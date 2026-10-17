@@ -1,0 +1,14 @@
+{
+  "name": "swimmingoncode",
+  "description": "Plugins from Swimming on Code",
+  "owner": {
+    "name": "Swimming on Code"
+  },
+  "plugins": [
+    {
+      "name": "narthex",
+      "source": "./",
+      "description": "Agent skills for decision-driven work: build a decision form from a questions file, collect answers, and keep a decision log."
+    }
+  ]
+}

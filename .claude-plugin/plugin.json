@@ -1,0 +1,12 @@
+{
+  "name": "narthex",
+  "version": "0.1.0",
+  "description": "Agent skills for decision-driven work: build a decision form from a questions file, collect answers, and keep a decision log.",
+  "author": {
+    "name": "Pablo Dorado",
+    "url": "https://github.com/swimmingoncode/narthex"
+  },
+  "homepage": "https://github.com/swimmingoncode/narthex",
+  "repository": "https://github.com/swimmingoncode/narthex",
+  "license": "MIT"
+}

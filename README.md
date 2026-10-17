@@ -10,6 +10,21 @@ The project was called SDD Studio until 2026-10-17, when Pablo dropped that work
 the codename Narthex (`notes/2026-10-17-codenames.md`). The sections below keep their original wording as
 history.
 
+## Install
+
+In Claude Code:
+
+```
+/plugin marketplace add swimmingoncode/narthex
+/plugin install narthex@swimmingoncode
+```
+
+For other Agent Skills hosts, the skills under `skills/` should work with the `skills` CLI (untested):
+
+```
+npx skills add swimmingoncode/narthex
+```
+
 ## Status (2026-10-17)
 
 - `SPEC.md` v0.3.0: the one-time rewrite (ruling R18), folding in amendments 0001 to 0005 and rulings R1 to

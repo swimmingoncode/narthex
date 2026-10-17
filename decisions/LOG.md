@@ -1,6 +1,6 @@
 # Narthex Decisions — log
 
-Generated Sat 2026-10-17 13:35 -05 · commit 44fd6f7 by the decision-form skill from `responses/`. Do not edit by hand:
+Generated Sat 2026-10-17 13:49 -05 · commit 757c156 by the decision-form skill from `responses/`. Do not edit by hand:
 every answer ever archived is listed, oldest first. A later answer to the same item supersedes the earlier one.
 
 | When | Item | Question | Answer | Notes | By | Status | Applied by |
@@ -15,7 +15,7 @@ every answer ever archived is listed, oldest first. A later answer to the same i
 | 2026-10-17 18:23 | `v3-oq-1` | What is Narthex's final name? | Run a trademark and domain search first (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
 | 2026-10-17 18:23 | `v3-oq-2` | Where do newcomers' repositories live? | Guided GitHub account now, hosted git later (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
 | 2026-10-17 18:24 | `v3-oq-3` | What are Narthex's pricing and business model? | Decide after the Bloque pilot (recommended) | As you already saw, Narthex is open-source first. This means that the business model revolves around …? | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
-| 2026-10-17 18:24 | `v3-oq-11` | Which builder and which product pilot Narthex at Bloque? | An operations flow on the core (details in notes) |  | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
+| 2026-10-17 18:24 | `v3-oq-11` | Which builder and which product pilot Narthex at Bloque? | An operations flow on the core (details in notes) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0003 |
 | 2026-10-17 18:25 | `v3-oq-4` | Which sector profiles ship first? | All five candidates |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
 | 2026-10-17 18:25 | `v3-oq-5` | May an executable or formal spec outrank SPEC.md? | Yes, where the profile says so (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
 | 2026-10-17 18:26 | `v3-oq-6` | Does an agent count as an independent reviewer? | Agents for product and oss-ledger; a person for regulated (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
@@ -25,6 +25,10 @@ every answer ever archived is listed, oldest first. A later answer to the same i
 | 2026-10-17 18:29 | `v3-oq-9` | How are tests named? | Per project; default plain names, ids in comments (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
 | 2026-10-17 18:30 | `v3-oq-10` | When does a builder's change need an engineer? | Three tiers as described (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
 | 2026-10-17 18:31 | `v3-asm-trust` | Confirm the 9 trust and access assumptions? | Confirm these assumptions (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
+| 2026-10-17 18:46 | `a-pilot` | Name the pilot builder and operations flow |  | My bad. The pilot is using Narthex on Bloque. | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0003 |
+| 2026-10-17 18:47 | `q-name-search` | Run a trademark and domain search for Narthex | OK |  | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
+| 2026-10-17 18:48 | `q-business-models` | Draft open-source business-model options for Narthex | OK |  | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
+| 2026-10-17 18:48 | `q-reading-chains` | Add full reading chains to the form's Read items | OK |  | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
 | 2026-10-17 20:00 | `0003-design` | Is our product mapping the discovery flow? | Change it (notes) | Pablo, in chat on 2026-10-17, ruling R5: producing the product spec "stays out of scope as a separate product". R14 adopts a minimal product-spec input contract. Product mapping belongs to that product; Narthex keeps question sets in its knowledge base. | relayed:chat | current | SPEC v0.3.0 §4.3, REQ-ITK-7 (R5, R14) |
 | 2026-10-17 20:00 | `0003-direction` | Is "anyone builds on the core, spec as norm" v1? | Yes, this is v1 (recommended) | Pablo, in chat on 2026-10-17, ruling R11: "Low-code and no-code as proposed: same component spec, verification by contract tests, built by builders." Ruling R12 puts Bloque's teams, not all software engineers, first. | relayed:chat | current | SPEC v0.3.0 §3.1, REQ-VER-10 (R11, R12) |
 | 2026-10-17 20:00 | `0005-next` | Is the spec-profile work next? | Folded into SPEC v0.3.0 with amendments 0002 to 0004 | Pablo, in chat on 2026-10-17, ruling R18: "Rewrite SPEC.md now, folding in research, prior art, amendments 0001-0005 and the recommendations." The profile work is part of that rewrite. | relayed:chat | current | SPEC v0.3.0 §6.6, §7.1 (R18) |

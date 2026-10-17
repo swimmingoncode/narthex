@@ -1,7 +1,7 @@
 ---
 name: Narthex (codename)
 summary: Tools and a knowledge base that turn a user's agentic system into a senior software architect. It guides people from a product specification through requirements, architecture, construction, verification, release and evolution, with decisions as data, living documents, and checks that run in CI.
-spec_version: 0.3.2
+spec_version: 0.3.3
 status: draft
 date: 2026-10-17
 rewrite_of: SDD Studio SPEC v0.2.0
@@ -947,7 +947,7 @@ answers archived in `decisions/responses/2026-10-17T18-35.json` (`REQ-DEC-35`). 
 | `OQ-8` | What does an agent do when it finds a spec gap? | Closed by amendment 0002 (item `v3-oq-8`): build meanwhile only on the plan's own or a stricter reading; never change `SPEC.md` or `PLAN.md` before the ruling; otherwise stop and raise an item. Pablo's note on the item added `REQ-DEC-43` (ASM-57) | `REQ-SKL-24` |
 | `OQ-9` | How are tests named? | Closed by amendment 0002 (item `v3-oq-9`): a per-project setting; by default plain names, identifiers in a comment | `REQ-SKL-30`, `REQ-VER-4` |
 | `OQ-10` | When does a builder's change need an engineer? | Closed by amendment 0002 (item `v3-oq-10`): three tiers, green, amber and red | `REQ-VER-7` |
-| `OQ-11` | Which builder and which product pilot Narthex at Bloque? | Open. Item `v3-oq-11` chose an operations flow on Bloque's core, but the notes behind it were empty. Pablo names the builder and the flow | The first milestone's plan |
+| `OQ-11` | Which builder and which product pilot Narthex at Bloque? | Closed by amendment 0003 (item `a-pilot`, 2026-10-17): "The pilot is using Narthex on Bloque." Bloque as a whole pilots Narthex; no single builder or flow is singled out. | The first milestone's plan |
 | `OQ-12` | Who checks the legal side of sector material, and when? | Closed by amendment 0002 (item `v3-oq-12`): a lawyer, before the first pack with material derived from a copyrighted standard ships | `REQ-KNB-7`, every sector pack |
 
 ---

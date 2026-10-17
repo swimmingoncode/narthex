@@ -434,7 +434,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0003"
   },
   {
    "id": "v3-oq-12",
@@ -2006,7 +2007,8 @@
     "Stop it"
    ],
    "follows": "v3-oq-1",
-   "origin": "amendment 0002, 2026-10-17"
+   "origin": "amendment 0002, 2026-10-17",
+   "keep_open": true
   },
   {
    "id": "q-business-models",
@@ -2020,7 +2022,8 @@
     "Stop it"
    ],
    "follows": "v3-oq-3",
-   "origin": "amendment 0002, 2026-10-17"
+   "origin": "amendment 0002, 2026-10-17",
+   "keep_open": true
   },
   {
    "id": "q-reading-chains",
@@ -2034,7 +2037,8 @@
     "Stop it"
    ],
    "follows": "v3-oq-8",
-   "origin": "amendment 0002, 2026-10-17"
+   "origin": "amendment 0002, 2026-10-17",
+   "keep_open": true
   },
   {
    "id": "a-pilot",
@@ -2054,7 +2058,8 @@
    ],
    "blocks": true,
    "follows": "v3-oq-11",
-   "origin": "amendment 0002, 2026-10-17"
+   "origin": "amendment 0002, 2026-10-17",
+   "applied": "amendment 0003"
   }
  ]
 }

@@ -1,13 +1,13 @@
 ---
 name: Narthex (codename): overview
-digest_of: SPEC.md v0.3.0
+digest_of: SPEC.md v0.3.4 (amendments 0001 to 0004 applied)
 status: informative. Where this and SPEC.md disagree, SPEC.md wins
 date: 2026-10-17
 ---
 
 # Narthex: overview
 
-A short reading of `SPEC.md` v0.3.0 for someone new to the project: what Narthex is, who it is for, how it
+A short reading of `SPEC.md` v0.3.4 for someone new to the project: what Narthex is, who it is for, how it
 works, what exists today, and what is still open. Identifiers in `code` point to the spec. External sources are
 in `REFERENCES.md`.
 
@@ -147,20 +147,23 @@ The MCP server, the web GUI, the sector profiles and the remaining skills do not
 **Assumed** until Pablo confirms them: 58 recommended options (nine confirmed so far) folded into the spec, listed in SPEC §13 and
 confirmed on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v3-asm-docs` and `v3-asm-packaging`.
 
-**Ruled** on 2026-10-17 by amendment 0002 (SPEC v0.3.2), nine of the twelve open questions: `OQ-2` and `OQ-4`
-to `OQ-10`, and `OQ-12`. All five sector profiles ship first. Nine trust-and-access assumptions are confirmed.
+**Ruled** on 2026-10-17:
+- amendment 0001 (v0.3.1): Narthex generates its own published pages; claude.ai artifacts are one optional target;
+- amendment 0002 (v0.3.2): nine of the twelve open questions, `OQ-2`, `OQ-4` to `OQ-10` and `OQ-12`. All five sector
+  profiles ship first, and nine trust-and-access assumptions are confirmed;
+- amendment 0003 (v0.3.3): `OQ-11`, the pilot is Narthex used across Bloque;
+- amendment 0004 (v0.3.4): the business model, part of `OQ-3`; only prices and plans stay open.
 
 **Open**, each an item on the form (SPEC §11):
 
 | Question | ID |
 |---|---|
-| The final name (alternatives are being brainstormed) | `OQ-1` |
+| The final name (parked under Later while the candidates sink in) | `OQ-1` |
 | Prices and plans (after the Bloque pilot; the business model itself is ruled, see above) | `OQ-3` |
-| Which builder and product pilot Narthex at Bloque (Pablo names them) | `OQ-11` |
 
 ## 7. Where to read more
 
-- `SPEC.md`: the normative specification, with the map from v0.2.0 in Appendix A.
+- `SPEC.md`: the normative specification. The map from v0.2.0 is in `history/v0-id-map.md`.
 - `REFERENCES.md`: the external sources, by topic.
 - `notes/2026-10-17-product-definition-review.md`: the product definition and the full chain.
 - `notes/2026-10-17-research-spec-formats.md`: how each industry writes specs.

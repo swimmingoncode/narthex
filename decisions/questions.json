@@ -67,6 +67,10 @@
     {
      "id": "architecture",
      "title": "Architecture"
+    },
+    {
+     "id": "plan",
+     "title": "Plan"
     }
    ]
   },
@@ -2887,6 +2891,348 @@
      "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0006-identity-and-sign-in.md"
     }
    ]
+  },
+  {
+   "id": "r-plan",
+   "kind": "read",
+   "section": "read",
+   "title": "PLAN.md: how Narthex gets built, milestone by milestone",
+   "lead": "The plan turns the architecture into milestones, features and one-change tasks. Read it before the Plan decisions.",
+   "options": [
+    "Read, no comments",
+    "Read, comments in notes",
+    "Not yet"
+   ],
+   "refs": [
+    {
+     "label": "PLAN.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md"
+    }
+   ],
+   "origin": "STEP-3 plan, 2026-10-17",
+   "chain": [
+    {
+     "label": "PLAN §1 How to read",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#1-how-to-read",
+     "why": "The identifiers, and how milestones, features and tasks fit together.",
+     "before": [
+      "r-architecture"
+     ]
+    },
+    {
+     "label": "PLAN §3 Milestones",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#3-milestones",
+     "why": "What each milestone delivers and the measurable checks that say it is done.",
+     "before": [
+      "PLAN §1 How to read"
+     ],
+     "for": [
+      "plan-first-level",
+      "plan-web-address",
+      "plan-pilot-start"
+     ]
+    },
+    {
+     "label": "PLAN §2 Plan decisions",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#2-plan-decisions",
+     "why": "The rules the build follows: one change per task, who merges, which AI model does what.",
+     "before": [
+      "PLAN §1 How to read"
+     ],
+     "for": [
+      "plan-merge-rule",
+      "plan-watch-key"
+     ]
+    },
+    {
+     "label": "PLAN §4 Features and tasks",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#4-features-and-tasks",
+     "why": "The first milestone in detail, including the wake-up helper and the sign-in work.",
+     "before": [
+      "PLAN §3 Milestones"
+     ],
+     "for": [
+      "plan-watch-key",
+      "plan-merge-rule"
+     ]
+    },
+    {
+     "label": "PLAN §5 Dependencies and waves",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#5-dependencies-and-waves",
+     "why": "Which work runs side by side, and the longest chain that sets the pace.",
+     "before": [
+      "PLAN §4 Features and tasks"
+     ]
+    },
+    {
+     "label": "Testing note §2 Synthetic sessions",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-testing-narthex.md#2-synthetic-sessions-l3",
+     "why": "How AI agents playing users would test Narthex: personas, scenarios and checks.",
+     "before": [
+      "PLAN §3 Milestones"
+     ],
+     "for": [
+      "plan-test-scenarios",
+      "plan-test-budget"
+     ]
+    },
+    {
+     "label": "PLAN §6 Risks and open items",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#6-risks-and-open-items",
+     "why": "The eight biggest risks, and the seven questions for you with their defaults.",
+     "before": [
+      "PLAN §5 Dependencies and waves"
+     ],
+     "for": [
+      "plan-first-level",
+      "plan-test-scenarios",
+      "plan-test-budget",
+      "plan-web-address",
+      "plan-merge-rule",
+      "plan-watch-key",
+      "plan-pilot-start"
+     ]
+    },
+    {
+     "label": "PLAN §7 Traceability",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#7-traceability",
+     "why": "Optional: proof that every requirement has a home, or a milestone it waits for.",
+     "before": [
+      "PLAN §4 Features and tasks"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "plan-first-level",
+   "section": "decide",
+   "group": "plan",
+   "title": "Who should the first version guide: makers like you?",
+   "lead": "The first version ships guided questions for one kind of person only. The architecture planned for first-time builders, before the maker level existed.",
+   "bullets": [
+    "Makers have built with AI before but are not fluent in code.",
+    "You play a maker, so your own test run is a real one.",
+    "First-time builders and the other levels follow in M1."
+   ],
+   "options": [
+    "Makers first (recommended)",
+    "First-time builders first",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "PLAN DEC-22",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#22-plan-only-decisions"
+    },
+    {
+     "label": "PLAN §3 Milestones",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#3-milestones"
+    }
+   ],
+   "spec": [
+    "REQ-ITK-7",
+    "ASM-59"
+   ],
+   "origin": "STEP-3 plan, 2026-10-17"
+  },
+  {
+   "id": "plan-test-scenarios",
+   "section": "decide",
+   "group": "plan",
+   "title": "Which three practice runs should test Narthex first?",
+   "lead": "In M1, AI agents play users and run through Narthex, so we catch breakage before real people do. We start with three scenarios.",
+   "bullets": [
+    "Happy path: a maker goes from an idea to an approved spec.",
+    "Unattended form: you vanish for days; the agent waits quietly, then resumes.",
+    "Spec gap: the agent meets a missing rule mid-build and must not guess.",
+    "More join later; every pilot problem becomes a new run."
+   ],
+   "options": [
+    "Happy path, unattended form, spec gap (recommended)",
+    "Happy path, vague idea, reserved actions",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "Testing note §2",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-testing-narthex.md#2-synthetic-sessions-l3"
+    },
+    {
+     "label": "PLAN F-025",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#42-m1-features"
+    }
+   ],
+   "spec": [
+    "REQ-DEC-39",
+    "REQ-SKL-24"
+   ],
+   "origin": "STEP-3 plan, 2026-10-17"
+  },
+  {
+   "id": "plan-test-budget",
+   "section": "decide",
+   "group": "plan",
+   "reserved": true,
+   "title": "How much may one practice run cost?",
+   "lead": "Each practice run uses paid AI time, and each scenario runs several times because agents vary. Step out of character for this one: it commits money.",
+   "bullets": [
+    "Recommended: up to $3 a run, five runs per scenario, per release.",
+    "That is at most $45 per release for three scenarios.",
+    "The $3 is an estimate, not measured yet.",
+    "A run that hits the ceiling stops and counts as a failure."
+   ],
+   "options": [
+    "Up to $3 a run, five runs each (recommended)",
+    "Up to $10 a run, five runs each",
+    "Up to $1 a run, three runs each",
+    "Discuss first"
+   ],
+   "refs": [
+    {
+     "label": "Testing note §4",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-testing-narthex.md#4-questions-for-pablo"
+    },
+    {
+     "label": "PLAN §3 M1 exit",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#3-milestones"
+    }
+   ],
+   "spec": [
+    "NFR-9"
+   ],
+   "origin": "STEP-3 plan, 2026-10-17"
+  },
+  {
+   "id": "plan-web-address",
+   "section": "decide",
+   "group": "plan",
+   "reserved": true,
+   "title": "Which web address should the first hosted version use?",
+   "lead": "Hosted Narthex needs web addresses before anyone else can use it, and the final name is still open. Step out of character: this may cost money.",
+   "bullets": [
+    "Recommended: free subdomains of a domain Swimming on Code already holds.",
+    "Buying a codename domain now costs money and may change with the name.",
+    "Any purchase is a separate step you approve later."
+   ],
+   "options": [
+    "Subdomains of a domain we already hold (recommended)",
+    "Buy a domain for the codename now",
+    "Wait for the final name",
+    "Discuss first"
+   ],
+   "refs": [
+    {
+     "label": "PLAN T-017-04",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#f-017-deploy-and-operations"
+    },
+    {
+     "label": "SAD §7.2 The hosted service",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#72-the-hosted-service"
+    }
+   ],
+   "spec": [
+    "REQ-IDN-8",
+    "OQ-1"
+   ],
+   "origin": "STEP-3 plan, 2026-10-17"
+  },
+  {
+   "id": "plan-merge-rule",
+   "section": "decide",
+   "group": "plan",
+   "reserved": true,
+   "title": "May agents merge their own changes once every check passes?",
+   "lead": "Each task ends as one pull request, a proposed change. Step out of character for this one: it trades speed for safety.",
+   "bullets": [
+    "Recommended: agents merge when all checks pass and a reviewer agent finds nothing.",
+    "Sign-in, links, keys and the four contracts always wait for your click.",
+    "Those also get a separate security review first.",
+    "Until you answer, you merge every change yourself."
+   ],
+   "options": [
+    "Yes, except sign-in, keys and contracts (recommended)",
+    "Yes, every change once checks pass",
+    "No, I merge every change",
+    "Discuss first"
+   ],
+   "refs": [
+    {
+     "label": "PLAN DEC-17",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#22-plan-only-decisions"
+    }
+   ],
+   "spec": [
+    "REQ-SKL-25",
+    "INV-4"
+   ],
+   "origin": "STEP-3 plan, 2026-10-17"
+  },
+  {
+   "id": "plan-watch-key",
+   "section": "decide",
+   "group": "plan",
+   "reserved": true,
+   "title": "May the wake-up helper keep listening while you take days?",
+   "lead": "A small helper wakes your agent when you answer, but under today's key rules its key stops after 15 minutes. Step out of character: this is a security call.",
+   "bullets": [
+    "So it would go deaf long before you might answer.",
+    "Recommended: a listening key that lasts until the form closes or you revoke it.",
+    "It only learns that something changed, never what you answered.",
+    "Without it, you tell the agent yourself once you have answered.",
+    "This adds one kind of key to the rules you accepted (ADR-0007)."
+   ],
+   "options": [
+    "Long-lived listening key, no content (recommended)",
+    "No, I tell the agent myself",
+    "Discuss first"
+   ],
+   "refs": [
+    {
+     "label": "PLAN §6.1 risk 4",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#61-top-risks"
+    },
+    {
+     "label": "ADR-0007 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0007-token-model.md"
+    }
+   ],
+   "spec": [
+    "REQ-DEC-40",
+    "REQ-IFC-9",
+    "INV-17"
+   ],
+   "origin": "STEP-3 plan, 2026-10-17"
+  },
+  {
+   "id": "plan-pilot-start",
+   "section": "decide",
+   "group": "plan",
+   "title": "When should Bloque start using Narthex for real?",
+   "lead": "Real use at Bloque tells us whether Narthex builds the right thing. Starting earlier finds problems sooner but meets more rough edges.",
+   "bullets": [
+    "Recommended: start after M1, on one Bloque project, while later work goes on.",
+    "Waiting for the hosted launch gives smoother tools but later lessons.",
+    "Installing Narthex on Bloque's code is a separate step you approve."
+   ],
+   "options": [
+    "After M1, on one project (recommended)",
+    "After the hosted launch",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "PLAN §3 M2 onward",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#m2-onward"
+    }
+   ],
+   "spec": [
+    "OQ-11",
+    "REQ-CHN-13"
+   ],
+   "origin": "STEP-3 plan, 2026-10-17"
   }
  ]
 }

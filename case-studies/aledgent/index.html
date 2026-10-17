@@ -1,0 +1,194 @@
+<title>The aledgent Method</title>
+<style>
+/* Layout: a case-study document. One reading column near 66ch, a stat strip, a numbered loop (a real sequence), dated timeline, episode cards. */
+:root{
+  --bg:#f5f4f0; --surface:#ffffff; --ink:#1c1d1a; --muted:#5e6157; --rule:#dcdad2;
+  --accent:#1f5f8b; --accent-soft:#e3eef6; --good:#2d6a3e; --good-soft:#e5f1e8; --warn:#8a4b12; --warn-soft:#f6ebdf;
+  --f-head:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Source Serif 4","Source Serif Pro",Georgia,serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121411; --surface:#1a1d19; --ink:#e4e6df; --muted:#a2a69a; --rule:#2e322c;
+  --accent:#7fb7e0; --accent-soft:#1a2a36; --good:#7fc58f; --good-soft:#18291d; --warn:#e3a96b; --warn-soft:#33261a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121411; --surface:#1a1d19; --ink:#e4e6df; --muted:#a2a69a; --rule:#2e322c;
+  --accent:#7fb7e0; --accent-soft:#1a2a36; --good:#7fc58f; --good-soft:#18291d; --warn:#e3a96b; --warn-soft:#33261a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.62 var(--f-body)}
+.wrap{max-width:52rem;margin:0 auto;padding-inline:16px;padding-block:32px 80px}
+h1,h2,h3{font-family:var(--f-head);line-height:1.2;text-wrap:balance}
+h1{font-size:2.2rem;margin:0 0 6px}
+h2{font-size:1.45rem;margin:52px 0 12px;padding-top:14px;border-top:1px solid var(--rule)}
+h3{font-size:1.1rem;margin:0 0 6px}
+p,ul,ol{max-width:66ch;margin:0 0 14px}
+ul,ol{padding-left:1.25em} li{margin-bottom:6px}
+.eyebrow{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.09em;font-size:12px;color:var(--muted);font-weight:600;margin:0 0 8px}
+.lede{font-size:1.08rem}
+code{font-family:var(--f-mono);font-size:.84em;background:var(--accent-soft);padding:.05em .3em;border-radius:3px}
+a{color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:22px 0 8px}
+.stat{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;min-width:0}
+.stat b{display:block;font-family:var(--f-head);font-size:1.6rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat span{font-size:.86rem;color:var(--muted)}
+ol.loop{list-style:none;counter-reset:s;padding:0;margin:0 0 16px}
+ol.loop>li{counter-increment:s;position:relative;padding:10px 0 10px 46px;border-top:1px solid var(--rule);margin:0;max-width:66ch}
+ol.loop>li:last-child{border-bottom:1px solid var(--rule)}
+ol.loop>li::before{content:counter(s);position:absolute;left:0;top:11px;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-family:var(--f-mono);font-size:13px;display:grid;place-items:center}
+ol.loop b{font-family:var(--f-head)}
+.tl{border-left:2px solid var(--rule);margin:8px 0 18px 6px;padding-left:18px}
+.tl div{position:relative;margin:0 0 12px;max-width:62ch}
+.tl div::before{content:"";position:absolute;left:-24px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.tl time{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);display:block}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;margin:14px 0}
+.card .k{font-family:var(--f-head);font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;margin:10px 0 2px}
+.card p:last-child,.card ul:last-child{margin-bottom:0}
+.scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--surface);margin:12px 0 18px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--f-head);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.cols{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+@media(min-width:720px){.cols{grid-template-columns:1fr 1fr}}
+.cols .card{margin:0}
+.good{border-left:3px solid var(--good)} .warn{border-left:3px solid var(--warn)}
+footer{margin-top:56px;padding-top:14px;border-top:1px solid var(--rule);color:var(--muted);font-size:.88rem}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<div class="wrap">
+<header>
+<p class="eyebrow">Case study · Bloque · September–October 2026</p>
+<h1>The aledgent method</h1>
+<p class="lede">How one engineering lead, working with Claude and a team of AI agents, took a private, provable ledger from idea to a measured, multi-Agent design in under three weeks. The lead decided; the agents researched, wrote, built and measured.</p>
+<div class="stats">
+  <div class="stat"><b>17</b><span>days from the first spec review</span></div>
+  <div class="stat"><b>612</b><span>commits on main</span></div>
+  <div class="stat"><b>97</b><span>pull requests merged, CI green</span></div>
+  <div class="stat"><b>204</b><span>requirements, 25 invariants</span></div>
+  <div class="stat"><b>14</b><span>spec amendments, 23 plan decisions</span></div>
+  <div class="stat"><b>11</b><span>upstream proposals to VOS</span></div>
+</div>
+</header>
+
+<h2>The loop</h2>
+<p>Every piece of work ran through the same sequence. The order matters: nothing gets built before the lead has ruled on its shape.</p>
+<ol class="loop">
+<li><b>Idea.</b> The lead states a goal in a sentence or two. "A canary this week." "Go straight to Kreivo." "3.5 ops/s is nothing."</li>
+<li><b>Investigate.</b> Research agents read code, papers and data, and return sourced reports with file:line citations and run ids.</li>
+<li><b>Specify.</b> A normative SPEC (requirements, invariants, open questions), an OVERVIEW, and a PLAN of features.</li>
+<li><b>Discuss.</b> Meetings and chat produce rulings. Rulings are written down as data the same day.</li>
+<li><b>Decide by form.</b> Every open question lands in a web form: grouped, concise, with a recommendation, defaults applied where safe. Answers flow back to the agents directly.</li>
+<li><b>Plan.</b> Decisions become DECs, features, tasks and measurable gates.</li>
+<li><b>Execute.</b> Agents work features in parallel, each in its own worktree, and merge through CI under fixed house rules.</li>
+<li><b>Measure.</b> Claims are backed by runs on named hardware. Stale numbers get re-run.</li>
+<li><b>Amend.</b> When reality disagrees with the spec, a numbered amendment changes it.</li>
+<li><b>Propose upward.</b> Fixes that belong to dependencies become measured proposals for their maintainers.</li>
+<li><b>Report.</b> Five-line chat updates; everything long goes into a page or the form, with a push notification.</li>
+</ol>
+
+<h2>Timeline</h2>
+<div class="tl">
+<div><time>2026-09-16</time>First spec review. The ledger's requirements and invariants take shape.</div>
+<div><time>2026-09-22–23</time>Repository opens; 233 commits in two days as the spec, plan and first features land.</div>
+<div><time>2026-09-29–30</time>VOS fork PRs, the recompiler (11× faster), passkeys, the canary packaging and infrastructure.</div>
+<div><time>2026-10-02</time>Owner rulings by form. The merge train lands ten PRs. The canary is staged for the test account.</div>
+<div><time>2026-10-02, evening</time>The canary is called off: payment-rails isn't ready. The plan pivots to going straight to Kreivo, with a CI sidecar for payment-rails.</div>
+<div><time>2026-10-03</time>Straight-to-Kreivo bind proven on zombienet. Stress suite built. VOS runtime cost cut 17×. Shards on real VOS Agents: 642 transfers/s on 8 Agents. Custom runtime and topology designed and measured.</div>
+</div>
+
+<h2>Three episodes</h2>
+
+<div class="card">
+<h3>1. Calling off the canary, then going further</h3>
+<p>Friday evening, the lead and DevOps called off the canary: the payment platform wasn't ready to connect. Instead of waiting, the lead asked three things at once: a sidecar so payment-rails can test against a real ledger in CI, a plan to wire it, and a direct path to the chain without an intermediate stage.</p>
+<p class="k">What the agents did</p>
+<ul>
+<li>Published a sidecar image and a CI job on top of the existing client PR.</li>
+<li>Mapped about 70 ledger touchpoints in payment-rails into 20 questions and 23 work packages.</li>
+<li>Wrote the amendment, built the bind flow end to end and proved it on a test network the same weekend.</li>
+</ul>
+<p class="k">Why it worked</p>
+<p>The pivot cost hours, not weeks, because the spec, the decisions and the plan were all data the agents could re-read.</p>
+</div>
+
+<div class="card">
+<h3>2. "3.5 ops/s is basically nothing"</h3>
+<p>The first measurement of the core as a VOS Agent gave 3.5 operations per second. The lead refused to accept it as the ceiling and kept asking why.</p>
+<div class="scroll"><table>
+<tr><th>Question the lead asked</th><th>What measurement found</th></tr>
+<tr><td>What's the overhead, and is it really the maintainer's to fix?</td><td>The runtime re-hashes the actor's whole program on every call. We had a partial fix already, never applied together.</td></tr>
+<tr><td>Is triple hashing a real security need?</td><td>One verified pass is; the others repeat it. On our stack it was six passes, not three.</td></tr>
+<tr><td>Is a JAM host unable to help?</td><td>The Gray Paper has no hash host call by design, but its <code>lookup</code> hands over bytes already verified by hash.</td></tr>
+<tr><td>Can we split the work across Agents?</td><td>Yes: exactly-once credits between shards, proven by property tests, then measured on real hardware.</td></tr>
+</table></div>
+<div class="scroll"><table>
+<tr><th>Measure</th><th class="num">Before</th><th class="num">After</th></tr>
+<tr><td>Fixed runtime gas per call</td><td class="num">1,571 M</td><td class="num">90 M</td></tr>
+<tr><td>One Agent, reservations/s</td><td class="num">4.1</td><td class="num">33.4</td></tr>
+<tr><td>8 shard Agents, transfers/s (16 vCPU)</td><td class="num">—</td><td class="num">642</td></tr>
+</table></div>
+<p>The lead's skepticism set the direction; the agents supplied the evidence. Every number on this page traces to a named run.</p>
+</div>
+
+<div class="card">
+<h3>3. The decision form, designed by use</h3>
+<p>The way decisions were taken changed five times in two days, each time because the lead said what hurt.</p>
+<ul>
+<li><b>Chat</b> was too fast to read, so decisions moved to <b>HTML pages</b> with options and notes.</li>
+<li>Pages lived on a laptop, so they became a <b>published form</b> with answers stored where the agents read them, plus push notifications.</li>
+<li>40 decisions in one list was a burden, so the form got <b>sections and sub-tabs</b>, with defaults already applied and marked.</li>
+<li>Paragraphs were too long, so every item was rewritten to <b>a title, a sentence and a few bullets</b>.</li>
+<li>Past answers were hard to find, so <b>Decided became an Outbox</b>, grouped like the inbox, showing each original question beside its answer.</li>
+</ul>
+<p>Of 40 open decisions, 11 needed the lead; the rest only needed a glance.</p>
+</div>
+
+<h2>Who did what</h2>
+<div class="cols">
+<div class="card good">
+<h3>The lead</h3>
+<ul>
+<li>Set goals and scope, and called pivots.</li>
+<li>Ruled on product and security trade-offs.</li>
+<li>Challenged numbers and assumptions.</li>
+<li>Talked to people: the VOS maintainer, DevOps.</li>
+<li>Approved anything outward-facing: infrastructure, publishing, other teams' repos.</li>
+</ul>
+</div>
+<div class="card good">
+<h3>Claude and the agents</h3>
+<ul>
+<li>Research with citations; specs, amendments, plans.</li>
+<li>Code, tests, CI and merges under house rules.</li>
+<li>Benchmarks on named hardware, profiles, root causes.</li>
+<li>Upstream proposals and bug reports, drafted for the lead to send.</li>
+<li>The decision form and every update to it.</li>
+</ul>
+</div>
+</div>
+
+<h2>What made it work</h2>
+<ul>
+<li><b>Rulings are data.</b> Every answer is stored and re-read by the next agent, never left in chat scrollback.</li>
+<li><b>Defaults are explicit and reversible.</b> Agents never block on a question: they take the conservative default, record it, and keep going.</li>
+<li><b>Measure before claiming.</b> Facts are tagged apart from inferences, and old numbers are re-run, not quoted.</li>
+<li><b>House rules travel with every brief.</b> Commit identity and signing, protected repositories, outward actions, concise reporting.</li>
+<li><b>The lead's attention is the scarce resource.</b> Five-line chat, grouped decisions, notifications only when something is ready.</li>
+</ul>
+
+<h2>What went wrong, and what changed</h2>
+<div class="cols">
+<div class="card warn"><h3>Commit identity overridden</h3><p>An early agent brief forced an email address, leaving 224 commits unverified. Now a global rule forbids overriding identity or signing, and every brief carries it.</p></div>
+<div class="card warn"><h3>Too much text</h3><p>Long chat answers went unread. Now chat is five lines at most, and everything else is a page or a form item.</p></div>
+<div class="card warn"><h3>Stale and invalid numbers</h3><p>A batching bug silently voided some runs, and the stress verdict predated the speed-ups. Now runs are tied to commits, and gates get re-run.</p></div>
+<div class="card warn"><h3>Overclaims corrected by the lead</h3><p>"Shared needs persistent disks", "8 ops/s is VOS's best", "the core runs on VOS": each was challenged and corrected with evidence.</p></div>
+</div>
+
+<h2>What's next</h2>
+<p>The workflow is being turned into a product, SDD Studio: a decision inbox and outbox, living documentation linked both ways to decisions, and a plugin of workflow skills. This page is its first case study.</p>
+
+<footer>Prepared 2026-10-03 by Claude for Pablo Dorado. Figures from the aledgent repository (main) and its measurement notes. Internal financial and security details are deliberately left out.</footer>
+</div>

@@ -1,0 +1,53 @@
+{
+  "responses": [
+    {
+      "id": "oq-1",
+      "choice": "Bloque's teams, then engineers, then factories and consultants",
+      "notes": "Pablo, in chat on 2026-10-17, ruling R12: \"First customers, in order: (1) Bloque's teams, not all of them software engineers; (2) individual engineers ... (3) software factories and consultants last.\" Recorded in notes/2026-10-17-rulings.md.",
+      "at": "2026-10-17T20:00:00-05:00",
+      "by": "relayed:chat"
+    },
+    {
+      "id": "oq-4",
+      "choice": "Rename now (name in notes)",
+      "notes": "Pablo, in chat on 2026-10-17, ruling R1: \"The name 'SDD Studio' is dropped. Use codenames until a final name is found.\" He chose the codename Narthex the same day (notes/2026-10-17-codenames.md).",
+      "at": "2026-10-17T20:00:00-05:00",
+      "by": "relayed:chat"
+    },
+    {
+      "id": "oq-5",
+      "choice": "Narthex's web GUI, linked from the MCP",
+      "notes": "Pablo, in chat on 2026-10-17, ruling R3: \"Interface: MCP and a GUI. The GUI is web, with optional harness add-ons ... The MCP hands the user links into the UI.\" Recorded in notes/2026-10-17-rulings.md.",
+      "at": "2026-10-17T20:00:00-05:00",
+      "by": "relayed:chat"
+    },
+    {
+      "id": "oq-11",
+      "choice": "Several answerers from v1",
+      "notes": "Pablo, in chat on 2026-10-17, ruling R10: \"Multiple teams as proposed: identifier ownership per team, decision routing per role ...\" With R12, Bloque's teams come first.",
+      "at": "2026-10-17T20:00:00-05:00",
+      "by": "relayed:chat"
+    },
+    {
+      "id": "0003-direction",
+      "choice": "Yes, this is v1 (recommended)",
+      "notes": "Pablo, in chat on 2026-10-17, ruling R11: \"Low-code and no-code as proposed: same component spec, verification by contract tests, built by builders.\" Ruling R12 puts Bloque's teams, not all software engineers, first.",
+      "at": "2026-10-17T20:00:00-05:00",
+      "by": "relayed:chat"
+    },
+    {
+      "id": "0003-design",
+      "choice": "Change it (notes)",
+      "notes": "Pablo, in chat on 2026-10-17, ruling R5: producing the product spec \"stays out of scope as a separate product\". R14 adopts a minimal product-spec input contract. Product mapping belongs to that product; Narthex keeps question sets in its knowledge base.",
+      "at": "2026-10-17T20:00:00-05:00",
+      "by": "relayed:chat"
+    },
+    {
+      "id": "0005-next",
+      "choice": "Folded into SPEC v0.3.0 with amendments 0002 to 0004",
+      "notes": "Pablo, in chat on 2026-10-17, ruling R18: \"Rewrite SPEC.md now, folding in research, prior art, amendments 0001-0005 and the recommendations.\" The profile work is part of that rewrite.",
+      "at": "2026-10-17T20:00:00-05:00",
+      "by": "relayed:chat"
+    }
+  ]
+}

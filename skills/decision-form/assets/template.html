@@ -1,0 +1,395 @@
+<meta charset="utf-8">
+<title>/*__TITLE__*/</title><!--__BRAND_HEAD__-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!--__FONTS__--><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap"><!--/__FONTS__-->
+<style>
+/* Layout: a single column of question cards under a sticky row of section tabs, with topic sub-tabs below.
+   Built to be answered one-handed on a phone: big targets, open items first, defaults parked below a divider. */
+:root{
+  --bg:#f3f4f7;--card:#ffffff;--ink:#16181d;--muted:#5a6070;--line:#d9dce4;--chip:#e7e9ef;
+  --accent:#2a45b8;--accent-ink:#ffffff;--open:#a85a00;--ok:#1f7a4d;--blk:#b2262c;
+  --f-body:"Atkinson Hyperlegible",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111318;--card:#1a1d24;--ink:#e7e9ee;--muted:#9aa1b2;--line:#2c313c;--chip:#252a34;
+  --accent:#93a6ff;--accent-ink:#0f1430;--open:#f0b45c;--ok:#6cc596;--blk:#f08a84;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111318;--card:#1a1d24;--ink:#e7e9ee;--muted:#9aa1b2;--line:#2c313c;--chip:#252a34;
+  --accent:#93a6ff;--accent-ink:#0f1430;--open:#f0b45c;--ok:#6cc596;--blk:#f08a84;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body)}
+.wrap{max-width:780px;margin:0 auto;padding-inline:16px;padding-block:18px 96px}
+h1{font-size:23px;line-height:1.25;margin:0;text-wrap:balance}
+.meta{color:var(--muted);font-size:14px;margin:3px 0 0}
+.status{font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:10px}
+.status b{color:var(--ink);font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--muted);margin-right:6px;vertical-align:1px}
+.dot.on{background:var(--ok)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin:14px -16px 0;padding:8px 16px;border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none;font:inherit;font-size:14.5px;min-height:36px;border:0;background:var(--chip);color:var(--ink);padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+.n{font-family:var(--f-mono);font-size:11.5px;opacity:.85;margin-left:5px;font-variant-numeric:tabular-nums}
+.nw{color:var(--open);font-weight:700;margin-left:4px}
+nav.tabs button[aria-current="page"] .nw{color:inherit}
+.sub{color:var(--muted);font-size:15px;margin:14px 0 6px}
+.subnav{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.subnav button{font:inherit;font-size:14px;min-height:36px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:5px 11px;border-radius:8px;cursor:pointer}
+.subnav button[aria-current="page"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.subnav .op{font-size:12px;color:var(--open);margin-left:6px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 15px;margin:12px 0;scroll-margin-top:72px}
+.item.answered{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.head{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.t{font-weight:700;font-size:17px;line-height:1.35;text-wrap:balance;min-width:0}
+.tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;flex:none;max-width:45%}
+.tag{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:5px;border:1px solid currentColor;white-space:nowrap}
+.tag.new{color:var(--open)}.tag.done{color:var(--ok)}.tag.blk{color:var(--blk)}.tag.dflt{color:var(--muted)}.tag.via{color:var(--accent);white-space:normal;text-align:right}
+.id{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);margin-top:2px}
+.applied{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;margin-top:6px}
+.applied .lbl{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.applied .tag{color:var(--ok);text-transform:none;letter-spacing:0;white-space:normal;overflow-wrap:anywhere}
+.applied a.tag{text-decoration:underline}
+.ctx{font-size:15.5px;margin-top:8px;overflow-wrap:anywhere}
+.ctx p{margin:0 0 6px}.ctx ul{margin:4px 0 6px;padding-left:20px}.ctx li{margin:3px 0}
+.ctx .rec{font-weight:700;margin-top:6px}
+code{font-family:var(--f-mono);font-size:12.5px;background:var(--chip);padding:1px 5px;border-radius:5px}
+.refs{font-size:14px;margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center}
+.refs a{color:var(--accent)}.refs .off{color:var(--muted)}
+.refs button.peek{font:inherit;font-size:14px;color:var(--accent);background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.opts{margin-top:10px;display:flex;flex-direction:column;gap:2px}
+.opts label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:8px 6px;min-height:40px;border-radius:7px;font-size:15.5px}
+.opts label:hover{background:var(--chip)}
+.opts input{margin-top:4px;accent-color:var(--accent);flex:none;width:18px;height:18px}
+.opts .d{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);margin-left:6px;text-transform:uppercase;letter-spacing:.05em}
+textarea{width:100%;margin-top:8px;min-height:60px;font:inherit;font-size:15px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+textarea:focus-visible,button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.saved{font-size:12.5px;color:var(--muted);margin-top:4px;min-height:1em}
+.dflts{margin:22px 0 4px;padding-top:10px;border-top:1px dashed var(--line)}
+.dflts>summary{cursor:pointer;font-size:14.5px;color:var(--muted);min-height:40px;display:flex;align-items:center}
+.dflts>summary:hover{color:var(--ink)}
+.divider{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 4px;padding-top:10px;border-top:1px dashed var(--line)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 15px;margin:12px 0}
+.panel h2{font-size:15px;margin:0 0 6px}
+.panel ul{margin:0;padding-left:20px}.panel li{margin:3px 0}
+.panel a{color:var(--accent)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td a{color:var(--accent)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tools button,.tools label.btn{font:inherit;font-size:14px;min-height:38px;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.ghead{font-size:13px;margin:22px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.out details{margin-top:6px}.out summary{cursor:pointer;font-size:14px;color:var(--accent)}
+.optlist{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:3px;font-size:15px}
+.optlist li{padding:4px 8px;border-radius:6px;color:var(--muted)}
+.optlist li.chosen{color:var(--ink);background:color-mix(in srgb,var(--ok) 16%,transparent);font-weight:700}
+.optlist li.chosen::before{content:"✓ ";color:var(--ok)}
+.ans{font-size:15px;margin:6px 0 0;overflow-wrap:anywhere}
+.out .redo{font:inherit;font-size:13.5px;margin-top:8px;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.empty{color:var(--muted);font-size:15px;padding:24px 0}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:0;width:min(720px,calc(100vw - 24px));max-height:calc(100vh - 48px)}
+dialog::backdrop{background:rgb(0 0 0 / .45)}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card)}
+.dlg-head a{color:var(--accent);font-size:14px}
+.dlg-head button{font:inherit;font-size:14px;min-height:36px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:4px 12px;cursor:pointer}
+.dlg-body{padding:6px 16px 16px;overflow-wrap:anywhere;font-size:15.5px}
+.dlg-body table{display:block;overflow-x:auto}
+.dlg-body .hit{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+@media (prefers-reduced-motion:no-preference){.item{transition:border-color .2s}}
+/*__BRAND_TOKENS__*/</style>
+
+<div class="wrap">
+  <!--__BRAND_LOGO__--><h1 id="h1">Decision form</h1>
+  <p class="meta" id="meta"></p>
+  <div class="status">
+    <span id="where"><span class="dot"></span>Connecting…</span>
+    <span id="total"></span>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  <div id="view"><p class="sub">Loading the questions… If this stays, the page could not run its script. Open it in a web browser, or ask for it to be published as an artifact.</p></div>
+  <noscript><p class="sub">This form needs JavaScript. Open the file in a web browser (a file preview won't run it), or ask for it to be published as an artifact.</p></noscript>
+</div>
+<dialog id="peek" aria-labelledby="peek-title">
+  <div class="dlg-head"><a id="peek-title" href="#" target="_blank" rel="noopener">Open the full page</a><button type="button" id="peek-close">Close</button></div>
+  <div class="dlg-body" id="peek-body"></div>
+</dialog>
+
+<script>
+/*__DATA__*/
+// FORM, SECTIONS, ITEMS, RESOLVED, NEW and STAMP are injected by scripts/build.py.
+const LS = FORM.storageKey;
+let S = {}, col = null, dl = null, who = null, cur = null;
+const timers = {};
+const NEWSET = new Set(NEW);
+const ALL = [['overview', 'Overview', FORM.overviewBlurb || 'What is new, what blocks, and how much is left.'],
+  ...SECTIONS.map(s => [s.id, s.title, s.blurb || '']),
+  ['outbox', 'Outbox', 'Your answers as recorded, each with its original question. Change one if it reads wrong.']];
+const DISCUSS = /\bdiscuss\b/i;
+
+function lsLoad(){ try { return JSON.parse(localStorage.getItem(LS) || '{}') } catch(e){ return {} } }
+function lsSave(){ try { localStorage.setItem(LS, JSON.stringify(S)) } catch(e){} }
+function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) }
+function answered(id){ const r = S[id]; return !!(r && (r.choice || r.notes)) }
+function decided(id){ return answered(id) && !DISCUSS.test(S[id].choice || '') }
+function sectionOf(id){ return SECTIONS.find(s => s.id === id) }
+// Items of kind queue (the agent acts) and update (nobody acts) never wait for the owner, so they never count as open.
+function needsYou(i){ return i.kind !== 'queue' && i.kind !== 'update' }
+function count(sec, grp){
+  const its = ITEMS.filter(i => i.section === sec && (!grp || i.group === grp));
+  return { a: its.filter(i => answered(i.id)).length, n: its.length,
+    open: its.filter(i => needsYou(i) && !i.defaulted && !decided(i.id)).length, nw: its.filter(i => NEWSET.has(i.id)).length };
+}
+
+function tabs(){
+  const nav = document.getElementById('tabs'); nav.innerHTML = '';
+  for (const [p, t] of ALL){
+    let h = esc(t);
+    if (p !== 'overview' && p !== 'outbox'){
+      const c = count(p); if (!c.n) continue;
+      h += `<span class="n">${c.open || '✓'}</span>` + (c.nw ? `<span class="nw">•${c.nw}</span>` : '');
+    } else if (p === 'outbox'){ if (!RESOLVED.length) continue; h += `<span class="n">${RESOLVED.length}</span>`; }
+    const b = document.createElement('button'); b.type = 'button'; b.id = 'tab-' + p; b.innerHTML = h;
+    if (p === cur) b.setAttribute('aria-current', 'page');
+    b.onclick = () => nav_(p); nav.appendChild(b);
+  }
+  const tot = ITEMS.filter(i => answered(i.id)).length;
+  document.getElementById('total').innerHTML = `<b>${tot}</b> of <b>${ITEMS.length}</b> answered · <b>${NEW.length}</b> new since the last update`;
+}
+function nav_(hash, itemId){ location.hash = hash; go(hash); if (itemId){ const el = document.getElementById(itemId); if (el) el.scrollIntoView({block:'start'}) } }
+
+function refsHtml(refs){
+  if (!refs || !refs.length) return '';
+  return '<div class="refs">' + refs.map((x, k) => {
+    if (!x.url) return `<span class="off">${esc(x.label)}</span>`;
+    if (x.peek) return `<button type="button" class="peek" data-url="${esc(x.url)}">${esc(x.label)}</button>`;
+    return `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`;
+  }).join('') + '</div>';
+}
+
+function card(it){
+  const r = S[it.id] || {}, el = document.createElement('div');
+  el.className = 'item' + (answered(it.id) ? ' answered' : ''); el.id = it.id;
+  let tags = '';
+  if (NEWSET.has(it.id)) tags += '<span class="tag new">New</span>';
+  if (answered(it.id)) tags += '<span class="tag done">Answered</span>';
+  if (it.blocks) tags += '<span class="tag blk">Blocks</span>';
+  if (it.defaulted && !answered(it.id)) tags += '<span class="tag dflt">Default applied</span>';
+  let h = `<div class="head"><div class="t">${esc(it.title)}</div><div class="tags">${tags}</div></div><div class="id">${esc(it.id)}</div>`;
+  if (it.ctx) h += `<div class="ctx">${it.ctx}</div>`;
+  h += refsHtml(it.refs);
+  if (it.options && it.options.length){
+    h += '<div class="opts" role="radiogroup" aria-label="Options">' + it.options.map((o, i) =>
+      `<label><input type="radio" id="${esc(it.id)}-o${i}" name="${esc(it.id)}" value="${esc(o)}"${r.choice === o ? ' checked' : ''}><span>${esc(o)}${it.default === i ? '<span class="d">default</span>' : ''}</span></label>`).join('') + '</div>';
+  }
+  h += `<textarea id="${esc(it.id)}-notes" aria-label="Notes for ${esc(it.id)}" placeholder="${it.options && it.options.length ? 'Notes, or your own answer' : 'Your answer'}">${esc(r.notes || '')}</textarea><div class="saved" id="${esc(it.id)}-st"></div>`;
+  el.innerHTML = h;
+  wirePeek(el);
+  const st = el.querySelector('.saved');
+  const upd = () => {
+    const c = el.querySelector('input[type=radio]:checked'), n = el.querySelector('textarea').value;
+    if (c || n){ S[it.id] = { choice: c ? c.value : '', notes: n, at: new Date().toISOString() }; if (who) S[it.id].by = who; }
+    else delete S[it.id];
+    lsSave(); el.classList.toggle('answered', answered(it.id)); st.textContent = 'Saving…'; tabs();
+    clearTimeout(timers[it.id]); timers[it.id] = setTimeout(() => { delete timers[it.id]; persist(it.id, st) }, 700);
+  };
+  el.querySelectorAll('input[type=radio]').forEach(x => x.addEventListener('change', upd));
+  el.querySelector('textarea').addEventListener('input', upd);
+  return el;
+}
+
+async function persist(id, st){
+  if (!col){ st.textContent = 'Saved in this browser only. Export your answers from the Overview to hand them over.'; return }
+  try { const r = S[id]; if (r) await col.doc(id).set(r); else await col.doc(id).delete(); st.textContent = 'Saved to your account. Claude can read it.' }
+  catch(e){ st.textContent = 'Not saved to your account (' + (e && e.code || 'error') + '). Kept in this browser.' }
+}
+
+function go(hash){
+  let [pg, grp] = (hash || '').split('.');
+  if (!ALL.some(x => x[0] === pg)) pg = 'overview';
+  cur = pg; tabs();
+  const v = document.getElementById('view'); v.innerHTML = '';
+  const meta = ALL.find(x => x[0] === pg);
+  if (meta[2]){ const sub = document.createElement('p'); sub.className = 'sub'; sub.textContent = meta[2]; v.appendChild(sub) }
+  if (pg === 'overview'){ overview(v); return }
+  if (pg === 'outbox'){ outbox(v, grp); return }
+  let its = ITEMS.filter(i => i.section === pg);
+  const groups = (sectionOf(pg).groups || []).filter(g => its.some(i => i.group === g.id));
+  if (groups.length){
+    if (!groups.some(g => g.id === grp)) grp = (groups.find(g => count(pg, g.id).open) || groups[0]).id;
+    const sn = document.createElement('div'); sn.className = 'subnav';
+    for (const g of groups){
+      const c = count(pg, g.id);
+      const b = document.createElement('button'); b.type = 'button'; b.id = 'grp-' + pg + '-' + g.id;
+      b.innerHTML = esc(g.title) + (c.open ? `<span class="op">${c.open} open</span>` : '<span class="n">✓</span>') + (c.nw ? `<span class="nw">•${c.nw}</span>` : '');
+      if (g.id === grp) b.setAttribute('aria-current', 'page');
+      b.onclick = () => nav_(pg + '.' + g.id); sn.appendChild(b);
+    }
+    v.appendChild(sn);
+    its = its.filter(i => i.group === grp);
+  }
+  const rank = i => (i.defaulted ? 2 : (answered(i.id) ? 1 : 0)) - (NEWSET.has(i.id) ? 0.5 : 0);
+  if (pg !== 'queue') its.sort((a, b) => rank(a) - rank(b)); // the queue keeps the file's order: it is a sequence
+  if (!its.length){ v.insertAdjacentHTML('beforeend', '<p class="empty">Nothing waiting here.</p>'); return }
+  const shown = its.filter(i => !i.defaulted), dflt = its.filter(i => i.defaulted);
+  for (const it of shown) v.appendChild(card(it));
+  if (dflt.length){
+    const d = document.createElement('details'); d.className = 'dflts'; d.id = 'dflt-' + pg + '-' + (grp || '');
+    try { d.open = sessionStorage.getItem(d.id) === '1' } catch(e){}
+    d.addEventListener('toggle', () => { try { sessionStorage.setItem(d.id, d.open ? '1' : '0') } catch(e){} });
+    d.innerHTML = `<summary>${dflt.length} ${dflt.length === 1 ? 'default' : 'defaults'} already applied. Open to change one.</summary>`;
+    for (const it of dflt) d.appendChild(card(it));
+    v.appendChild(d);
+  }
+}
+
+function linkTo(i){ return `<a href="#${esc(i.section + (i.group ? '.' + i.group : ''))}" data-go="${esc(i.section + (i.group ? '.' + i.group : ''))}" data-id="${esc(i.id)}">${esc(i.title)}</a>` }
+
+function overview(v){
+  let h = '';
+  const blockers = ITEMS.filter(i => i.blocks && needsYou(i) && !decided(i.id));
+  if (blockers.length) h += '<div class="panel"><h2>Blocking other work</h2><ul>' + blockers.map(i => `<li>${linkTo(i)}</li>`).join('') + '</ul></div>';
+  const nl = ITEMS.filter(i => NEWSET.has(i.id));
+  h += nl.length ? '<div class="panel"><h2>New since the last update</h2><ul>' + nl.map(i => `<li>${linkTo(i)}</li>`).join('') + '</ul></div>'
+                 : '<div class="panel"><h2>Nothing new since the last update.</h2></div>';
+  const agenda = ITEMS.filter(i => S[i.id] && DISCUSS.test(S[i.id].choice || ''));
+  if (agenda.length) h += '<div class="panel"><h2>To discuss</h2><ul>' + agenda.map(i => `<li>${linkTo(i)}</li>`).join('') + '</ul></div>';
+  h += '<div class="scroll"><table><tr><th>Section</th><th>What it holds</th><th>Open</th><th>Answered</th></tr>' + SECTIONS.map(s => {
+    const c = count(s.id); return c.n ? `<tr><td><a href="#${esc(s.id)}" data-go="${esc(s.id)}">${esc(s.title)}</a></td><td>${esc(s.blurb || '')}</td><td class="num">${c.open}</td><td class="num">${c.a} / ${c.n}</td></tr>` : '';
+  }).join('') + '</table></div>';
+  h += '<div class="tools"><button type="button" id="exp" hidden>Save my answers (.json)</button><label class="btn" for="imp">Load answers from a .json</label><input type="file" id="imp" accept=".json,application/json" hidden></div><p class="saved" id="tool-st"></p>';
+  v.insertAdjacentHTML('beforeend', h);
+  v.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); nav_(a.dataset.go, a.dataset.id) }));
+  const exp = document.getElementById('exp'); if (canExport()){ exp.hidden = false; exp.onclick = exportJson }
+  document.getElementById('imp').addEventListener('change', importJson);
+}
+
+function outbox(v, sec){
+  if (!RESOLVED.length){ v.insertAdjacentHTML('beforeend', '<p class="empty">No answers recorded yet.</p>'); return }
+  const secs = SECTIONS.filter(s => RESOLVED.some(r => r.section === s.id));
+  if (!secs.some(s => s.id === sec)) sec = secs[0].id;
+  const sn = document.createElement('div'); sn.className = 'subnav';
+  for (const s of secs){
+    const b = document.createElement('button'); b.type = 'button';
+    b.innerHTML = esc(s.title) + `<span class="n">${RESOLVED.filter(r => r.section === s.id).length}</span>`;
+    if (s.id === sec) b.setAttribute('aria-current', 'page');
+    b.onclick = () => nav_('outbox.' + s.id); sn.appendChild(b);
+  }
+  v.appendChild(sn);
+  const rs = RESOLVED.filter(r => r.section === sec);
+  const groups = sectionOf(sec).groups || [];
+  const keys = [...new Set(rs.map(r => r.group || ''))].sort((a, b) => groups.findIndex(g => g.id === a) - groups.findIndex(g => g.id === b));
+  for (const g of keys){
+    const grs = rs.filter(r => (r.group || '') === g);
+    if (keys.length > 1 || g) v.insertAdjacentHTML('beforeend', `<h2 class="ghead">${esc((groups.find(x => x.id === g) || {}).title || 'General')} <span class="n">${grs.length}</span></h2>`);
+    for (const r of grs){
+      const el = document.createElement('div'); el.id = r.id;
+      if (r.superseded){ // replaced by another item: no answer to change here
+        el.className = 'item out';
+        el.innerHTML = `<div class="head"><div class="t">${esc(r.title)}</div><div class="tags"><span class="tag dflt">Superseded</span></div></div><div class="id">${esc(r.id)}</div>
+          <p class="ans">Superseded by ${esc(r.superseded.title)} (${esc(r.superseded.id)})</p>
+          ${r.ctx ? `<details><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}</details>` : ''}`;
+        wirePeek(el); v.appendChild(el); continue;
+      }
+      el.className = 'item answered out';
+      const a = r.answer, opts = (r.options || []).map(o => `<li class="${o === a.choice ? 'chosen' : ''}">${esc(o)}</li>`).join('');
+      const own = a.choice && !(r.options || []).includes(a.choice) ? `<p class="ans"><b>Your answer:</b> ${esc(a.choice)}</p>` : '';
+      // A ruling given outside the form is archived with by "relayed:<source>"; say where it came from.
+      const by = a.by || '', via = by === 'relayed:chat' ? 'Ruled in chat' : by.startsWith('relayed:') ? 'Relayed from ' + by.slice(8) : '';
+      el.innerHTML = `<div class="head"><div class="t">${esc(r.title)}</div><div class="tags">${via ? `<span class="tag via">${esc(via)}</span>` : ''}<span class="tag done">${esc((a.at || '').slice(0, 10))}</span></div></div>
+        ${r.applied ? `<div class="applied"><span class="lbl">Applied in</span><span class="tag">${esc(r.applied)}</span></div>` : ''}${(r.led || []).length ? `<div class="applied"><span class="lbl">Led to</span>${r.led.map(f => `<a class="tag" href="#${esc(f.resolved ? 'outbox.' + f.section : f.section + (f.group ? '.' + f.group : ''))}" data-go="${esc(f.resolved ? 'outbox.' + f.section : f.section + (f.group ? '.' + f.group : ''))}" data-id="${esc(f.id)}">${esc(f.title)} (${esc(f.sectionTitle)})</a>`).join('')}</div>` : ''}<div class="id">${esc(r.id)}</div>
+        ${r.ctx ? `<details><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}</details>` : ''}
+        ${opts ? `<ul class="optlist">${opts}</ul>` : ''}${own}${a.notes ? `<p class="ans"><b>Your notes:</b> ${esc(a.notes)}</p>` : ''}
+        <button type="button" class="redo">Change this answer</button>`;
+      wirePeek(el);
+      el.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); nav_(a.dataset.go, a.dataset.id) }));
+      el.querySelector('.redo').onclick = () => { S[r.id] = S[r.id] || { choice: a.choice || '', notes: a.notes || '', at: a.at }; el.replaceWith(card(r)) };
+      v.appendChild(el);
+    }
+  }
+}
+
+// Peek: open a section of a document published next to this page, at its anchor, without leaving the form.
+function wirePeek(root){ root.querySelectorAll('button.peek').forEach(b => b.addEventListener('click', () => peek(b.dataset.url))) }
+async function peek(url){
+  const dlg = document.getElementById('peek'), body = document.getElementById('peek-body'), link = document.getElementById('peek-title');
+  link.href = url; body.textContent = 'Loading…';
+  if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  const [path, anchor] = url.split('#');
+  try {
+    const res = await fetch(path); if (!res.ok) throw new Error(res.status);
+    const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+    doc.querySelectorAll('script,style,link,iframe,object,embed').forEach(n => n.remove());
+    doc.querySelectorAll('*').forEach(n => [...n.attributes].forEach(a => { if (/^on/i.test(a.name)) n.removeAttribute(a.name) }));
+    const hit = anchor ? doc.getElementById(anchor) : null;
+    body.innerHTML = '';
+    if (!hit){ body.textContent = anchor ? 'That anchor is not in the published page. Open the full page instead.' : ''; if (!anchor) body.append(...doc.body.childNodes); return }
+    const sec = hit.closest('section') || sectionFrom(hit);
+    hit.classList.add('hit'); body.appendChild(document.importNode(sec, true));
+    const shown = body.querySelector('.hit'); if (shown) shown.scrollIntoView({ block: 'center' });
+  } catch(e){ body.textContent = 'Could not load ' + path + '. Open the full page instead.' }
+}
+function sectionFrom(el){
+  // A heading anchor brings its section (siblings up to the next heading of the same or higher level); a row or item brings its table or list.
+  const h = /^H([1-6])$/.exec(el.tagName);
+  if (!h) return el.closest('table,ul,ol,dl,p') || el;
+  const box = document.createElement('div'); box.appendChild(el.cloneNode(true));
+  for (let n = el.nextElementSibling; n; n = n.nextElementSibling){ const m = /^H([1-6])$/.exec(n.tagName); if (m && +m[1] <= +h[1]) break; box.appendChild(n.cloneNode(true)) }
+  box.firstChild.id = el.id; box.firstChild.classList.add('hit'); return box;
+}
+document.getElementById('peek-close').onclick = () => document.getElementById('peek').close();
+
+// Inside a published artifact only the downloads capability can save a file; opened locally in a browser, a plain download works.
+function canExport(){ return !!dl || !window.claude }
+async function exportJson(){
+  const st = document.getElementById('tool-st');
+  const out = ITEMS.map(i => ({ id: i.id, title: i.title, ...(S[i.id] || {}) })).filter(r => r.choice || r.notes);
+  const name = FORM.slug + '-answers-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-') + '.json';
+  const data = JSON.stringify({ exported: new Date().toISOString(), responses: out }, null, 2);
+  if (!dl){ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); st.textContent = 'Downloaded ' + name + '. Hand it to Claude to archive.'; return }
+  try { const r = await dl.save({ filename: name, data }); st.textContent = r === 'saved' ? 'Saved ' + name + '.' : 'Not saved.' }
+  catch(e){ st.textContent = e && e.code === 'cancelled' ? 'Not saved.' : 'Could not save the file (' + (e && e.code || 'error') + ').' }
+}
+async function importJson(ev){
+  const st = document.getElementById('tool-st'), f = ev.target.files[0]; if (!f) return;
+  let d; try { d = JSON.parse(await f.text()) } catch(e){ st.textContent = 'That file is not an answers .json.'; return }
+  const rs = (d.responses || []).filter(r => (r.choice || r.notes) && ITEMS.some(i => i.id === r.id));
+  for (const r of rs){ S[r.id] = { choice: r.choice || '', notes: r.notes || '', at: r.at || new Date().toISOString() }; if (col){ try { await col.doc(r.id).set(S[r.id]) } catch(e){} } }
+  lsSave(); st.textContent = `Loaded ${rs.length} answers` + (col ? ' and saved them to your account.' : ' into this browser.'); tabs();
+}
+
+function boot(){
+  document.getElementById('h1').textContent = FORM.title;
+  document.getElementById('meta').textContent = 'Updated ' + STAMP + ' · ' + ITEMS.length + ' items waiting';
+  S = lsLoad();
+  for (const it of ITEMS) if (it.answer && (!S[it.id] || (S[it.id].at || '') < (it.answer.at || ''))) S[it.id] = it.answer; // archived answers to items still open
+  go((location.hash || '').slice(1));
+  window.addEventListener('hashchange', () => go((location.hash || '').slice(1)));
+  (async () => {
+    const where = document.getElementById('where');
+    const use = n => (window.claude && window.claude.use) ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+    dl = await use('downloads');
+    if (cur === 'overview'){ const exp = document.getElementById('exp'); if (exp && canExport()){ exp.hidden = false; exp.onclick = exportJson } }
+    const user = await use('user'); try { who = user ? await user.id() : null } catch(e){ who = null }
+    const db = await use('db');
+    if (!db){ where.innerHTML = '<span class="dot"></span>Saving in this browser only'; return }
+    col = db.collection(FORM.collection);
+    where.innerHTML = '<span class="dot on"></span>Saving to your account';
+    let first = true;
+    col.onSnapshot(snap => {
+      const remote = {};
+      for (const d of snap.docs){ const x = d.data(); if (x) remote[d.id] = { choice: x.choice || '', notes: x.notes || '', at: x.at || '', ...(x.by ? { by: x.by } : {}) } }
+      if (first){ first = false; // send answers made offline that the account does not have yet
+        for (const [k, r] of Object.entries(S)) if (!remote[k] && ITEMS.some(i => i.id === k)) col.doc(k).set(r).catch(() => {});
+      }
+      for (const [k, r] of Object.entries(remote)) if (!timers[k] && (!S[k] || (r.at || '') >= (S[k].at || ''))) S[k] = r;
+      lsSave();
+      const ae = document.activeElement; if (!(ae && ae.tagName === 'TEXTAREA')) go((location.hash || '').slice(1)); else tabs();
+    }, () => { where.innerHTML = '<span class="dot"></span>Saving in this browser only (account unavailable)'; col = null });
+  })();
+}
+boot();
+</script>

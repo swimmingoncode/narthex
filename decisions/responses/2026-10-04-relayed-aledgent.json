@@ -1,0 +1,11 @@
+{
+  "responses": [
+    {
+      "id": "ru-experiments",
+      "choice": "Adopt as ruled on aledgent",
+      "notes": "Ruled by Pablo on aledgent on 2026-10-04 and relayed by the aledgent session; not answered on this form. Recorded here so amendment 0001 cites an item.",
+      "at": "2026-10-04T00:00:00Z",
+      "by": "relayed:aledgent-session"
+    }
+  ]
+}

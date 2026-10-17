@@ -1,0 +1,11 @@
+{
+  "responses": [
+    {
+      "id": "ru-section-order",
+      "choice": "Read → Decide → Act, then Updates and Later",
+      "notes": "Pablo on aledgent's form, 2026-10-13: \"shouldn't be Read before Decide and Decide before Act in the form?\" Relayed by the aledgent session.",
+      "at": "2026-10-13T12:00:00-05:00",
+      "by": "relayed:aledgent-session"
+    }
+  ]
+}

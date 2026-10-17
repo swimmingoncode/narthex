@@ -99,5 +99,9 @@
  "plan-web-address": "37686173414cfb08",
  "plan-merge-rule": "6715d372c63f1bae",
  "plan-watch-key": "3d80185e0997d5bb",
- "plan-pilot-start": "426e8f2fac81baa5"
+ "plan-pilot-start": "426e8f2fac81baa5",
+ "a-domain": "ab505fc143c79943",
+ "act-test-github-org": "58ee8896481956ff",
+ "act-github-oauth-app": "43a5801b275b6e78",
+ "act-github-app-test": "fc7a058e1279bc63"
 }

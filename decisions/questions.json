@@ -3,7 +3,7 @@
   "title": "Narthex Decisions",
   "collection": "responses",
   "specName": "SPEC.md",
-  "overviewBlurb": "The open questions of SPEC.md v0.3.0 (§11), and five items to confirm the assumptions of §13. Recommendations come first.",
+  "overviewBlurb": "The open questions of SPEC.md v0.3.0 (\u00a711), and five items to confirm the assumptions of \u00a713. Recommendations come first.",
   "specBase": "docs/spec.html"
  },
  "sections": [
@@ -489,7 +489,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md §13 Assumptions (in the repo)",
+     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -518,7 +518,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md §13 Assumptions (in the repo)",
+     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -546,7 +546,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md §13 Assumptions (in the repo)",
+     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -574,7 +574,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md §13 Assumptions (in the repo)",
+     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -602,7 +602,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md §13 Assumptions (in the repo)",
+     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -622,7 +622,7 @@
    ],
    "options": [
     "Yes, next, ahead of the other amendments (recommended)",
-    "After 0002–0004 are ruled",
+    "After 0002\u20130004 are ruled",
     "Discuss first"
    ],
    "refs": [
@@ -635,7 +635,7 @@
      "url": null
     }
    ],
-   "applied": "SPEC v0.3.0 §6.6, §7.1 (R18)"
+   "applied": "SPEC v0.3.0 \u00a76.6, \u00a77.1 (R18)"
   },
   {
    "id": "0005-first",
@@ -727,7 +727,7 @@
    "title": "Sections follow a decision: Read, Decide, Act",
    "lead": "Pablo on aledgent's form, relayed on 2026-10-13: context first, then the ruling, then the action.",
    "options": [
-    "Read → Decide → Act, then Updates and Later",
+    "Read \u2192 Decide \u2192 Act, then Updates and Later",
     "Change it (notes)"
    ],
    "origin": "aledgent session, relaying Pablo",
@@ -753,7 +753,7 @@
     "A product for other leads",
     "Discuss first"
    ],
-   "applied": "SPEC v0.3.0 §1.5 (R12)",
+   "applied": "SPEC v0.3.0 \u00a71.5 (R12)",
    "refs": [
     {
      "label": "v0.2.0 OQ-1",
@@ -1555,7 +1555,7 @@
     "Deferral with a reason, release scoping, import of existing projects."
    ],
    "options": [
-    "Adopt A1–A11 and A16–A18 (recommended)",
+    "Adopt A1\u2013A11 and A16\u2013A18 (recommended)",
     "Adopt with changes (notes)",
     "Discuss first"
    ],
@@ -1722,7 +1722,7 @@
      "url": null
     }
    ],
-   "applied": "SPEC v0.3.0 §3.1, REQ-VER-10 (R11, R12)"
+   "applied": "SPEC v0.3.0 \u00a73.1, REQ-VER-10 (R11, R12)"
   },
   {
    "id": "0003-pilot",
@@ -1759,7 +1759,7 @@
    "lead": "The steps match neither Story Mapping nor Impact Mapping; they compose older ideas in a reuse-first order.",
    "bullets": [
     "Function analysis of what exists, then a needs-met map.",
-    "Needs × components value matrix, then a business-model-style descriptor.",
+    "Needs \u00d7 components value matrix, then a business-model-style descriptor.",
     "A reuse review, then a plain-language how-it-works page (from SPARC)."
    ],
    "options": [
@@ -1777,7 +1777,7 @@
      "url": null
     }
    ],
-   "applied": "SPEC v0.3.0 §4.3, REQ-ITK-7 (R5, R14)"
+   "applied": "SPEC v0.3.0 \u00a74.3, REQ-ITK-7 (R5, R14)"
   },
   {
    "id": "0003-alarm",
@@ -1874,7 +1874,67 @@
      "url": "docs/overview.html"
     }
    ],
-   "applied": "read 2026-10-17"
+   "applied": "read 2026-10-17",
+   "chain": [
+    {
+     "label": "OVERVIEW.md",
+     "url": "docs/overview.html",
+     "why": "The map: what Narthex is, who it is for, the chain and the capabilities, in a few pages."
+    },
+    {
+     "label": "SPEC.md \u00a71 to \u00a74",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/SPEC.md#1-purpose-and-scope",
+     "why": "The premise, the glossary, the parties and the chain; every open question assumes them.",
+     "before": [
+      "OVERVIEW.md"
+     ]
+    },
+    {
+     "label": "SPEC.md \u00a711 Open questions",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/SPEC.md#11-open-questions",
+     "why": "The twelve questions with their recommendations and rulings; nine are closed, three stay open.",
+     "before": [
+      "SPEC.md \u00a71 to \u00a74"
+     ],
+     "for": [
+      "v3-oq-1",
+      "v3-oq-2",
+      "v3-oq-3",
+      "v3-oq-4",
+      "v3-oq-5",
+      "v3-oq-6",
+      "v3-oq-7",
+      "v3-oq-8",
+      "v3-oq-9",
+      "v3-oq-10",
+      "v3-oq-11",
+      "v3-oq-12"
+     ]
+    },
+    {
+     "label": "SPEC.md \u00a713 Assumptions",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/SPEC.md#13-assumptions",
+     "why": "The 56 assumptions the spec rests on; you can correct any of them.",
+     "before": [
+      "SPEC.md \u00a71 to \u00a74"
+     ],
+     "for": [
+      "v3-asm-trust",
+      "v3-asm-method",
+      "v3-asm-form",
+      "v3-asm-docs",
+      "v3-asm-packaging"
+     ]
+    },
+    {
+     "label": "REFERENCES.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/REFERENCES.md",
+     "why": "The external sources behind the spec, by topic, if a claim needs checking.",
+     "before": [
+      "SPEC.md \u00a711 Open questions"
+     ]
+    }
+   ]
   },
   {
    "id": "v3-r-references",
@@ -1894,7 +1954,41 @@
     }
    ],
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "applied": "read 2026-10-17"
+   "applied": "read 2026-10-17",
+   "chain": [
+    {
+     "label": "REFERENCES.md: how it is maintained",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/REFERENCES.md#how-this-file-is-maintained",
+     "why": "How entries are grouped, marked [secondary] or [unverified], and linked to the files that cite them.",
+     "before": [
+      "r-spec"
+     ]
+    },
+    {
+     "label": "REFERENCES.md: sector standards",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/REFERENCES.md#sector-standards",
+     "why": "The sources behind the sector profiles, with a note that the primary standards were not read.",
+     "before": [
+      "REFERENCES.md: how it is maintained"
+     ],
+     "for": [
+      "v3-oq-4",
+      "v3-oq-5"
+     ]
+    },
+    {
+     "label": "notes/2026-10-17-research-spec-formats.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-research-spec-formats.md",
+     "why": "How each industry writes specs, and the candidate profiles those sources support.",
+     "before": [
+      "REFERENCES.md: sector standards"
+     ],
+     "for": [
+      "v3-oq-4",
+      "v3-oq-5"
+     ]
+    }
+   ]
   },
   {
    "id": "r-research",
@@ -2038,7 +2132,7 @@
    ],
    "follows": "v3-oq-8",
    "origin": "amendment 0002, 2026-10-17",
-   "keep_open": true
+   "applied": "decision-form reading chains"
   },
   {
    "id": "a-pilot",

@@ -399,6 +399,19 @@ substitute.
 
 ---
 
+
+### 6.6 Open security work
+
+The threat table above is a first pass. Before M0 ships, a threat model (STRIDE) adds at least:
+- prompt injection through repository text that the MCP returns to agents;
+- tenant isolation on the hosted service;
+- verification of git-provider webhooks;
+- token leakage through URL fragments, logs and referrers;
+- a privacy position (GDPR) for EU hosting, and the choice of email provider.
+
+M0 signs people in with GitHub only. Email, Google and Outlook sign-in (R13, `REQ-ITK-3`) follow in M1; this is
+a phased gap, not a change of rule.
+
 ## 7. Deployment
 
 ### 7.1 Three ways to run

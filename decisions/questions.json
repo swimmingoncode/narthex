@@ -2496,7 +2496,7 @@
    "section": "decide",
    "group": "architecture",
    "title": "Where should hosted Narthex run, and what may it cost?",
-   "lead": "Hosted Narthex is the version people use without installing anything. The cheapest choice is one rented server in Europe, roughly €10 to €40 a month at first (an estimate).",
+   "lead": "Hosted Narthex is the version people use without installing anything; we recommend one rented server in Europe, about €10 to €40 a month at first (an estimate). Step out of character for this one: it commits money.",
    "bullets": [
     "One server: cheapest, and the same setup self-hosters use; we do the upkeep.",
     "Managed platform: less upkeep, costs more as use grows, some lock-in.",
@@ -2522,7 +2522,8 @@
    "spec": [
     "REQ-IDN-8"
    ],
-   "origin": "STEP-2 architecture and design, 2026-10-17"
+   "origin": "STEP-2 architecture and design, 2026-10-17",
+   "reserved": true
   },
   {
    "id": "adr-0005",
@@ -2564,7 +2565,7 @@
    "section": "decide",
    "group": "architecture",
    "title": "How should people and agents sign in to Narthex?",
-   "lead": "We recommend a free sign-in library built into Narthex rather than paying an outside sign-in company. Needs you out of character: it decides who holds users' sign-in data and how agents are trusted.",
+   "lead": "We recommend a free sign-in library built into Narthex rather than paying an outside sign-in company. Step out of character for this one: it decides who holds users' sign-in data and how agents are trusted.",
    "bullets": [
     "Built in (Better Auth): free, works self-hosted; we own its security updates.",
     "Outside company (Auth0, Clerk): least work; fees per user; data held by them.",
@@ -2603,9 +2604,9 @@
    "section": "decide",
    "group": "architecture",
    "title": "How long may a link for answering a form keep working?",
-   "lead": "An answer link lets one person submit answers to one form and nothing else. Needs you out of character: its lifetime trades a leaked link against a lost answer.",
+   "lead": "An answer link lets one person submit answers to one form and nothing else. Step out of character for this one: its lifetime trades a leaked link against a lost answer.",
    "bullets": [
-    "Until revoked: no answer is ever lost, even weeks later (your rule R20).",
+    "Until revoked: no answer is ever lost, even weeks later (your rule: no answer is ever lost).",
     "A leaked link could submit answers until revoked; every answer is logged.",
     "A 90-day cap limits leaks but can break very slow forms.",
     "Seeing the form's latest state always needs a link that expires in minutes."
@@ -2676,7 +2677,7 @@
    "section": "decide",
    "group": "architecture",
    "title": "Move the decision form from claude.ai to Narthex's own site?",
-   "lead": "Today the form lives on claude.ai. We keep the same page and teach it to save answers to Narthex instead, in four small steps (your rule R23).",
+   "lead": "Today the form lives on claude.ai. We keep the same page and teach it to save answers to Narthex instead, in four small steps (your rule: Narthex makes its own pages).",
    "bullets": [
     "Nothing changes for you while it moves.",
     "During the move, answers from both places are merged.",

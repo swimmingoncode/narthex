@@ -36,10 +36,11 @@ apps/
   server/        MCP, API, auth, git-host connectors, publisher, jobs (one process)
   web/           Astro GUI
 packages/
-  core/          data model, JSON Schemas (schemas/), ids, trace graph; no I/O
+  core/          data model, ids, trace graph; no I/O
   verify/        checks and gates; depends on core only
   cli/           `narthex` command: verify, mcp --stdio, watch, publish
   form-adapter/  the store adapters for the form page (browser code)
+contracts/       frozen contracts: JSON Schemas, listings, fixtures and conformance suites (data)
 kb/              knowledge base, open core (MIT)
 skills/          workflow skills, including decision-form (Python)
 .claude-plugin/  plugin packaging
@@ -52,10 +53,16 @@ Boundaries:
 - `core` depends on nothing of ours. `verify` depends on `core`. `server` and `cli` depend on both.
 - Nothing depends on `apps/*`.
 - `kb/` is data. Code reads it through `core`'s loader and schemas.
+- `contracts/` is data too, at the repo root. The Python form builder and the server both read it, so it does not
+  live inside `packages/core`, which stays free of anything of ours.
 - Paid packs live in a separate private repository and reach users only through the server (ADR-0013).
 
 ## Consequences
 
 - One version number for server, CLI and plugin.
-- Schemas in `packages/core/schemas/` are the frozen contracts of M0, with fixtures beside them.
+- The four contracts of M0 live in `contracts/` at the repo root, with fixtures and a conformance suite beside each.
+  Both the Python builder and the server consume them.
+- Contract versions: 0.1.0 when the four are frozen, then 1.0.0, tagged at the M0 exit commit. A change after the
+  freeze needs a version bump and a changelog entry.
+- The M0 slice builds 10 of the 14 MCP tools. The other 4 follow in M1.
 - The existing `skills/` and `.claude-plugin/` directories keep their places.

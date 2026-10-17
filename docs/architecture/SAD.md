@@ -497,7 +497,7 @@ approves the SRS on a form hosted by Narthex, with the answer coming back to the
 ### 10.1 In the slice
 
 1. GUI: sign in with GitHub; profile (level, sector, role); install the GitHub App on one repo.
-2. MCP over Streamable HTTP with OAuth 2.1; 14 tools (§11.2).
+2. MCP over Streamable HTTP with OAuth 2.1; 10 of the 14 tools of §11.2 (the other 4 follow in M1).
 3. Knowledge base: the `product` profile, the intake question set for one level, the templates for
    `PRODUCT.md` and `SPEC.md`.
 4. Verify engine: the input-contract check (`REQ-CHN-5`), reference and duplicate checks, the `product` profile's
@@ -523,8 +523,10 @@ the docs site and PDF; experiments; paid packs; email sign-in; notifications oth
 ## 11. Contracts M0 freezes
 
 `REQ-CHN-12` asks the first milestone to freeze the contracts between components. M0 freezes four. Each is a
-versioned JSON Schema or listing in `packages/core/schemas/`, with conformance fixtures that every
-implementation (the Python builder, the TypeScript core, the server) must pass.
+versioned JSON Schema or listing in `contracts/` at the repo root (ADR-0011), with conformance fixtures that every
+implementation (the Python builder, the TypeScript core, the server) must pass. Both the Python builder and the
+server consume `contracts/`. The contracts freeze at version 0.1.0 and are tagged 1.0.0 at the M0 exit commit
+(§10.3).
 
 ### 11.1 Data-model JSON Schemas
 
@@ -539,7 +541,9 @@ implementation (the Python builder, the TypeScript core, the server) must pass.
 
 ### 11.2 MCP tools and resources
 
-Tool names are short and grouped by prefix. Every tool returns structured content with a small text summary.
+Tool names are short and grouped by prefix. Every tool returns structured content with a small text summary. The
+contract lists all 14 tools. The M0 slice builds 10 of them; `spec_trace`, `queue_update`, `amendment_propose` and
+`task_token` follow in M1.
 
 | Group | Tool | Does |
 |---|---|---|

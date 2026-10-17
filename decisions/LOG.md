@@ -1,6 +1,6 @@
 # Narthex Decisions — log
 
-Generated Sat 2026-10-17 17:48 -05 · commit 7f8c9df by the decision-form skill from `responses/`. Do not edit by hand:
+Generated Sat 2026-10-17 18:46 -05 · commit e849514 by the decision-form skill from `responses/`. Do not edit by hand:
 every answer ever archived is listed, oldest first. A later answer to the same item supersedes the earlier one.
 
 | When | Item | Question | Answer | Notes | By | Status | Applied by |
@@ -42,3 +42,7 @@ every answer ever archived is listed, oldest first. A later answer to the same i
 | 2026-10-17 22:03 | `adr-0004` | Where should hosted Narthex run, and what may it cost? | One rented server in Europe (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | docs/architecture/adr/0004 accepted |
 | 2026-10-17 22:04 | `adr-0006` | How should people and agents sign in to Narthex? | Run a separate sign-in server | What options do we have and does any of them fit better? If not, built-in it is. | u_I_crGe4UnsTeI8vf31ga_A | current | ADR 0006 accepted: built-in library, by your rule "if not, built-in it is" |
 | 2026-10-17 22:04 | `adr-0007` | How long may a link for answering a form keep working? | Until revoked or the form closes (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | docs/architecture/adr/0007 accepted |
+| 2026-10-17 23:22 | `plan-test-budget` | How much may one practice run cost? | Up to $3 a run, five runs each (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | PLAN v0.2.0 DEC-16 |
+| 2026-10-17 23:38 | `plan-web-address` | Which web address should the first hosted version use? | Subdomains of a domain we already hold (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | PLAN v0.2.0 DEC-4 |
+| 2026-10-17 23:39 | `plan-merge-rule` | May agents merge their own changes once every check passes? | Yes, except sign-in, keys and contracts (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | PLAN v0.2.0 DEC-17 |
+| 2026-10-17 23:43 | `plan-watch-key` | May the wake-up helper keep listening while you take days? | Long-lived listening key, no content (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | PLAN v0.2.0 DEC-7 |

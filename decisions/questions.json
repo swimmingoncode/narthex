@@ -3102,7 +3102,8 @@
    "spec": [
     "NFR-9"
    ],
-   "origin": "STEP-3 plan, 2026-10-17"
+   "origin": "STEP-3 plan, 2026-10-17",
+   "applied": "PLAN v0.2.0 DEC-16"
   },
   {
    "id": "plan-web-address",
@@ -3136,7 +3137,8 @@
     "REQ-IDN-8",
     "OQ-1"
    ],
-   "origin": "STEP-3 plan, 2026-10-17"
+   "origin": "STEP-3 plan, 2026-10-17",
+   "applied": "PLAN v0.2.0 DEC-4"
   },
   {
    "id": "plan-merge-rule",
@@ -3167,7 +3169,8 @@
     "REQ-SKL-25",
     "INV-4"
    ],
-   "origin": "STEP-3 plan, 2026-10-17"
+   "origin": "STEP-3 plan, 2026-10-17",
+   "applied": "PLAN v0.2.0 DEC-17"
   },
   {
    "id": "plan-watch-key",
@@ -3203,7 +3206,8 @@
     "REQ-IFC-9",
     "INV-17"
    ],
-   "origin": "STEP-3 plan, 2026-10-17"
+   "origin": "STEP-3 plan, 2026-10-17",
+   "applied": "PLAN v0.2.0 DEC-7"
   },
   {
    "id": "plan-pilot-start",
@@ -3233,6 +3237,25 @@
     "REQ-CHN-13"
    ],
    "origin": "STEP-3 plan, 2026-10-17"
+  },
+  {
+   "id": "a-domain",
+   "kind": "act",
+   "section": "act",
+   "reserved": true,
+   "title": "Which domain should Narthex use for its subdomains?",
+   "lead": "You chose subdomains of a domain we already hold. Tell me which one, so hosted Narthex gets its web addresses; nothing is bought.",
+   "refs": [
+    {
+     "label": "PLAN T-017-04",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#f-017-deploy-and-operations"
+    }
+   ],
+   "spec": [
+    "REQ-IDN-8"
+   ],
+   "follows": "plan-web-address",
+   "origin": "PLAN v0.2.0, 2026-10-17"
   }
  ]
 }

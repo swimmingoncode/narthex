@@ -145,27 +145,27 @@ scenarios; intake for all four levels.
 
 ### 4.1 M0 features
 
-| Feature | Title | Model | Depends on | Contracts | Tasks |
+| Title | Feature | Model | Depends on | Contracts | Tasks |
 |---|---|---|---|---|---|
-| `F-001` | Workspace, CI and house rules | Sonnet | none | creates the guard for all four | 6 |
-| `F-002` | Contract: data-model schemas | Opus | `F-001` | implements data-model | 4 |
-| `F-003` | Contract: MCP tools and resources | Opus | `F-002`, `F-005` | implements mcp; consumes data-model, tokens | 4 |
-| `F-004` | Contract: profile schema and `product` | Opus | `F-001` | implements profile | 3 |
-| `F-005` | Contract: token model | Opus | `F-001`, `T-010-01` | implements tokens | 2 |
-| `F-006` | Core model | Sonnet | C0 | consumes data-model, profile | 5 |
-| `F-007` | Verify engine and CI action | Sonnet | `F-006` | consumes data-model, profile | 4 |
-| `F-008` | Knowledge base, M0 content | Sonnet | C0 | consumes profile, mcp (kb pieces) | 3 |
-| `F-009` | Server foundation and inbox store | Sonnet | C0 | consumes data-model | 4 |
-| `F-010` | Sign-in and tokens (GitHub) | Sonnet (spike `T-010-01`: Opus) | `F-009`; the spike `T-010-01` needs only `T-001-01` and `T-001-06` | implements tokens; consumes mcp | 8 |
-| `F-011` | GitHub App connector | Sonnet | `F-009`, `T-001-06` | consumes tokens | 4 |
-| `F-012` | Form builder store adapter | Sonnet | C0 | consumes data-model, mcp (endpoints) | 4 |
-| `F-013` | Decide service: publish, answers, events | Sonnet | `F-010`, `F-011`, `F-012` | consumes data-model, mcp, tokens | 4 |
-| `F-014` | MCP server, 10 tools, both transports | Sonnet | `F-006`, `F-007`, `F-008`, `F-011`, `F-013` | implements mcp | 6 |
-| `F-015` | Web GUI: sign-in, profile, projects | Sonnet | `F-010`, `F-011` | consumes tokens | 4 |
-| `F-016` | Agent plugin: watcher and skills | Sonnet | C0 | consumes mcp, data-model | 7 |
-| `F-017` | Deploy and operations | Sonnet | `F-009`, `F-015`; `T-017-03` also `F-014` | none | 4 |
-| `F-018` | Walking skeleton end to end | Sonnet | `F-014`, `F-015`, `F-016`, `F-017` | consumes all four | 8 |
-| `F-019` | Threat model and security review | Opus | `T-007-03` (`T-019-01`); `F-010`, `F-011`, `F-013` (`T-019-02`) | reviews tokens, mcp | 2 |
+| Workspace, CI and house rules | `F-001` | Sonnet | none | creates the guard for all four | 6 |
+| Contract: data-model schemas | `F-002` | Opus | `F-001` | implements data-model | 4 |
+| Contract: MCP tools and resources | `F-003` | Opus | `F-002`, `F-005` | implements mcp; consumes data-model, tokens | 4 |
+| Contract: profile schema and `product` | `F-004` | Opus | `F-001` | implements profile | 3 |
+| Contract: token model | `F-005` | Opus | `F-001`, `T-010-01` | implements tokens | 2 |
+| Core model | `F-006` | Sonnet | C0 | consumes data-model, profile | 5 |
+| Verify engine and CI action | `F-007` | Sonnet | `F-006` | consumes data-model, profile | 4 |
+| Knowledge base, M0 content | `F-008` | Sonnet | C0 | consumes profile, mcp (kb pieces) | 3 |
+| Server foundation and inbox store | `F-009` | Sonnet | C0 | consumes data-model | 4 |
+| Sign-in and tokens (GitHub) | `F-010` | Sonnet (spike `T-010-01`: Opus) | `F-009`; the spike `T-010-01` needs only `T-001-01` and `T-001-06` | implements tokens; consumes mcp | 8 |
+| GitHub App connector | `F-011` | Sonnet | `F-009`, `T-001-06` | consumes tokens | 4 |
+| Form builder store adapter | `F-012` | Sonnet | C0 | consumes data-model, mcp (endpoints) | 4 |
+| Decide service: publish, answers, events | `F-013` | Sonnet | `F-010`, `F-011`, `F-012` | consumes data-model, mcp, tokens | 4 |
+| MCP server, 10 tools, both transports | `F-014` | Sonnet | `F-006`, `F-007`, `F-008`, `F-011`, `F-013` | implements mcp | 6 |
+| Web GUI: sign-in, profile, projects | `F-015` | Sonnet | `F-010`, `F-011` | consumes tokens | 4 |
+| Agent plugin: watcher and skills | `F-016` | Sonnet | C0 | consumes mcp, data-model | 7 |
+| Deploy and operations | `F-017` | Sonnet | `F-009`, `F-015`; `T-017-03` also `F-014` | none | 4 |
+| Walking skeleton end to end | `F-018` | Sonnet | `F-014`, `F-015`, `F-016`, `F-017` | consumes all four | 8 |
+| Threat model and security review | `F-019` | Opus | `T-007-03` (`T-019-01`); `F-010`, `F-011`, `F-013` (`T-019-02`) | reviews tokens, mcp | 2 |
 
 C0 is the contract freeze: `F-002` to `F-005` merged, which includes the sign-in spike `T-010-01` that `F-005` waits on. M0 has 86 tasks.
 
@@ -614,25 +614,25 @@ Not for Pablo; technical, recorded so they are not lost.
 
 | Feature | Requirements and invariants |
 |---|---|
-| `F-001` | `REQ-SKL-17`, `REQ-SKL-18`, `REQ-SKL-19`, `REQ-SKL-20`, `REQ-SKL-23`, `REQ-SKL-27`, `REQ-SKL-30`, `REQ-DAT-8`, `INV-4`, `INV-8`, `NFR-4` |
-| `F-002` | `REQ-DEC-1` to `REQ-DEC-11`, `REQ-DEC-43`, `REQ-DEC-44`, `REQ-DAT-2`, `REQ-DAT-6`, `REQ-DAT-14`, `REQ-DAT-15`, `REQ-DAT-16`, `REQ-DAT-20`, `REQ-TEM-2`, `REQ-CHN-12`, `INV-1` |
-| `F-003` | `REQ-IFC-1`, `REQ-IFC-2`, `REQ-IFC-4`, `REQ-IFC-6`, `REQ-IFC-7`, `REQ-IFC-9`, `REQ-KNB-2`, `REQ-KNB-3`, `REQ-DEC-24`, `NFR-8` |
-| `F-004` | `REQ-DAT-9`, `REQ-DAT-10`, `REQ-DAT-17`, `REQ-DAT-18`, `REQ-KNB-3`, `REQ-KNB-6`, `REQ-KNB-11`, `INV-14` |
-| `F-005` | `REQ-IFC-9`, `REQ-IFC-10`, `REQ-IFC-11`, `REQ-IDN-3`, `REQ-IDN-4`, `REQ-IDN-7`, `INV-17`, `NFR-3` |
-| `F-006` | `REQ-DAT-1`, `REQ-DAT-3`, `REQ-DAT-4`, `REQ-DAT-5`, `REQ-DAT-7`, `REQ-DAT-11`, `REQ-DAT-12`, `REQ-DAT-20`, `REQ-CHN-6` |
-| `F-007` | `REQ-VER-1`, `REQ-VER-3`, `REQ-VER-4`, `REQ-VER-12`, `REQ-CHN-3`, `REQ-CHN-5`, `REQ-CHN-6`, `REQ-CHN-7`, `REQ-ITK-8`, `REQ-KNB-4`, `INV-12`, `INV-14`, `NFR-1` |
-| `F-008` | `REQ-KNB-1`, `REQ-KNB-5`, `REQ-KNB-8`, `REQ-KNB-10`, `REQ-KNB-11`, `REQ-KNB-12`, `REQ-ITK-7`, `NFR-7` |
-| `F-009` | `REQ-DAT-15`, `REQ-DEC-24`, `INV-2`, `INV-3`, `NFR-5`, `REQ-IDN-8` |
-| `F-010` | `REQ-ITK-2`, `REQ-IDN-3`, `REQ-IFC-9`, `REQ-IFC-10`, `REQ-IFC-11`, `REQ-TEM-4`, `INV-4`, `INV-17`, `NFR-3` |
-| `F-011` | `REQ-IDN-1`, `REQ-IDN-2`, `REQ-IDN-4`, `REQ-IDN-5`, `REQ-IDN-6`, `INV-16` |
-| `F-012` | `REQ-DEC-12` to `REQ-DEC-19`, `REQ-DEC-26` to `REQ-DEC-29`, `REQ-DAT-3`, `REQ-DOC-16`, `INV-5`, `INV-13`, `INV-18`, `NFR-2`, `NFR-4`, `NFR-5`, `NFR-6` |
-| `F-013` | `REQ-DEC-22`, `REQ-DEC-23`, `REQ-DEC-24`, `REQ-DEC-42`, `REQ-IDN-7`, `REQ-IFC-6`, `INV-2`, `INV-9`, `INV-11`, `INV-18` |
-| `F-014` | `REQ-IFC-1`, `REQ-IFC-2`, `REQ-IFC-4`, `REQ-IFC-7`, `REQ-IFC-12`, `REQ-KNB-2`, `REQ-DEC-20`, `REQ-DEC-24`, `REQ-DEC-38`, `REQ-IDN-5`, `REQ-VER-3`, `NFR-8` |
-| `F-015` | `REQ-IFC-3`, `REQ-ITK-1`, `REQ-ITK-4`, `REQ-ITK-5`, `REQ-ITK-6`, `REQ-ITK-9`, `REQ-ITK-10`, `REQ-DEC-18`, `NFR-2` |
-| `F-016` | `REQ-DEC-21`, `REQ-DEC-25`, `REQ-DEC-30`, `REQ-DEC-31`, `REQ-DEC-33`, `REQ-DEC-39` to `REQ-DEC-42`, `REQ-IFC-6`, `REQ-SKL-1`, `REQ-SKL-3`, `REQ-SKL-5`, `REQ-SKL-14`, `REQ-SKL-20`, `REQ-SKL-21`, `REQ-SKL-22`, `REQ-SKL-32`, `REQ-SKL-33`, `REQ-SKL-34`, `NFR-9` |
-| `F-017` | `REQ-IDN-8`, `NFR-4`, `NFR-8` |
-| `F-018` | `INV-2`, `INV-3`, `INV-4`, `INV-9`, `INV-11`, `INV-12`, `INV-16`, `INV-17`, `REQ-DEC-39`, `REQ-DEC-42`, `NFR-8` |
-| `F-019` | `REQ-CHN-7` |
+| Feature `F-001` | `REQ-SKL-17`, `REQ-SKL-18`, `REQ-SKL-19`, `REQ-SKL-20`, `REQ-SKL-23`, `REQ-SKL-27`, `REQ-SKL-30`, `REQ-DAT-8`, `INV-4`, `INV-8`, `NFR-4` |
+| Feature `F-002` | `REQ-DEC-1` to `REQ-DEC-11`, `REQ-DEC-43`, `REQ-DEC-44`, `REQ-DAT-2`, `REQ-DAT-6`, `REQ-DAT-14`, `REQ-DAT-15`, `REQ-DAT-16`, `REQ-DAT-20`, `REQ-TEM-2`, `REQ-CHN-12`, `INV-1` |
+| Feature `F-003` | `REQ-IFC-1`, `REQ-IFC-2`, `REQ-IFC-4`, `REQ-IFC-6`, `REQ-IFC-7`, `REQ-IFC-9`, `REQ-KNB-2`, `REQ-KNB-3`, `REQ-DEC-24`, `NFR-8` |
+| Feature `F-004` | `REQ-DAT-9`, `REQ-DAT-10`, `REQ-DAT-17`, `REQ-DAT-18`, `REQ-KNB-3`, `REQ-KNB-6`, `REQ-KNB-11`, `INV-14` |
+| Feature `F-005` | `REQ-IFC-9`, `REQ-IFC-10`, `REQ-IFC-11`, `REQ-IDN-3`, `REQ-IDN-4`, `REQ-IDN-7`, `INV-17`, `NFR-3` |
+| Feature `F-006` | `REQ-DAT-1`, `REQ-DAT-3`, `REQ-DAT-4`, `REQ-DAT-5`, `REQ-DAT-7`, `REQ-DAT-11`, `REQ-DAT-12`, `REQ-DAT-20`, `REQ-CHN-6` |
+| Feature `F-007` | `REQ-VER-1`, `REQ-VER-3`, `REQ-VER-4`, `REQ-VER-12`, `REQ-CHN-3`, `REQ-CHN-5`, `REQ-CHN-6`, `REQ-CHN-7`, `REQ-ITK-8`, `REQ-KNB-4`, `INV-12`, `INV-14`, `NFR-1` |
+| Feature `F-008` | `REQ-KNB-1`, `REQ-KNB-5`, `REQ-KNB-8`, `REQ-KNB-10`, `REQ-KNB-11`, `REQ-KNB-12`, `REQ-ITK-7`, `NFR-7` |
+| Feature `F-009` | `REQ-DAT-15`, `REQ-DEC-24`, `INV-2`, `INV-3`, `NFR-5`, `REQ-IDN-8` |
+| Feature `F-010` | `REQ-ITK-2`, `REQ-IDN-3`, `REQ-IFC-9`, `REQ-IFC-10`, `REQ-IFC-11`, `REQ-TEM-4`, `INV-4`, `INV-17`, `NFR-3` |
+| Feature `F-011` | `REQ-IDN-1`, `REQ-IDN-2`, `REQ-IDN-4`, `REQ-IDN-5`, `REQ-IDN-6`, `INV-16` |
+| Feature `F-012` | `REQ-DEC-12` to `REQ-DEC-19`, `REQ-DEC-26` to `REQ-DEC-29`, `REQ-DAT-3`, `REQ-DOC-16`, `INV-5`, `INV-13`, `INV-18`, `NFR-2`, `NFR-4`, `NFR-5`, `NFR-6` |
+| Feature `F-013` | `REQ-DEC-22`, `REQ-DEC-23`, `REQ-DEC-24`, `REQ-DEC-42`, `REQ-IDN-7`, `REQ-IFC-6`, `INV-2`, `INV-9`, `INV-11`, `INV-18` |
+| Feature `F-014` | `REQ-IFC-1`, `REQ-IFC-2`, `REQ-IFC-4`, `REQ-IFC-7`, `REQ-IFC-12`, `REQ-KNB-2`, `REQ-DEC-20`, `REQ-DEC-24`, `REQ-DEC-38`, `REQ-IDN-5`, `REQ-VER-3`, `NFR-8` |
+| Feature `F-015` | `REQ-IFC-3`, `REQ-ITK-1`, `REQ-ITK-4`, `REQ-ITK-5`, `REQ-ITK-6`, `REQ-ITK-9`, `REQ-ITK-10`, `REQ-DEC-18`, `NFR-2` |
+| Feature `F-016` | `REQ-DEC-21`, `REQ-DEC-25`, `REQ-DEC-30`, `REQ-DEC-31`, `REQ-DEC-33`, `REQ-DEC-39` to `REQ-DEC-42`, `REQ-IFC-6`, `REQ-SKL-1`, `REQ-SKL-3`, `REQ-SKL-5`, `REQ-SKL-14`, `REQ-SKL-20`, `REQ-SKL-21`, `REQ-SKL-22`, `REQ-SKL-32`, `REQ-SKL-33`, `REQ-SKL-34`, `NFR-9` |
+| Feature `F-017` | `REQ-IDN-8`, `NFR-4`, `NFR-8` |
+| Feature `F-018` | `INV-2`, `INV-3`, `INV-4`, `INV-9`, `INV-11`, `INV-12`, `INV-16`, `INV-17`, `REQ-DEC-39`, `REQ-DEC-42`, `NFR-8` |
+| Feature `F-019` | `REQ-CHN-7` |
 | Plan decisions | `REQ-CHN-11` (`DEC-15`), `NFR-10` and `NFR-11` (`DEC-18`) |
 
 `REQ-DEC-21`, `REQ-DEC-31` and `REQ-DEC-33` are rules the `decide` skill already follows and the builder already

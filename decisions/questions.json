@@ -2913,7 +2913,7 @@
    "chain": [
     {
      "label": "PLAN §1 How to read",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#1-how-to-read",
+     "url": "docs/plan.html#1-how-to-read",
      "why": "The identifiers, and how milestones, features and tasks fit together.",
      "before": [
       "r-architecture"
@@ -2921,7 +2921,7 @@
     },
     {
      "label": "PLAN §3 Milestones",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#3-milestones",
+     "url": "docs/plan.html#3-milestones",
      "why": "What each milestone delivers and the measurable checks that say it is done.",
      "before": [
       "PLAN §1 How to read"
@@ -2934,7 +2934,7 @@
     },
     {
      "label": "PLAN §2 Plan decisions",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#2-plan-decisions",
+     "url": "docs/plan.html#2-plan-decisions",
      "why": "The rules the build follows: one change per task, who merges, which AI model does what.",
      "before": [
       "PLAN §1 How to read"
@@ -2946,7 +2946,7 @@
     },
     {
      "label": "PLAN §4 Features and tasks",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#4-features-and-tasks",
+     "url": "docs/plan.html#4-features-and-tasks",
      "why": "The first milestone in detail, including the wake-up helper and the sign-in work.",
      "before": [
       "PLAN §3 Milestones"
@@ -2958,7 +2958,7 @@
     },
     {
      "label": "PLAN §5 Dependencies and waves",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#5-dependencies-and-waves",
+     "url": "docs/plan.html#5-dependencies-and-waves",
      "why": "Which work runs side by side, and the longest chain that sets the pace.",
      "before": [
       "PLAN §4 Features and tasks"
@@ -2978,7 +2978,7 @@
     },
     {
      "label": "PLAN §6 Risks and open items",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#6-risks-and-open-items",
+     "url": "docs/plan.html#6-risks-and-open-items",
      "why": "The eight biggest risks, and the seven questions for you with their defaults.",
      "before": [
       "PLAN §5 Dependencies and waves"
@@ -2995,7 +2995,7 @@
     },
     {
      "label": "PLAN §7 Traceability",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#7-traceability",
+     "url": "docs/plan.html#7-traceability",
      "why": "Optional: proof that every requirement has a home, or a milestone it waits for.",
      "before": [
       "PLAN §4 Features and tasks"

@@ -1,0 +1,111 @@
+{
+ "items": [
+  {
+   "id": "act-test-github-org",
+   "kind": "act",
+   "section": "act",
+   "title": "Create a GitHub test organisation for Narthex",
+   "lead": "Later tasks need a throwaway organisation to test sign-in and the GitHub App against. Creating it is an outward action.",
+   "bullets": [
+    "The walking skeleton (T-018-02) and the sign-in spike (T-010-01) both run against it.",
+    "Use an organisation with no real repositories, so tests can create and delete freely.",
+    "Write the organisation's name in features/F-001-workspace/notes.md; no secret is involved."
+   ],
+   "options": [
+    "I'll create it and note its name",
+    "Use an organisation I already own (name it)",
+    "Discuss first"
+   ],
+   "blocks": true,
+   "spec": [
+    "INV-4",
+    "REQ-SKL-20",
+    "DEC-23",
+    "T-018-02"
+   ],
+   "refs": [
+    {
+     "label": "PLAN.md, task T-001-06 (in the repo)",
+     "url": null
+    },
+    {
+     "label": "PLAN.md, DEC-23 (in the repo)",
+     "url": null
+    }
+   ],
+   "reserved": true,
+   "origin": "F-001, task T-001-06, 2026-10-17"
+  },
+  {
+   "id": "act-github-oauth-app",
+   "kind": "act",
+   "section": "act",
+   "title": "Register a GitHub OAuth app for sign-in, with a localhost callback",
+   "lead": "The sign-in spike (T-010-01) needs a real GitHub OAuth app. Its callback points at localhost until a hosted address exists.",
+   "bullets": [
+    "Register it under the test organisation, once that exists.",
+    "The callback URL is a localhost address; T-017-04 later files an item to point it at the hosted address.",
+    "Put the client id in features/F-001-workspace/notes.md. Put the client secret in the secret store, never in the repo."
+   ],
+   "options": [
+    "I'll register it and note the client id",
+    "Discuss first"
+   ],
+   "blocks": true,
+   "spec": [
+    "INV-4",
+    "REQ-SKL-20",
+    "DEC-23",
+    "T-010-01",
+    "T-017-04"
+   ],
+   "refs": [
+    {
+     "label": "PLAN.md, task T-001-06 (in the repo)",
+     "url": null
+    },
+    {
+     "label": "PLAN.md, DEC-23 (in the repo)",
+     "url": null
+    }
+   ],
+   "reserved": true,
+   "origin": "F-001, task T-001-06, 2026-10-17"
+  },
+  {
+   "id": "act-github-app-test",
+   "kind": "act",
+   "section": "act",
+   "title": "Register a test GitHub App on the test organisation",
+   "lead": "The git-host connector and the walking skeleton need a GitHub App they can install on the test organisation.",
+   "bullets": [
+    "Register it under the test organisation, once that exists.",
+    "Put the app id in features/F-001-workspace/notes.md. Put the private key and webhook secret in the secret store.",
+    "Install it only on the test organisation, never on a real one."
+   ],
+   "options": [
+    "I'll register it and note the app id",
+    "Discuss first"
+   ],
+   "blocks": true,
+   "spec": [
+    "INV-4",
+    "REQ-SKL-20",
+    "DEC-23",
+    "T-018-02"
+   ],
+   "refs": [
+    {
+     "label": "PLAN.md, task T-001-06 (in the repo)",
+     "url": null
+    },
+    {
+     "label": "PLAN.md, DEC-23 (in the repo)",
+     "url": null
+    }
+   ],
+   "reserved": true,
+   "origin": "F-001, task T-001-06, 2026-10-17"
+  }
+ ]
+}

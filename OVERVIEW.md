@@ -1,13 +1,13 @@
 ---
 name: Narthex (codename): overview
-digest_of: SPEC.md v0.3.6 (amendments 0001 to 0006 applied)
+digest_of: SPEC.md v0.3.7 (amendments 0001 to 0007 applied)
 status: informative. Where this and SPEC.md disagree, SPEC.md wins
 date: 2026-10-17
 ---
 
 # Narthex: overview
 
-A short reading of `SPEC.md` v0.3.6 for someone new to the project: what Narthex is, who it is for, how it
+A short reading of `SPEC.md` v0.3.7 for someone new to the project: what Narthex is, who it is for, how it
 works, what exists today, and what is still open. Identifiers in `code` point to the spec. External sources are
 in `REFERENCES.md`.
 
@@ -154,7 +154,10 @@ confirmed on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v
 - amendment 0003 (v0.3.3): `OQ-11`, the pilot is Narthex used across Bloque;
 - amendment 0004 (v0.3.4): the business model, part of `OQ-3`; only prices and plans stay open;
 - amendment 0005 (v0.3.5), corrected by 0006 (v0.3.6): a new `maker` level for the seasoned vibe-coder, between newcomer
-  and practitioner; a practitioner knows coding but not software engineering.
+  and practitioner; a practitioner knows coding but not software engineering;
+- amendment 0007 (v0.3.7): Narthex tests itself at four layers (components, invariants, synthetic sessions with
+  persona agents, real use at Bloque); a synthetic run costs at most $3, five runs per scenario per release; every
+  real incident becomes a scenario (`REQ-VER-14` to `REQ-VER-20`).
 
 **Open**, each an item on the form (SPEC §11):
 

@@ -1,11 +1,11 @@
 ---
 name: Narthex (codename)
 summary: Tools and a knowledge base that turn a user's agentic system into a senior software architect. It guides people from a product specification through requirements, architecture, construction, verification, release and evolution, with decisions as data, living documents, and checks that run in CI.
-spec_version: 0.3.6
+spec_version: 0.3.7
 status: draft
 date: 2026-10-17
 rewrite_of: SDD Studio SPEC v0.2.0
-amendments: 0001, 0002, 0003, 0004
+amendments: 0001 to 0007
 ---
 
 # Narthex: system specification
@@ -814,6 +814,21 @@ definitive shape reaches the decision form.
 | `REQ-VER-12` | AI-assisted checks MUST run in the user's agent, or in the user's CI with the user's model access. Narthex runs no model of its own in v1 (ASM-7, R9). |
 | `REQ-VER-13` | The `report` skill and the `STEP-4` gate MUST generate the requirement-to-evidence table from the trace graph (ASM-24). |
 
+#### 7.6.1 Testing Narthex
+
+Normative. Narthex tests itself with the method it teaches (`notes/2026-10-17-testing-narthex.md`; amendment 0007).
+Synthetic sessions verify; real use validates.
+
+| ID | Requirement |
+|---|---|
+| `REQ-VER-14` | Narthex MUST be tested at four layers: L1 components, L2 invariants, L3 synthetic sessions and L4 real use. L1 to L3 verify. L4 validates. No layer replaces another. |
+| `REQ-VER-15` | L1 MUST run on every change: unit tests, golden fixtures, property tests and contract tests of the MCP surface, for the builder, the renderer, the MCP tools, the validators and the profiles. L2 MUST give every `INV-*` an executable check tagged with its id (`REQ-VER-4`). It MUST run on every change that touches the invariant's package and nightly, against recorded and synthetic sessions. A recorded transcript MAY become a fixture. |
+| `REQ-VER-16` | L3 MUST run before each release. Persona agents, each with a hidden true intent and a style (terse, rambling, contradictory, absent for days), play the user. They cover each experience level and each sector with a profile. A real agent harness plays the user's agent and drives Narthex from intake to a first milestone plan. The scenarios MUST include: the happy path from idea to an approved SRS; a vague or contradictory product specification caught at the input contract; an unattended form, where the agent does not poll and resumes correctly; a read link that expires while the person answers (`INV-17`); a spec gap in mid-build; a wrong sector corrected after intake; two teams amending one requirement; an outward action requested on a default, which is refused (`INV-4`); and a run that must stay under its cost ceiling. |
+| `REQ-VER-17` | An L3 run MUST be judged by deterministic assertions: the artefacts exist; ids are valid and stable; trace links are complete; the invariants hold; the form is updated after each read; the cost stays under the ceiling. It MAY also be judged by an LLM grader with a rubric, for question quality, concision, guidance fitted to the experience level and whether the final SRS matches the persona's hidden intent. A judged result MUST be labelled AI-assisted (`REQ-VER-2`), and the grader MUST be calibrated against human-graded runs. |
+| `REQ-VER-18` | Agents vary, so each L3 scenario MUST run several times per release, and its result is a pass rate, not a single outcome. A drop in pass rate is a regression. A synthetic run MUST NOT cost more than $3, and each scenario MUST run five times per release (item `plan-test-budget`, 2026-10-17). A run that reaches the ceiling stops and counts as a failure. The runs use the model access of the lead or of the CI (`REQ-VER-12`). |
+| `REQ-VER-19` | L4 is real use: Narthex specifying itself, and the Bloque pilot (`OQ-11`, amendment 0003). The pilot MUST measure: the time from idea to an approved SRS; decisions per week and the share of defaults later overturned; rework caused by spec gaps; token cost per milestone; how often forms sit unattended and whether agents resumed correctly; and each user's own rating of clarity. These are reported in the milestone report (`REQ-SKL-13`, ASM-60). |
+| `REQ-VER-20` | Every incident found in real use MUST become an L3 scenario, and an L2 check when it breaks an invariant, so that it does not return. |
+
 ### 7.7 Integrations and identity
 
 | ID | Requirement |
@@ -968,7 +983,7 @@ answers archived in `decisions/responses/2026-10-17T18-35.json` (`REQ-DEC-35`). 
 | Requirements engineering (`STEP-1`) | `REQ-CHN-1` to `REQ-CHN-7`, `REQ-SKL-2`, `REQ-SKL-3`, `REQ-DAT-5` to `REQ-DAT-10`, `REQ-DAT-17` to `REQ-DAT-19`, `REQ-KNB-1` to `REQ-KNB-12` |
 | Architecture and design (`STEP-2`) | `REQ-CHN-8` to `REQ-CHN-10`, `REQ-CHN-12`, `REQ-SKL-4` |
 | Construction (`STEP-3`) | `REQ-CHN-11`, `REQ-SKL-6` to `REQ-SKL-8`, `REQ-SKL-14` to `REQ-SKL-31`, `REQ-IDN-3` to `REQ-IDN-6`, `REQ-VER-4`, `REQ-VER-6` to `REQ-VER-10`, `INV-8`, `INV-16` |
-| Verification and validation (`STEP-4`) | `REQ-CHN-13`, `REQ-DAT-11` to `REQ-DAT-13`, `REQ-VER-1` to `REQ-VER-5`, `REQ-VER-11` to `REQ-VER-13` |
+| Verification and validation (`STEP-4`) | `REQ-CHN-13`, `REQ-DAT-11` to `REQ-DAT-13`, `REQ-VER-1` to `REQ-VER-5`, `REQ-VER-11` to `REQ-VER-20` |
 | Release and operations (`STEP-5`) | `REQ-CHN-14`, `REQ-SKL-12`, `REQ-SKL-20`, `INV-4` |
 | Evolution (`STEP-6`) | `REQ-CHN-15`, `REQ-SKL-10`, `REQ-SKL-11`, `REQ-TEM-5`, `REQ-TEM-7`, `REQ-DEC-34`, `REQ-DEC-35`, `REQ-DOC-10`, `INV-7` |
 | Decisions (`XC-1`) | `REQ-DEC-1` to `REQ-DEC-44`, `REQ-DAT-14` to `REQ-DAT-16`, `REQ-SKL-5`, `REQ-IFC-3` to `REQ-IFC-6`, `REQ-IFC-9` to `REQ-IFC-12`, `INV-17`, `REQ-TEM-3`, `REQ-TEM-4`, `INV-1` to `INV-4`, `INV-9`, `INV-11` |
@@ -1050,6 +1065,7 @@ he overturns is changed by an amendment. Rulings R1 to R22 are not assumptions. 
 | `ASM-57` | Pablo's note on `v3-oq-8` means that every `read` item and the knowledge base's reading guidance give the full reading chain: an ordered path, each step with its prerequisites and why it matters to the decision. Pablo can correct this reading | Assumption (new in amendment 0002, reading Pablo's note of 2026-10-17) | `REQ-DEC-43`, `REQ-DEC-44`, `REQ-KNB-10` |
 | `ASM-58` | R25 (the knowledge base stays MIT) and R29 (experts' sector packs are paid and not public) are read together: the open core of the knowledge base, which is the method, the profiles, the standard flows and the guidance Narthex writes, is MIT. Experts' sector packs are separate content under their own terms, outside the MIT repository. Pablo can correct this reading | Assumption (new in amendment 0004, reading R25 and R29) | `REQ-KNB-12` |
 | `ASM-59` | A maker gets the guided questions in fewer, larger rounds, with only new terms explained, or an AI-reprocessed prompt they confirm | Assumption (new in amendment 0006) | §5.3 |
+| `ASM-60` | The pilot measures of `REQ-VER-19` are reported once per milestone, in the milestone report | Assumption (new in amendment 0007; testing note §4, question 4) | `REQ-VER-19` |
 
 ---
 

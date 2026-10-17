@@ -1,6 +1,6 @@
 # Narthex Decisions — log
 
-Generated Sat 2026-10-17 13:51 -05 · commit 617f756 by the decision-form skill from `responses/`. Do not edit by hand:
+Generated Sat 2026-10-17 13:54 -05 · commit ad8f32f by the decision-form skill from `responses/`. Do not edit by hand:
 every answer ever archived is listed, oldest first. A later answer to the same item supersedes the earlier one.
 
 | When | Item | Question | Answer | Notes | By | Status | Applied by |
@@ -26,8 +26,8 @@ every answer ever archived is listed, oldest first. A later answer to the same i
 | 2026-10-17 18:30 | `v3-oq-10` | When does a builder's change need an engineer? | Three tiers as described (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
 | 2026-10-17 18:31 | `v3-asm-trust` | Confirm the 9 trust and access assumptions? | Confirm these assumptions (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0002 |
 | 2026-10-17 18:46 | `a-pilot` | Name the pilot builder and operations flow |  | My bad. The pilot is using Narthex on Bloque. | u_I_crGe4UnsTeI8vf31ga_A | current | amendment 0003 |
-| 2026-10-17 18:47 | `q-name-search` | Run a trademark and domain search for Narthex | OK |  | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
-| 2026-10-17 18:48 | `q-business-models` | Draft open-source business-model options for Narthex | OK |  | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
+| 2026-10-17 18:47 | `q-name-search` | Run a trademark and domain search for Narthex | OK |  | u_I_crGe4UnsTeI8vf31ga_A | current | notes/2026-10-17-name-search.md |
+| 2026-10-17 18:48 | `q-business-models` | Draft open-source business-model options for Narthex | OK |  | u_I_crGe4UnsTeI8vf31ga_A | current | notes/2026-10-17-business-models.md |
 | 2026-10-17 18:48 | `q-reading-chains` | Add full reading chains to the form's Read items | OK |  | u_I_crGe4UnsTeI8vf31ga_A | current | decision-form reading chains |
 | 2026-10-17 20:00 | `0003-design` | Is our product mapping the discovery flow? | Change it (notes) | Pablo, in chat on 2026-10-17, ruling R5: producing the product spec "stays out of scope as a separate product". R14 adopts a minimal product-spec input contract. Product mapping belongs to that product; Narthex keeps question sets in its knowledge base. | relayed:chat | current | SPEC v0.3.0 §4.3, REQ-ITK-7 (R5, R14) |
 | 2026-10-17 20:00 | `0003-direction` | Is "anyone builds on the core, spec as norm" v1? | Yes, this is v1 (recommended) | Pablo, in chat on 2026-10-17, ruling R11: "Low-code and no-code as proposed: same component spec, verification by contract tests, built by builders." Ruling R12 puts Bloque's teams, not all software engineers, first. | relayed:chat | current | SPEC v0.3.0 §3.1, REQ-VER-10 (R11, R12) |

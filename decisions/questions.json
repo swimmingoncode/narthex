@@ -3,7 +3,7 @@
   "title": "Narthex Decisions",
   "collection": "responses",
   "specName": "SPEC.md",
-  "overviewBlurb": "The open questions of SPEC.md v0.3.0 (\u00a711), and five items to confirm the assumptions of \u00a713. Recommendations come first.",
+  "overviewBlurb": "The open questions of SPEC.md v0.3.0 (§11), and five items to confirm the assumptions of §13. Recommendations come first.",
   "specBase": "docs/spec.html"
  },
  "sections": [
@@ -489,7 +489,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
+     "label": "SPEC.md §13 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -518,7 +518,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
+     "label": "SPEC.md §13 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -546,7 +546,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
+     "label": "SPEC.md §13 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -574,7 +574,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
+     "label": "SPEC.md §13 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -602,7 +602,7 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md \u00a713 Assumptions (in the repo)",
+     "label": "SPEC.md §13 Assumptions (in the repo)",
      "url": null
     }
    ],
@@ -622,7 +622,7 @@
    ],
    "options": [
     "Yes, next, ahead of the other amendments (recommended)",
-    "After 0002\u20130004 are ruled",
+    "After 0002–0004 are ruled",
     "Discuss first"
    ],
    "refs": [
@@ -635,7 +635,7 @@
      "url": null
     }
    ],
-   "applied": "SPEC v0.3.0 \u00a76.6, \u00a77.1 (R18)"
+   "applied": "SPEC v0.3.0 §6.6, §7.1 (R18)"
   },
   {
    "id": "0005-first",
@@ -727,7 +727,7 @@
    "title": "Sections follow a decision: Read, Decide, Act",
    "lead": "Pablo on aledgent's form, relayed on 2026-10-13: context first, then the ruling, then the action.",
    "options": [
-    "Read \u2192 Decide \u2192 Act, then Updates and Later",
+    "Read → Decide → Act, then Updates and Later",
     "Change it (notes)"
    ],
    "origin": "aledgent session, relaying Pablo",
@@ -753,7 +753,7 @@
     "A product for other leads",
     "Discuss first"
    ],
-   "applied": "SPEC v0.3.0 \u00a71.5 (R12)",
+   "applied": "SPEC v0.3.0 §1.5 (R12)",
    "refs": [
     {
      "label": "v0.2.0 OQ-1",
@@ -1555,7 +1555,7 @@
     "Deferral with a reason, release scoping, import of existing projects."
    ],
    "options": [
-    "Adopt A1\u2013A11 and A16\u2013A18 (recommended)",
+    "Adopt A1–A11 and A16–A18 (recommended)",
     "Adopt with changes (notes)",
     "Discuss first"
    ],
@@ -1722,7 +1722,7 @@
      "url": null
     }
    ],
-   "applied": "SPEC v0.3.0 \u00a73.1, REQ-VER-10 (R11, R12)"
+   "applied": "SPEC v0.3.0 §3.1, REQ-VER-10 (R11, R12)"
   },
   {
    "id": "0003-pilot",
@@ -1759,7 +1759,7 @@
    "lead": "The steps match neither Story Mapping nor Impact Mapping; they compose older ideas in a reuse-first order.",
    "bullets": [
     "Function analysis of what exists, then a needs-met map.",
-    "Needs \u00d7 components value matrix, then a business-model-style descriptor.",
+    "Needs × components value matrix, then a business-model-style descriptor.",
     "A reuse review, then a plain-language how-it-works page (from SPARC)."
    ],
    "options": [
@@ -1777,7 +1777,7 @@
      "url": null
     }
    ],
-   "applied": "SPEC v0.3.0 \u00a74.3, REQ-ITK-7 (R5, R14)"
+   "applied": "SPEC v0.3.0 §4.3, REQ-ITK-7 (R5, R14)"
   },
   {
    "id": "0003-alarm",
@@ -1882,7 +1882,7 @@
      "why": "The map: what Narthex is, who it is for, the chain and the capabilities, in a few pages."
     },
     {
-     "label": "SPEC.md \u00a71 to \u00a74",
+     "label": "SPEC.md §1 to §4",
      "url": "https://github.com/swimmingoncode/narthex/blob/main/SPEC.md#1-purpose-and-scope",
      "why": "The premise, the glossary, the parties and the chain; every open question assumes them.",
      "before": [
@@ -1890,11 +1890,11 @@
      ]
     },
     {
-     "label": "SPEC.md \u00a711 Open questions",
+     "label": "SPEC.md §11 Open questions",
      "url": "https://github.com/swimmingoncode/narthex/blob/main/SPEC.md#11-open-questions",
      "why": "The twelve questions with their recommendations and rulings; nine are closed, three stay open.",
      "before": [
-      "SPEC.md \u00a71 to \u00a74"
+      "SPEC.md §1 to §4"
      ],
      "for": [
       "v3-oq-1",
@@ -1912,11 +1912,11 @@
      ]
     },
     {
-     "label": "SPEC.md \u00a713 Assumptions",
+     "label": "SPEC.md §13 Assumptions",
      "url": "https://github.com/swimmingoncode/narthex/blob/main/SPEC.md#13-assumptions",
      "why": "The 56 assumptions the spec rests on; you can correct any of them.",
      "before": [
-      "SPEC.md \u00a71 to \u00a74"
+      "SPEC.md §1 to §4"
      ],
      "for": [
       "v3-asm-trust",
@@ -1931,7 +1931,7 @@
      "url": "https://github.com/swimmingoncode/narthex/blob/main/REFERENCES.md",
      "why": "The external sources behind the spec, by topic, if a claim needs checking.",
      "before": [
-      "SPEC.md \u00a711 Open questions"
+      "SPEC.md §11 Open questions"
      ]
     }
    ]
@@ -2102,7 +2102,7 @@
    ],
    "follows": "v3-oq-1",
    "origin": "amendment 0002, 2026-10-17",
-   "keep_open": true
+   "applied": "notes/2026-10-17-name-search.md"
   },
   {
    "id": "q-business-models",
@@ -2117,7 +2117,7 @@
    ],
    "follows": "v3-oq-3",
    "origin": "amendment 0002, 2026-10-17",
-   "keep_open": true
+   "applied": "notes/2026-10-17-business-models.md"
   },
   {
    "id": "q-reading-chains",
@@ -2154,6 +2154,64 @@
    "follows": "v3-oq-11",
    "origin": "amendment 0002, 2026-10-17",
    "applied": "amendment 0003"
+  },
+  {
+   "id": "d-name-next",
+   "section": "decide",
+   "group": "v3-product",
+   "follows": "q-name-search",
+   "spec": [
+    "OQ-1"
+   ],
+   "title": "The name screen came back medium risk: what next?",
+   "lead": "US registers look clear in classes 9 and 42, but the exact .com, .dev, .ai and .io are taken and others use the name.",
+   "bullets": [
+    "Users include a church SaaS, a BI vendor and a Claude Code MCP project.",
+    "npm, PyPI and crates.io names are free; GitHub handle taken; getnarthex.com looks free.",
+    "Not legal advice: a lawyer's clearance search is still needed."
+   ],
+   "options": [
+    "Keep Narthex as codename; choose the final name later (recommended)",
+    "Pursue Narthex as final: lawyer clearance next",
+    "Brainstorm alternatives now"
+   ],
+   "refs": [
+    {
+     "label": "Name screen",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-name-search.md"
+    }
+   ]
+  },
+  {
+   "id": "r-business-models",
+   "kind": "read",
+   "section": "read",
+   "follows": "q-business-models",
+   "title": "Open-source business models for Narthex",
+   "lead": "Models, examples and risks, ranked for Narthex; input for OQ-3, which you'll decide after the Bloque pilot.",
+   "options": [
+    "Read, no comments",
+    "Read, comments in notes",
+    "Not yet"
+   ],
+   "chain": [
+    {
+     "label": "OQ-3 in SPEC.md",
+     "url": "docs/spec.html#oq-3",
+     "why": "The open question and your ruling: decide the model after the Bloque pilot."
+    },
+    {
+     "label": "Business-model options",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-business-models.md",
+     "why": "Ranks three combinations; top: MIT core, paid hosted team tier, book and training, sponsorship.",
+     "for": [
+      "v3-oq-3"
+     ],
+     "before": [
+      "OQ-3 in SPEC.md"
+     ]
+    }
+   ]
   }
  ]
 }

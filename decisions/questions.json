@@ -63,6 +63,10 @@
     {
      "id": "specsite",
      "title": "specsite (v0.2.0)"
+    },
+    {
+     "id": "architecture",
+     "title": "Architecture"
     }
    ]
   },
@@ -2254,6 +2258,588 @@
    ],
    "kind": "later",
    "keep_open": true
+  },
+  {
+   "id": "r-architecture",
+   "kind": "read",
+   "section": "read",
+   "title": "Architecture: how Narthex will be built",
+   "lead": "The software architecture description (SAD) and its 13 ADRs, the records of each design choice. Read it before the Architecture decisions.",
+   "options": [
+    "Read, no comments",
+    "Read, comments in notes",
+    "Not yet"
+   ],
+   "chain": [
+    {
+     "label": "SAD §1 Context and constraints",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#1-context-and-constraints",
+     "why": "What Narthex must do and the limits every choice respects: MIT, hosted and self-hosted, no polling.",
+     "before": [],
+     "for": [
+      "adr-0001",
+      "adr-0004"
+     ]
+    },
+    {
+     "label": "SAD §2 and §3 Components",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#2-components",
+     "why": "The twelve parts, what each does and which requirements it serves; every ADR picks how to build one.",
+     "before": [
+      "SAD §1 Context and constraints"
+     ],
+     "for": [
+      "adr-0001",
+      "adr-0003",
+      "adr-0011"
+     ]
+    },
+    {
+     "label": "SAD §4 Key sequences",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#4-key-sequences",
+     "why": "How an answer given days later reaches the agent, and how CI raises an alarm.",
+     "before": [
+      "SAD §2 and §3 Components"
+     ],
+     "for": [
+      "adr-0009",
+      "adr-0010",
+      "adr-0012"
+     ]
+    },
+    {
+     "label": "SAD §5 Data and storage",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#5-data-and-storage",
+     "why": "What stays in your repository and what Narthex keeps, and for how long.",
+     "before": [
+      "SAD §2 and §3 Components"
+     ],
+     "for": [
+      "adr-0005",
+      "adr-0013"
+     ]
+    },
+    {
+     "label": "SAD §6 Security model",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#6-security-model",
+     "why": "Sign-in, links and who may answer; the background for the two items reserved for you.",
+     "before": [
+      "SAD §5 Data and storage"
+     ],
+     "for": [
+      "adr-0006",
+      "adr-0007",
+      "adr-0008"
+     ]
+    },
+    {
+     "label": "SAD §7 Deployment and §9 Cost drivers",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#7-deployment",
+     "why": "How Narthex runs hosted or on your own server, and what costs money.",
+     "before": [
+      "SAD §5 Data and storage"
+     ],
+     "for": [
+      "adr-0004",
+      "adr-0002"
+     ]
+    },
+    {
+     "label": "SAD §10 and §11 The first slice",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#10-walking-skeleton-for-m0",
+     "why": "The first slice to build, from sign-up to an approved SRS, and the four contracts it freezes.",
+     "before": [
+      "SAD §4 Key sequences",
+      "SAD §6 Security model",
+      "SAD §7 Deployment and §9 Cost drivers"
+     ],
+     "for": [
+      "adr-0002",
+      "adr-0007",
+      "adr-0009"
+     ]
+    },
+    {
+     "label": "SAD §13 Open points and risks",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#13-open-points-and-risks",
+     "why": "Known gaps: GitLab and Codeberg keys, preview features, and no threat model in the spec yet.",
+     "before": [
+      "SAD §10 and §11 The first slice"
+     ],
+     "for": [
+      "adr-0008",
+      "adr-0006"
+     ]
+    }
+   ],
+   "refs": [
+    {
+     "label": "docs/architecture/SAD.md (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md"
+    }
+   ],
+   "spec": [
+    "REQ-CHN-8",
+    "REQ-CHN-9",
+    "REQ-CHN-12"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0001",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Build Narthex's server in TypeScript, like specsite?",
+   "lead": "TypeScript is the programming language specsite already uses, so one language covers the server, the web pages and the tools. The decision-form builder stays in Python.",
+   "bullets": [
+    "One language means fewer skills to learn and fewer moving parts.",
+    "It has the official toolkit for MCP, the way agents talk to Narthex.",
+    "People can try Narthex with one command, nothing to install by hand."
+   ],
+   "options": [
+    "Yes, TypeScript (recommended)",
+    "Use Python instead",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0001 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0001-server-runtime-typescript-node.md"
+    },
+    {
+     "label": "SAD §2 Components",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#2-components"
+    }
+   ],
+   "spec": [
+    "REQ-IDN-8",
+    "REQ-IFC-1",
+    "NFR-4"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0002",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Use the official MCP toolkit, online and on your own machine?",
+   "lead": "MCP is the standard way an AI agent talks to tools like Narthex. We use its official toolkit, over the internet for the hosted service and locally when you run Narthex yourself.",
+   "bullets": [
+    "Running it locally needs no account and no server.",
+    "Following the standard spares us chasing protocol changes by hand.",
+    "Replies stay short, so your agent spends fewer tokens, its paid word budget."
+   ],
+   "options": [
+    "Yes, the official toolkit (recommended)",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0002 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0002-mcp-sdk-and-transport.md"
+    },
+    {
+     "label": "SAD §9 Cost drivers",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#9-cost-drivers"
+    }
+   ],
+   "spec": [
+    "REQ-IFC-1",
+    "REQ-IFC-2",
+    "REQ-IDN-3",
+    "NFR-8"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0003",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Build the web pages with Astro, the tool specsite uses?",
+   "lead": "Astro is a website builder that sends very little code to your phone, so pages load fast. specsite, which shows the documents, is already built on it.",
+   "bullets": [
+    "Documents and the decision inbox look and feel the same.",
+    "Fast on phones, even with a 200-question form.",
+    "The decision form page itself stays as it is today."
+   ],
+   "options": [
+    "Yes, Astro (recommended)",
+    "Use a more popular one (Next.js)",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0003 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0003-web-gui-framework.md"
+    },
+    {
+     "label": "SAD §2 Components",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#2-components"
+    }
+   ],
+   "spec": [
+    "REQ-IFC-3",
+    "NFR-2",
+    "NFR-6"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0004",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Where should hosted Narthex run, and what may it cost?",
+   "lead": "Hosted Narthex is the version people use without installing anything. The cheapest choice is one rented server in Europe, roughly €10 to €40 a month at first (an estimate).",
+   "bullets": [
+    "One server: cheapest, and the same setup self-hosters use; we do the upkeep.",
+    "Managed platform: less upkeep, costs more as use grows, some lock-in.",
+    "Big cloud like AWS: most features, most cost and complexity.",
+    "Opening and paying for the account is a separate step you approve later."
+   ],
+   "options": [
+    "One rented server in Europe (recommended)",
+    "A managed platform, less upkeep",
+    "A big cloud like AWS",
+    "Discuss first"
+   ],
+   "refs": [
+    {
+     "label": "ADR-0004 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0004-hosting.md"
+    },
+    {
+     "label": "SAD §7 Deployment",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#7-deployment"
+    }
+   ],
+   "spec": [
+    "REQ-IDN-8"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0005",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Keep Narthex's own data in PostgreSQL?",
+   "lead": "PostgreSQL is a free, widely used database. It holds only the inbox and accounts; your documents and archived answers stay in your git repository.",
+   "bullets": [
+    "Every hosting company offers it ready-made.",
+    "One database keeps backups simple.",
+    "Running Narthex on your own machine needs no database at all."
+   ],
+   "options": [
+    "Yes, PostgreSQL (recommended)",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0005 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0005-database.md"
+    },
+    {
+     "label": "SAD §5 Data and storage",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#5-data-and-storage"
+    }
+   ],
+   "spec": [
+    "REQ-DAT-15",
+    "INV-2",
+    "NFR-5"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0006",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "How should people and agents sign in to Narthex?",
+   "lead": "We recommend a free sign-in library built into Narthex rather than paying an outside sign-in company. Needs you out of character: it decides who holds users' sign-in data and how agents are trusted.",
+   "bullets": [
+    "Built in (Better Auth): free, works self-hosted; we own its security updates.",
+    "Outside company (Auth0, Clerk): least work; fees per user; data held by them.",
+    "Separate open-source sign-in server: mature, but one more thing to run.",
+    "We test the library first and fall back to the separate server."
+   ],
+   "options": [
+    "Built-in open-source library (recommended)",
+    "Pay an outside sign-in company",
+    "Run a separate sign-in server",
+    "Discuss first"
+   ],
+   "reserved": true,
+   "blocks": true,
+   "refs": [
+    {
+     "label": "ADR-0006 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0006-identity-and-sign-in.md"
+    },
+    {
+     "label": "SAD §6 Security model",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#6-security-model"
+    }
+   ],
+   "spec": [
+    "REQ-ITK-2",
+    "REQ-ITK-3",
+    "REQ-IDN-3",
+    "REQ-TEM-4"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0007",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "How long may a link for answering a form keep working?",
+   "lead": "An answer link lets one person submit answers to one form and nothing else. Needs you out of character: its lifetime trades a leaked link against a lost answer.",
+   "bullets": [
+    "Until revoked: no answer is ever lost, even weeks later (your rule R20).",
+    "A leaked link could submit answers until revoked; every answer is logged.",
+    "A 90-day cap limits leaks but can break very slow forms.",
+    "Seeing the form's latest state always needs a link that expires in minutes."
+   ],
+   "options": [
+    "Until revoked or the form closes (recommended)",
+    "At most 90 days, then a new link",
+    "Discuss first"
+   ],
+   "reserved": true,
+   "blocks": true,
+   "refs": [
+    {
+     "label": "ADR-0007 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0007-token-model.md"
+    },
+    {
+     "label": "SAD §6 Security model",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#6-security-model"
+    }
+   ],
+   "spec": [
+    "REQ-IFC-9",
+    "REQ-IFC-10",
+    "REQ-IFC-11",
+    "INV-17"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0008",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Start with GitHub only, then add GitLab and Codeberg?",
+   "lead": "GitHub, GitLab and Codeberg are sites that store code. Only GitHub gives Narthex the short, narrow access keys the spec asks for, so it goes first.",
+   "bullets": [
+    "GitLab follows in a later milestone.",
+    "Codeberg waits until its access keys can be limited to one project.",
+    "The first version, called M0, needs only a GitHub account."
+   ],
+   "options": [
+    "GitHub first, the others later (recommended)",
+    "All three from the start",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0008 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0008-git-host-integration.md"
+    },
+    {
+     "label": "SAD §13 Open points and risks",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#13-open-points-and-risks"
+    }
+   ],
+   "spec": [
+    "REQ-IDN-1",
+    "REQ-IDN-4",
+    "REQ-IDN-6"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0009",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Move the decision form from claude.ai to Narthex's own site?",
+   "lead": "Today the form lives on claude.ai. We keep the same page and teach it to save answers to Narthex instead, in four small steps (your rule R23).",
+   "bullets": [
+    "Nothing changes for you while it moves.",
+    "During the move, answers from both places are merged.",
+    "claude.ai stays an option, no longer the only home."
+   ],
+   "options": [
+    "Yes, in four small steps (recommended)",
+    "Rebuild the form from scratch",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0009 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0009-decision-form-migration.md"
+    },
+    {
+     "label": "SAD §4 Key sequences",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#4-key-sequences"
+    }
+   ],
+   "spec": [
+    "REQ-DOC-16",
+    "INV-18",
+    "REQ-IFC-8"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0010",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Let a small helper wake the agent when you answer?",
+   "lead": "Your agent never checks the form over and over. A tiny background helper waits for your answer and wakes the agent; if it can't run, you tell the agent you answered.",
+   "bullets": [
+    "Works even if you answer days later.",
+    "A faster push path comes once Claude Code supports it fully.",
+    "Meanwhile the agent keeps working on other things."
+   ],
+   "options": [
+    "Yes, the helper with fallbacks (recommended)",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0010 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0010-answer-delivery.md"
+    },
+    {
+     "label": "SAD §4 Key sequences",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#4-key-sequences"
+    }
+   ],
+   "spec": [
+    "REQ-IFC-6",
+    "REQ-DEC-39",
+    "REQ-DEC-40",
+    "REQ-DEC-41"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0011",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Keep all of Narthex's code in one repository?",
+   "lead": "A repository is a project's folder of code and history on GitHub. One repository for the server, web pages, tools and knowledge keeps them in step; specsite stays separate because other projects use it.",
+   "bullets": [
+    "One version number for everything that ships together.",
+    "Paid sector packs never go into this public repository."
+   ],
+   "options": [
+    "Yes, one repository (recommended)",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0011 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0011-monorepo-layout.md"
+    },
+    {
+     "label": "SAD §2 Components",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#2-components"
+    }
+   ],
+   "spec": [
+    "REQ-DOC-14",
+    "REQ-SKL-32",
+    "REQ-KNB-12"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0012",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Run the same checks on your laptop, in the agent and in CI?",
+   "lead": "CI is the robot that tests every change before it is merged. One checking tool runs in all three places, so a pass means the same everywhere.",
+   "bullets": [
+    "Works without the hosted service.",
+    "Serious problems block the change and alert the right reviewer.",
+    "No long-lived password is stored in CI."
+   ],
+   "options": [
+    "Yes, one tool everywhere (recommended)",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0012 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0012-verify-engine-in-ci.md"
+    },
+    {
+     "label": "SAD §4 Key sequences",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#4-key-sequences"
+    }
+   ],
+   "spec": [
+    "REQ-VER-3",
+    "REQ-VER-6",
+    "REQ-VER-7"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "adr-0013",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "title": "Keep Narthex's knowledge as files in the public repository?",
+   "lead": "The knowledge base is the method, templates and sector guides your agent reads. The free part lives as reviewed files in the public repository; paid expert packs live elsewhere.",
+   "bullets": [
+    "Every change to the method is reviewed like code.",
+    "Paid packs reach only the teams that bought them.",
+    "Works offline when you run Narthex yourself."
+   ],
+   "options": [
+    "Yes, files in the repository (recommended)",
+    "Discuss first"
+   ],
+   "default": 0,
+   "refs": [
+    {
+     "label": "ADR-0013 (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0013-knowledge-base-store.md"
+    },
+    {
+     "label": "SAD §5 Data and storage",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#5-data-and-storage"
+    }
+   ],
+   "spec": [
+    "REQ-KNB-1",
+    "REQ-KNB-2",
+    "REQ-KNB-12"
+   ],
+   "origin": "STEP-2 architecture and design, 2026-10-17"
   }
  ]
 }

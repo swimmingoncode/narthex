@@ -1,6 +1,6 @@
 # Narthex Decisions — log
 
-Generated Sat 2026-10-17 17:48 -05 · commit be6afd9 by the decision-form skill from `responses/`. Do not edit by hand:
+Generated Sat 2026-10-17 17:48 -05 · commit 7f8c9df by the decision-form skill from `responses/`. Do not edit by hand:
 every answer ever archived is listed, oldest first. A later answer to the same item supersedes the earlier one.
 
 | When | Item | Question | Answer | Notes | By | Status | Applied by |

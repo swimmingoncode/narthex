@@ -3,7 +3,8 @@
   "title": "Narthex Decisions",
   "collection": "responses",
   "specName": "SPEC.md",
-  "overviewBlurb": "The open questions of SPEC.md v0.3.0 (§11), and five items to confirm the assumptions of §13. Recommendations come first."
+  "overviewBlurb": "The open questions of SPEC.md v0.3.0 (§11), and five items to confirm the assumptions of §13. Recommendations come first.",
+  "specBase": "docs/spec.html"
  },
  "sections": [
   {
@@ -713,7 +714,8 @@
     "Read → Decide → Act, then Updates and Later",
     "Change it (notes)"
    ],
-   "origin": "aledgent session, relaying Pablo"
+   "origin": "aledgent session, relaying Pablo",
+   "refs": []
   },
   {
    "id": "oq-1",
@@ -735,10 +737,13 @@
     "A product for other leads",
     "Discuss first"
    ],
-   "spec": [
-    "v0.2.0 OQ-1"
-   ],
-   "applied": "SPEC v0.3.0 §1.5 (R12)"
+   "applied": "SPEC v0.3.0 §1.5 (R12)",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-1",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-2",
@@ -756,10 +761,13 @@
     "Its own product too",
     "Decide after the pilot"
    ],
-   "spec": [
-    "v0.2.0 OQ-2"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-2",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-3",
@@ -779,10 +787,13 @@
     "MIT",
     "AGPL-3.0"
    ],
-   "spec": [
-    "v0.2.0 OQ-3"
-   ],
-   "applied": "Swimming on Code licence rule (STATE.md); amendment 0004"
+   "applied": "Swimming on Code licence rule (STATE.md); amendment 0004",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-3",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-4",
@@ -795,10 +806,13 @@
     "Keep it for now (recommended)",
     "Rename now (name in notes)"
    ],
-   "spec": [
-    "v0.2.0 OQ-4"
-   ],
-   "applied": "SPEC v0.3.0 (R1); final name is OQ-1"
+   "applied": "SPEC v0.3.0 (R1); final name is OQ-1",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-4",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-5",
@@ -819,12 +833,21 @@
     "GitHub issues or discussions",
     "Discuss first"
    ],
-   "spec": [
-    "v0.2.0 OQ-5",
-    "v0.2.0 REQ-DI-12",
-    "v0.2.0 REQ-DI-15"
-   ],
-   "applied": "SPEC v0.3.0 REQ-IFC-3, REQ-IFC-8 (R3)"
+   "applied": "SPEC v0.3.0 REQ-IFC-3, REQ-IFC-8 (R3)",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-5",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-DI-12",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-DI-15",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-6",
@@ -841,11 +864,17 @@
     "The repo; the store is only an inbox (recommended)",
     "The store"
    ],
-   "spec": [
-    "v0.2.0 OQ-6",
-    "v0.2.0 INV-2"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-6",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 INV-2",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-7",
@@ -864,10 +893,13 @@
     "YAML",
     "One Markdown file per item"
    ],
-   "spec": [
-    "v0.2.0 OQ-7"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-7",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-8",
@@ -884,11 +916,17 @@
     "Log plus amendments is enough (recommended)",
     "Also one ADR-style file per ruling"
    ],
-   "spec": [
-    "v0.2.0 OQ-8",
-    "v0.2.0 REQ-DI-20"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-8",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-DI-20",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-9",
@@ -906,12 +944,21 @@
     "Yes, on reversible items only (recommended)",
     "No, every item waits for you"
    ],
-   "spec": [
-    "v0.2.0 OQ-9",
-    "v0.2.0 REQ-DI-4",
-    "v0.2.0 INV-4"
-   ],
-   "superseded_by": "v3-asm-trust"
+   "superseded_by": "v3-asm-trust",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-9",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-DI-4",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 INV-4",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-10",
@@ -925,11 +972,17 @@
     "Slack DM",
     "Email digest"
    ],
-   "spec": [
-    "v0.2.0 OQ-10",
-    "v0.2.0 REQ-DI-23"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-10",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-DI-23",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-11",
@@ -946,10 +999,13 @@
     "Only me in v1 (recommended)",
     "Several answerers from v1"
    ],
-   "spec": [
-    "v0.2.0 OQ-11"
-   ],
-   "applied": "SPEC v0.3.0 REQ-TEM-3, REQ-TEM-4 (R10)"
+   "applied": "SPEC v0.3.0 REQ-TEM-3, REQ-TEM-4 (R10)",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-11",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-12",
@@ -962,11 +1018,17 @@
     "Yes, an agenda page from them (recommended)",
     "The overview list is enough"
    ],
-   "spec": [
-    "v0.2.0 OQ-12",
-    "v0.2.0 REQ-DI-19"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-12",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-DI-19",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-15",
@@ -980,11 +1042,17 @@
     "Iframe of the full page at the anchor",
     "Side panel"
    ],
-   "spec": [
-    "v0.2.0 OQ-15",
-    "v0.2.0 REQ-LD-6"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-15",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-LD-6",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-16",
@@ -997,11 +1065,17 @@
     "Yes, identifiers; headings get slugs too (recommended)",
     "Heading slugs only"
    ],
-   "spec": [
-    "v0.2.0 OQ-16",
-    "v0.2.0 REQ-LD-3"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-16",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-LD-3",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-18",
@@ -1014,11 +1088,17 @@
     "Required in research and explainers (recommended)",
     "Recommended only"
    ],
-   "spec": [
-    "v0.2.0 OQ-18",
-    "v0.2.0 REQ-LD-10"
-   ],
-   "superseded_by": "v3-asm-form"
+   "superseded_by": "v3-asm-form",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-18",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-LD-10",
+     "url": null
+    }
+   ]
   },
   {
    "id": "ru-specsite",
@@ -1072,13 +1152,23 @@
     {
      "label": "Amendment 0004 (in the repo)",
      "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 OQ-13",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 OQ-14",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 OQ-17",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-LD-5",
+     "url": null
     }
-   ],
-   "spec": [
-    "v0.2.0 OQ-13",
-    "v0.2.0 OQ-14",
-    "v0.2.0 OQ-17",
-    "v0.2.0 REQ-LD-5"
    ],
    "superseded_by": "v3-asm-docs"
   },
@@ -1128,10 +1218,11 @@
     {
      "label": "Packaging note (in the repo)",
      "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 OQ-19",
+     "url": null
     }
-   ],
-   "spec": [
-    "v0.2.0 OQ-19"
    ],
    "superseded_by": "v3-asm-packaging"
   },
@@ -1151,10 +1242,13 @@
     "Local until a second project runs it (recommended)",
     "Public repo in the Swimming on Code org"
    ],
-   "spec": [
-    "v0.2.0 OQ-20"
-   ],
-   "superseded_by": "v3-asm-packaging"
+   "superseded_by": "v3-asm-packaging",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-20",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-21",
@@ -1172,10 +1266,13 @@
     "The next new Bloque project",
     "SDD Studio only for now"
    ],
-   "spec": [
-    "v0.2.0 OQ-21"
-   ],
-   "superseded_by": "v3-oq-11"
+   "superseded_by": "v3-oq-11",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-21",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-22",
@@ -1194,11 +1291,17 @@
     "Background local sessions",
     "Cloud sessions"
    ],
-   "spec": [
-    "v0.2.0 OQ-22",
-    "v0.2.0 REQ-WF-6"
-   ],
-   "superseded_by": "v3-asm-method"
+   "superseded_by": "v3-asm-method",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-22",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-WF-6",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-23",
@@ -1212,11 +1315,17 @@
     "Never; I merge"
    ],
    "lead": "aledgent's rule: merge only when the task allows it, and only with CI green.",
-   "spec": [
-    "v0.2.0 OQ-23",
-    "v0.2.0 REQ-WF-13"
-   ],
-   "superseded_by": "v3-asm-trust"
+   "superseded_by": "v3-asm-trust",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-23",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-WF-13",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-24",
@@ -1234,12 +1343,21 @@
     "None; the three modules first",
     "Others (notes)"
    ],
-   "spec": [
-    "v0.2.0 OQ-24",
-    "v0.2.0 DEF-1",
-    "v0.2.0 DEF-2"
-   ],
-   "superseded_by": "v3-asm-docs"
+   "superseded_by": "v3-asm-docs",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-24",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 DEF-1",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 DEF-2",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-25",
@@ -1257,11 +1375,17 @@
     "Yes, ship guard hooks in v1 (recommended)",
     "Brief text only for now"
    ],
-   "spec": [
-    "v0.2.0 OQ-25",
-    "v0.2.0 REQ-WF-15"
-   ],
-   "superseded_by": "v3-asm-trust"
+   "superseded_by": "v3-asm-trust",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-25",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-WF-15",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-26",
@@ -1275,11 +1399,17 @@
     "Project file only",
     "Your global CLAUDE.md"
    ],
-   "spec": [
-    "v0.2.0 OQ-26",
-    "v0.2.0 REQ-WF-10"
-   ],
-   "superseded_by": "v3-asm-packaging"
+   "superseded_by": "v3-asm-packaging",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-26",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-WF-10",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-27",
@@ -1296,11 +1426,17 @@
     "Yes, for changes that touch no requirement (recommended)",
     "No, every change follows the full flow"
    ],
-   "spec": [
-    "v0.2.0 OQ-27",
-    "v0.2.0 REQ-WF-17"
-   ],
-   "superseded_by": "v3-asm-method"
+   "superseded_by": "v3-asm-method",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-27",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-WF-17",
+     "url": null
+    }
+   ]
   },
   {
    "id": "ru-experiments",
@@ -1319,12 +1455,21 @@
     "Adopt as ruled on aledgent",
     "Change it (notes)"
    ],
-   "spec": [
-    "v0.2.0 REQ-CO-13",
-    "v0.2.0 REQ-CO-17",
-    "v0.2.0 INV-10"
-   ],
-   "origin": "aledgent session, relaying Pablo's ruling of 2026-10-04"
+   "origin": "aledgent session, relaying Pablo's ruling of 2026-10-04",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 REQ-CO-13",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-CO-17",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 INV-10",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-28",
@@ -1341,12 +1486,21 @@
     "Committed under experiments/ (recommended)",
     "Gitignored scratch, outcome page committed"
    ],
-   "spec": [
-    "v0.2.0 OQ-28",
-    "v0.2.0 REQ-CO-1",
-    "v0.2.0 REQ-CO-18"
-   ],
-   "superseded_by": "v3-asm-packaging"
+   "superseded_by": "v3-asm-packaging",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-28",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-CO-1",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-CO-18",
+     "url": null
+    }
+   ]
   },
   {
    "id": "oq-29",
@@ -1359,11 +1513,17 @@
     "Yes, drop and report it (recommended)",
     "No, every outcome comes to me"
    ],
-   "spec": [
-    "v0.2.0 OQ-29",
-    "v0.2.0 REQ-CO-19"
-   ],
-   "superseded_by": "v3-asm-packaging"
+   "superseded_by": "v3-asm-packaging",
+   "refs": [
+    {
+     "label": "v0.2.0 v0.2.0 OQ-29",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-CO-19",
+     "url": null
+    }
+   ]
   },
   {
    "id": "0002-adopt",
@@ -1412,9 +1572,6 @@
     "Always stop until ruled",
     "Always build the conservative reading"
    ],
-   "spec": [
-    "v0.2.0 REQ-WF-12"
-   ],
    "refs": [
     {
      "label": "Amendment 0002 (in the repo)",
@@ -1422,6 +1579,10 @@
     },
     {
      "label": "Synthesis note (in the repo)",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-WF-12",
      "url": null
     }
    ],
@@ -1465,9 +1626,6 @@
     "Bump on every amendment",
     "No bump before v1.0.0"
    ],
-   "spec": [
-    "v0.2.0 REQ-WF-7"
-   ],
    "refs": [
     {
      "label": "Amendment 0002 (in the repo)",
@@ -1475,6 +1633,10 @@
     },
     {
      "label": "Synthesis note (in the repo)",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 REQ-WF-7",
      "url": null
     }
    ],
@@ -1534,11 +1696,15 @@
     {
      "label": "Intake note (in the repo)",
      "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 OQ-1",
+     "url": null
+    },
+    {
+     "label": "v0.2.0 v0.2.0 OQ-11",
+     "url": null
     }
-   ],
-   "spec": [
-    "v0.2.0 OQ-1",
-    "v0.2.0 OQ-11"
    ],
    "applied": "SPEC v0.3.0 §3.1, REQ-VER-10 (R11, R12)"
   },
@@ -1684,12 +1850,12 @@
    ],
    "refs": [
     {
-     "label": "SPEC.md v0.3.0 (in the repo)",
-     "url": null
+     "label": "SPEC.md",
+     "url": "docs/spec.html"
     },
     {
-     "label": "OVERVIEW.md (in the repo)",
-     "url": null
+     "label": "OVERVIEW.md",
+     "url": "docs/overview.html"
     }
    ]
   },
@@ -1706,8 +1872,8 @@
    ],
    "refs": [
     {
-     "label": "REFERENCES.md (in the repo)",
-     "url": null
+     "label": "REFERENCES.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/REFERENCES.md"
     }
    ],
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17"
@@ -1725,8 +1891,8 @@
    ],
    "refs": [
     {
-     "label": "notes/2026-10-03-research.md (in the repo)",
-     "url": null
+     "label": "notes/2026-10-03-research.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-03-research.md"
     }
    ],
    "superseded_by": "r-spec"
@@ -1744,8 +1910,8 @@
    ],
    "refs": [
     {
-     "label": "notes/2026-10-04-use-cases-synthesis.md (in the repo)",
-     "url": null
+     "label": "notes/2026-10-04-use-cases-synthesis.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-04-use-cases-synthesis.md"
     }
    ],
    "superseded_by": "r-spec"
@@ -1763,12 +1929,12 @@
    ],
    "refs": [
     {
-     "label": "notes/2026-10-04-intake-contributors.md (in the repo)",
-     "url": null
+     "label": "notes/2026-10-04-intake-contributors.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-04-intake-contributors.md"
     },
     {
-     "label": "notes/2026-10-04-research-design-and-guardrails.md (in the repo)",
-     "url": null
+     "label": "notes/2026-10-04-research-design-and-guardrails.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-04-research-design-and-guardrails.md"
     }
    ],
    "superseded_by": "r-spec"
@@ -1786,8 +1952,8 @@
    ],
    "refs": [
     {
-     "label": "notes/2026-10-17-research-spec-formats.md (in the repo)",
-     "url": null
+     "label": "notes/2026-10-17-research-spec-formats.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-research-spec-formats.md"
     }
    ],
    "superseded_by": "r-spec"
@@ -1805,8 +1971,8 @@
    ],
    "refs": [
     {
-     "label": "notes/2026-10-03-packaging.md (in the repo)",
-     "url": null
+     "label": "notes/2026-10-03-packaging.md",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-03-packaging.md"
     }
    ],
    "superseded_by": "r-spec"

@@ -143,20 +143,20 @@ confirmed on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v
 
 **Open**, each an item on the form (SPEC §11):
 
-| ID | Question |
+| Question | ID |
 |---|---|
-| `OQ-1` | The final name |
-| `OQ-2` | Where newcomers' repositories live |
-| `OQ-3` | Pricing and the business model |
-| `OQ-4` | Which sector profiles ship first |
-| `OQ-5` | Whether a profile may make an executable or formal spec normative |
-| `OQ-6` | Whether an agent counts as an independent reviewer |
-| `OQ-7` | Whether every amendment bumps the spec version |
-| `OQ-8` | What an agent does on a spec gap |
-| `OQ-9` | How tests are named |
-| `OQ-10` | When a builder's change needs an engineer (the alarm tiers) |
-| `OQ-11` | Which builder and product pilot Narthex at Bloque |
-| `OQ-12` | Who checks the legal side of sector material, and when |
+| The final name | `OQ-1` |
+| Where newcomers' repositories live | `OQ-2` |
+| Pricing and the business model | `OQ-3` |
+| Which sector profiles ship first | `OQ-4` |
+| Whether a profile may make an executable or formal spec normative | `OQ-5` |
+| Whether an agent counts as an independent reviewer | `OQ-6` |
+| Whether every amendment bumps the spec version | `OQ-7` |
+| What an agent does on a spec gap | `OQ-8` |
+| How tests are named | `OQ-9` |
+| When a builder's change needs an engineer (the alarm tiers) | `OQ-10` |
+| Which builder and product pilot Narthex at Bloque | `OQ-11` |
+| Who checks the legal side of sector material, and when | `OQ-12` |
 
 ## 7. Where to read more
 

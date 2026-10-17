@@ -2157,8 +2157,7 @@
   },
   {
    "id": "d-name-next",
-   "applied": "brainstorm in progress (notes/2026-10-17-name-alternatives.md)",
-   "keep_open": true,
+   "applied": "notes/2026-10-17-name-alternatives.md",
    "section": "decide",
    "group": "v3-product",
    "follows": "q-name-search",
@@ -2213,6 +2212,41 @@
      "before": [
       "OQ-3 in SPEC.md"
      ]
+    }
+   ]
+  },
+  {
+   "id": "d-name-pick",
+   "section": "decide",
+   "group": "v3-product",
+   "follows": "d-name-next",
+   "spec": [
+    "OQ-1"
+   ],
+   "reserved": true,
+   "title": "Which name goes to a lawyer's clearance search?",
+   "lead": "Twenty candidates were screened on registries, domains and products; none is cleared, and this isn't legal advice.",
+   "bullets": [
+    "Ferula: cleanest screen, free .dev; but Spanish férula means being under someone's thumb.",
+    "Calamus / Cálamo: the stalk that carried fire is also the pen that writes the spec; medium risk.",
+    "Pronoia: best meaning (forethought); medium to high risk.",
+    "Narthex: second on fit, medium risk; a Claude Code MCP project shares the name."
+   ],
+   "options": [
+    "Calamus / Cálamo",
+    "Ferula",
+    "Narthex",
+    "Pronoia",
+    "Discuss first"
+   ],
+   "refs": [
+    {
+     "label": "Name alternatives",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-name-alternatives.md"
+    },
+    {
+     "label": "Narthex screen",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-name-search.md"
     }
    ]
   }

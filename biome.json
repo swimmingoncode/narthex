@@ -12,7 +12,8 @@
       "!history",
       "!case-studies",
       "!amendments",
-      "!package-lock.json"
+      "!package-lock.json",
+      "!.narthex/registry.json"
     ]
   },
   "formatter": {

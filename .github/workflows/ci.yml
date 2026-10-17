@@ -36,6 +36,13 @@ jobs:
         run: npm run check
       - name: Tests (scripts and every workspace)
         run: npm test
+      - name: Registry
+        run: node scripts/check-registry.mjs
+      - name: Contract changes
+        env:
+          # A pull request compares with its base; a push compares with the commit before it.
+          NARTHEX_BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: node scripts/check-contracts.mjs
       # Report mode: these list findings and never fail the job.
       - name: Test tags (report)
         run: node scripts/check-test-tags.mjs --report

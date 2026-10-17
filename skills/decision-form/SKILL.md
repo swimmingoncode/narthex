@@ -36,6 +36,8 @@ repo. Format and style rules: `references/item-format.md`.
    `references/item-format.md`). Keep ids stable: a reworded question keeps its id, a different question
    gets a new one. Use the spec's id for spec questions (`OQ-12` → `oq-12`) and list it under `spec`. A
    question replaced by another keeps its item with `superseded_by: "<new id>"`; never delete it.
+   A `read` item carries its full reading chain (`chain`: ordered steps, each with its prerequisites and why it
+   matters, and the decisions it informs), never a single reference.
    A project's look goes in `form.brand` (fonts, colours, logo, favicon), never in edits to the built page.
 2. **Build and check.**
    ```bash

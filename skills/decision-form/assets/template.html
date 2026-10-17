@@ -58,6 +58,12 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--chip);padding:1
 .refs{font-size:14px;margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center}
 .refs a{color:var(--accent)}.refs .off{color:var(--muted)}
 .refs button.peek{font:inherit;font-size:14px;color:var(--accent);background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.chain{margin:8px 0 0;padding-left:22px;font-size:14px}
+.chain li{margin:6px 0;padding-left:2px}
+.chain .st a,.chain .st button.peek{font-size:14.5px;font-weight:600}.chain .st .off{font-weight:600;color:var(--ink)}
+.chain .why,.chain .meta{color:var(--muted);font-size:13.5px;margin-top:1px}
+.chain .meta a{color:var(--accent)}
+.readfirst{font-size:14px;margin-top:8px;color:var(--muted)}.readfirst a{color:var(--accent)}
 .opts{margin-top:10px;display:flex;flex-direction:column;gap:2px}
 .opts label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:8px 6px;min-height:40px;border-radius:7px;font-size:15.5px}
 .opts label:hover{background:var(--chip)}
@@ -161,14 +167,29 @@ function tabs(){
 }
 function nav_(hash, itemId){ location.hash = hash; go(hash); if (itemId){ const el = document.getElementById(itemId); if (el) el.scrollIntoView({block:'start'}) } }
 
+function refLink(x){
+  if (!x.url) return `<span class="off">${esc(x.label)}</span>`;
+  if (x.peek) return `<button type="button" class="peek" data-url="${esc(x.url)}">${esc(x.label)}</button>`;
+  return `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`;
+}
 function refsHtml(refs){
   if (!refs || !refs.length) return '';
-  return '<div class="refs">' + refs.map((x, k) => {
-    if (!x.url) return `<span class="off">${esc(x.label)}</span>`;
-    if (x.peek) return `<button type="button" class="peek" data-url="${esc(x.url)}">${esc(x.label)}</button>`;
-    return `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`;
-  }).join('') + '</div>';
+  return '<div class="refs">' + refs.map(refLink).join('') + '</div>';
 }
+// A link to another item: its tab while it is open, the outbox once it is answered.
+function itemLink(f){ const go = f.resolved ? 'outbox.' + f.section : f.section + (f.group ? '.' + f.group : ''); return `<a href="#${esc(go)}" data-go="${esc(go)}" data-id="${esc(f.id)}">${esc(f.title)}</a>` }
+// A read item's reading chain (REQ-DEC-43): the steps in order, with what each needs first, why, and what it informs.
+function chainHtml(ch){
+  if (!ch || !ch.length) return '';
+  return '<ol class="chain" aria-label="Reading chain">' + ch.map(st =>
+    `<li><span class="st">${refLink(st)}</span>${st.why ? `<div class="why">${esc(st.why)}</div>` : ''}`
+    + (st.before && st.before.length ? `<div class="meta">Read first: ${st.before.map(b => b.item ? itemLink(b.item) : esc(b.label)).join(', ')}</div>` : '')
+    + (st.for && st.for.length ? `<div class="meta">Informs: ${st.for.map(itemLink).join(', ')}</div>` : '') + '</li>').join('') + '</ol>';
+}
+// On a decision: the read items whose chains inform it.
+function readFirstHtml(rf){ return rf && rf.length ? `<div class="readfirst">Read first: ${rf.map(itemLink).join(', ')}</div>` : '' }
+function readingHtml(it){ return chainHtml(it.chain) + readFirstHtml(it.readFirst) }
+function wireGo(el){ el.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); nav_(a.dataset.go, a.dataset.id) })) }
 
 function card(it){
   const r = S[it.id] || {}, el = document.createElement('div');
@@ -180,14 +201,14 @@ function card(it){
   if (it.defaulted && !answered(it.id)) tags += '<span class="tag dflt">Default applied</span>';
   let h = `<div class="head"><div class="t">${esc(it.title)}</div><div class="tags">${tags}</div></div><div class="id">${esc(it.id)}</div>`;
   if (it.ctx) h += `<div class="ctx">${it.ctx}</div>`;
-  h += refsHtml(it.refs);
+  h += refsHtml(it.refs) + readingHtml(it);
   if (it.options && it.options.length){
     h += '<div class="opts" role="radiogroup" aria-label="Options">' + it.options.map((o, i) =>
       `<label><input type="radio" id="${esc(it.id)}-o${i}" name="${esc(it.id)}" value="${esc(o)}"${r.choice === o ? ' checked' : ''}><span>${esc(o)}${it.default === i ? '<span class="d">default</span>' : ''}</span></label>`).join('') + '</div>';
   }
   h += `<textarea id="${esc(it.id)}-notes" aria-label="Notes for ${esc(it.id)}" placeholder="${it.options && it.options.length ? 'Notes, or your own answer' : 'Your answer'}">${esc(r.notes || '')}</textarea><div class="saved" id="${esc(it.id)}-st"></div>`;
   el.innerHTML = h;
-  wirePeek(el);
+  wirePeek(el); wireGo(el);
   const st = el.querySelector('.saved');
   const upd = () => {
     const c = el.querySelector('input[type=radio]:checked'), n = el.querySelector('textarea').value;
@@ -291,8 +312,8 @@ function outbox(v, sec){
         el.className = 'item out';
         el.innerHTML = `<div class="head"><div class="t">${esc(r.title)}</div><div class="tags"><span class="tag dflt">Superseded</span></div></div><div class="id">${esc(r.id)}</div>
           <p class="ans">Superseded by ${esc(r.superseded.title)} (${esc(r.superseded.id)})</p>
-          ${r.ctx ? `<details><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}</details>` : ''}`;
-        wirePeek(el); v.appendChild(el); continue;
+          ${r.ctx ? `<details><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}${readingHtml(r)}</details>` : ''}`;
+        wirePeek(el); wireGo(el); v.appendChild(el); continue;
       }
       el.className = 'item answered out';
       const a = r.answer, opts = (r.options || []).map(o => `<li class="${o === a.choice ? 'chosen' : ''}">${esc(o)}</li>`).join('');
@@ -301,7 +322,7 @@ function outbox(v, sec){
       const by = a.by || '', via = by === 'relayed:chat' ? 'Ruled in chat' : by.startsWith('relayed:') ? 'Relayed from ' + by.slice(8) : '';
       el.innerHTML = `<div class="head"><div class="t">${esc(r.title)}</div><div class="tags">${via ? `<span class="tag via">${esc(via)}</span>` : ''}<span class="tag done">${esc((a.at || '').slice(0, 10))}</span></div></div>
         ${r.applied ? `<div class="applied"><span class="lbl">Applied in</span><span class="tag">${esc(r.applied)}</span></div>` : ''}${(r.led || []).length ? `<div class="applied"><span class="lbl">Led to</span>${r.led.map(f => `<a class="tag" href="#${esc(f.resolved ? 'outbox.' + f.section : f.section + (f.group ? '.' + f.group : ''))}" data-go="${esc(f.resolved ? 'outbox.' + f.section : f.section + (f.group ? '.' + f.group : ''))}" data-id="${esc(f.id)}">${esc(f.title)} (${esc(f.sectionTitle)})</a>`).join('')}</div>` : ''}<div class="id">${esc(r.id)}</div>
-        ${r.ctx ? `<details><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}</details>` : ''}
+        ${r.ctx ? `<details><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}${readingHtml(r)}</details>` : ''}
         ${opts ? `<ul class="optlist">${opts}</ul>` : ''}${own}${a.notes ? `<p class="ans"><b>Your notes:</b> ${esc(a.notes)}</p>` : ''}
         <button type="button" class="redo">Change this answer</button>`;
       wirePeek(el);

@@ -57,6 +57,7 @@ edits the built form by hand.
 | `reserved` | no | `true` for outward actions, security trade-offs and product rulings the lead keeps. Such an item cannot have a default |
 | `blocks` | no | `true` when its answer blocks other work. Listed on the overview |
 | `refs` | no | `[{label, url}]`. A relative URL with an anchor opens in place (peek) when that page is published next to the form; `url: null` shows a label only |
+| `chain` | no | On a `read` item: the full reading chain, an ordered list of steps (see [Reading chains](#reading-chains)). Without it, the builder warns when the item refers to more than one document or informs a decision |
 | `spec` | no | Identifiers the item concerns. Rendered as refs (`specBase`) or labels |
 | `keep_open` | no | `true` keeps an answered item in the inbox (for example "Changes needed") |
 | `applied` | no | What applied the answer: "amendment 0003", "PLAN DEC-4", a commit. Shown in the outbox under the title ("Applied in") and in the log |
@@ -79,6 +80,40 @@ Act is only for the owner. Work the agent does goes in the queue, never in Act. 
 column. The queue keeps the file's order (no open-first sort), so the order is the plan. Suggested options for
 a queue item: "OK", "Do this first", "Stop it". The builder warns when an item of kind `act`, `queue` or
 `update` sits in a known section that does not match (for example kind `queue` in section `act`).
+
+## Reading chains
+
+A `read` item says what to read, in which order, what each step needs first and why it matters to the decision
+(Pablo, 2026-10-17; SPEC `REQ-DEC-43`, `REQ-DEC-44`). A single reference is not a chain. `chain` is an ordered
+list; the page shows it as a numbered list.
+
+```json
+{"id": "r-spec", "kind": "read", "section": "read", "title": "SPEC.md and OVERVIEW.md",
+ "lead": "The spec and its short digest.",
+ "options": ["Read, no comments", "Read, comments in notes", "Not yet"],
+ "chain": [
+   {"label": "OVERVIEW.md", "url": "docs/overview.html",
+    "why": "The map: what the product is, in a few pages."},
+   {"label": "SPEC.md §1 to §4", "url": "https://github.com/acme/repo/blob/main/SPEC.md#1-purpose-and-scope",
+    "why": "The premise, the glossary and the chain every question assumes.", "before": ["OVERVIEW.md"]},
+   {"label": "SPEC.md §11 Open questions", "url": "https://github.com/acme/repo/blob/main/SPEC.md#11-open-questions",
+    "why": "The questions themselves, each with a recommendation.", "before": ["SPEC.md §1 to §4"], "for": ["oq-3", "oq-4"]}
+ ]}
+```
+
+| Step field | Required | Meaning |
+|---|---|---|
+| `label` | yes | What to read. Unique within the chain: `before` names steps by it |
+| `url` | no | A link, or `null` for a label only. A relative URL with an anchor opens in place (peek), like `refs` |
+| `why` | yes (warns) | Why it matters to the decision, at most 25 words |
+| `before` | yes after the first step (warns) | Earlier step labels, or ids of other items, to read first. `[]` when nothing is needed. Shown as "Read first" |
+| `for` | no | Ids of the decisions the step informs. Shown as "Informs", linking to them; each of those items shows "Read first: *this read item*" |
+
+Errors: `chain` on an item that is not `read`; an empty chain; a missing label or a repeated one; a `url` that
+is not a string or null; a `before` that is neither an earlier step nor an item; a `for` that is not an item.
+Warnings: a chain of one step; a step without `why` or over 25 words; a step after the first without `before`;
+a `read` item with no `chain` that refers to more than one document or to one a `decide` item also cites
+(superseded items are skipped). The limits on `lead` and `bullets` do not apply to the chain.
 
 ## Brand
 

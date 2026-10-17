@@ -114,10 +114,49 @@ def apply_brand(page, blk):
         page = page.replace(ph, blk[k] if k else "", 1)
     return page
 
+def doc_of(ref):
+    """The document a ref points at: its URL without the anchor, or its label when it has no URL."""
+    u = ref.get("url")
+    return u.split("#")[0] if u else ref.get("label")
+
+CHAIN_KEYS = {"label", "url", "why", "before", "for"}
+CHAIN_WHY_WORDS = 25
+
+def check_chain(i, kind, chain, ids):
+    """Validate a read item's reading chain (REQ-DEC-43, REQ-DEC-44). Returns (errors, warnings)."""
+    errs, warns = [], []
+    if kind != "read": return [f"{i}: chain belongs on a read item (kind read)"], []
+    if not isinstance(chain, list) or not chain: return [f"{i}: chain must be a non-empty list of steps"], []
+    labels = []
+    for n, st in enumerate(chain, 1):
+        w = f"{i}: chain step {n}"
+        if not isinstance(st, dict): errs.append(f"{w} must be an object"); continue
+        for k in sorted(set(st) - CHAIN_KEYS): errs.append(f"{w}: unknown key {k!r} ({', '.join(sorted(CHAIN_KEYS))})")
+        lab = st.get("label")
+        if not (isinstance(lab, str) and lab.strip()): errs.append(f"{w} has no label"); lab = None
+        elif lab in labels: errs.append(f"{w}: label {lab!r} used twice")
+        if st.get("url") is not None and not isinstance(st["url"], str): errs.append(f"{w}: url must be a string or null")
+        why = st.get("why")
+        if not (isinstance(why, str) and why.strip()): warns.append(f"{w} has no reason (why)")
+        elif words(why) > CHAIN_WHY_WORDS: warns.append(f"{w}: why over {CHAIN_WHY_WORDS} words ({words(why)})")
+        for key in ("before", "for"):
+            v = st.get(key)
+            if v is not None and not (isinstance(v, list) and all(isinstance(x, str) for x in v)):
+                errs.append(f"{w}: {key} must be a list of strings"); st = {**st, key: None}
+        for b in st.get("before") or []:
+            if b not in labels and not (b in ids and b != i): errs.append(f"{w}: before {b!r} is not an earlier step or another item")
+        for f in st.get("for") or []:
+            if f not in ids or f == i: errs.append(f"{w}: for {f!r} is not another item in this file")
+        if n > 1 and "before" not in st: warns.append(f"{w} lacks its prerequisites (before; use [] when none)")
+        if lab: labels.append(lab)
+    if len(chain) < 2: warns.append(f"{i}: reading chain has one step only (a single reference is not a chain)")
+    return errs, warns
+
 def check(doc, base=".", current=None):
     """Returns (errors, warnings). Errors break the form; warnings break only --strict.
     current: the latest archived answer per item id, to spot answers the form has not followed up."""
     errs, warns = [], []
+    all_ids = {x.get("id") for x in doc.get("items", [])}
     if "brand" in doc.get("form", {}): errs += check_brand(doc["form"]["brand"], base)
     secs = {s["id"]: s for s in doc.get("sections", [])}
     if not secs: errs.append("no sections")
@@ -161,12 +200,20 @@ def check(doc, base=".", current=None):
         if total > LIMITS["context_words"]: warns.append(f"{where} context is {total} words (aim under {LIMITS['context_words']})")
         for r in it.get("refs", []):
             if "label" not in r: errs.append(f"{where} a ref has no label")
+        if "chain" in it: chain_errs, chain_warns = check_chain(i, k, it["chain"], all_ids); errs += chain_errs; warns += chain_warns
         sb = it.get("superseded_by")
         if sb is not None and (not isinstance(sb, str) or sb == i or sb not in {x.get("id") for x in doc.get("items", [])}):
             errs.append(f"{where} superseded_by {sb!r} is not another item in this file")
         fo = it.get("follows")
         if fo is not None and (not isinstance(fo, str) or fo == i or fo not in {x.get("id") for x in doc.get("items", [])}):
             errs.append(f"{where} follows {fo!r} is not another item in this file")
+    # A read item that points at several documents, or at one a decision also cites, owes the reader a chain (REQ-DEC-43, REQ-DEC-44).
+    decided_docs = {doc_of(r) for x in doc.get("items", []) if x.get("kind", "decide") == "decide" for r in x.get("refs", []) if r.get("label")}
+    for it in doc.get("items", []):
+        if it.get("kind") != "read" or it.get("chain") is not None or it.get("superseded_by"): continue
+        docs = {doc_of(r) for r in it.get("refs", []) if r.get("label")}
+        if len(docs) + len(it.get("spec", [])) > 1 or (docs & decided_docs):
+            warns.append(f"{it.get('id', '?')}: read item has no reading chain (it refers to more than one document or informs a decision; add chain, REQ-DEC-43)")
     # A ruling the form has not followed up means it fell behind the chat: every answered decision shows what it produced.
     led = {x["follows"] for x in doc.get("items", []) if isinstance(x.get("follows"), str)}
     for it in doc.get("items", []):
@@ -203,13 +250,30 @@ def refs_of(it, form):
     out = []
     for r in it.get("refs", []):
         u = r.get("url")
-        peek = bool(u and "#" in u and not re.match(r"^[a-z]+:", u))
-        out.append({"label": r["label"], "url": u, "peek": r.get("peek", peek)})
+        out.append({"label": r["label"], "url": u, "peek": r.get("peek", is_peek(u))})
     base = form.get("specBase")  # e.g. "docs/SPEC.html": a rendered spec published next to the form
     for sid in it.get("spec", []):
         if base: out.append({"label": sid, "url": f"{base}#{sid.lower()}", "peek": True})
         else: out.append({"label": f"{form.get('specName', 'SPEC.md')} {sid}", "url": None})
     return out
+
+def is_peek(u): return bool(u and "#" in u and not re.match(r"^[a-z]+:", u))
+
+def chain_of(it, info):
+    """A read item's chain for the page: steps with their links. info: item id -> {id, title, section, group, resolved}."""
+    labels = {st.get("label") for st in it.get("chain") or []}
+    out = []
+    for st in it.get("chain") or []:
+        u = st.get("url")
+        out.append({"label": st["label"], "url": u, "peek": is_peek(u), "why": st.get("why", ""),
+                    "before": [{"label": b} if b in labels else {"label": info[b]["title"], "item": info[b]} for b in st.get("before") or []],
+                    "for": [info[f] for f in st.get("for") or []]})
+    return out
+
+def read_first_of(item_id, items, info):
+    """The read items whose chains inform this item: shown on it as 'Read first'."""
+    return [info[r["id"]] for r in items if r.get("kind") == "read" and not r.get("superseded_by")
+            and any(item_id in (st.get("for") or []) for st in r.get("chain") or [])]
 
 def page_item(it, form):
     return {"id": it["id"], "kind": it.get("kind", "decide"), "section": it["section"], "group": it.get("group"),
@@ -219,6 +283,7 @@ def page_item(it, form):
 
 def fingerprint(it):
     keep = {k: it.get(k) for k in ("title", "lead", "bullets", "rec", "options", "default", "refs", "spec")}
+    if it.get("chain"): keep["chain"] = it["chain"]  # only when present, so items without one keep their fingerprint
     return hashlib.sha256(json.dumps(keep, sort_keys=True).encode()).hexdigest()[:16]
 
 # ---------- answers ----------
@@ -318,16 +383,23 @@ def main():
         if i.get("follows"):
             follow.setdefault(i["follows"], []).append({"id": i["id"], "title": i["title"], "section": i["section"],
                 "sectionTitle": stitle[i["section"]], "group": i.get("group"), "resolved": resolved(i)})
+    info = {i["id"]: {"id": i["id"], "title": i["title"], "section": i["section"], "group": i.get("group"), "resolved": resolved(i)} for i in doc["items"]}
+    def page(i):
+        p = page_item(i, form)
+        if i.get("chain"): p["chain"] = chain_of(i, info)
+        rf = read_first_of(i["id"], doc["items"], info)
+        if rf: p["readFirst"] = rf
+        return p
     open_items = []
     for i in doc["items"]:
         if resolved(i): continue
-        p = page_item(i, form); h = current.get(i["id"])
+        p = page(i); h = current.get(i["id"])
         if h: p["answer"] = {"choice": h["choice"], "notes": h["notes"], "at": h["at"]}  # e.g. "Discuss first", or kept open
         open_items.append(p)
     done = []
     for i in doc["items"]:
         if resolved(i):
-            p = page_item(i, form); h = current.get(i["id"])
+            p = page(i); h = current.get(i["id"])
             if h: p["answer"] = {"choice": h["choice"], "notes": h["notes"], "at": h["at"], "by": h["by"]}
             if i["id"] in follow: p["led"] = follow[i["id"]]
             if i["id"] in sup: p["superseded"] = {"id": sup[i["id"]], "title": titles[sup[i["id"]]]}

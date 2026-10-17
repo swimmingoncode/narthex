@@ -39,7 +39,8 @@ Identifiers are stable. A withdrawn one is never reused (`REQ-DAT-5`). New plan 
 
 Each task row names the files or packages it touches, the tests that prove it, and when it is done. Test names
 are plain, as the house rules require (`REQ-SKL-30`, `OQ-9`). The identifiers in square brackets after a test
-name go in a comment on that test, `// verifies: INV-17`, which the trace checks read. "Done when" is always a
+name go in a comment on that test, `// verifies: INV-17`, which the trace checks read. A test marked (L2) is an
+invariant check (`DEC-16`); it is built in the task that builds the code it checks. "Done when" is always a
 condition a script can decide (`REQ-SKL-14`).
 
 ### Status of plan decisions
@@ -74,14 +75,14 @@ stricter reading applies (`REQ-SKL-24`).
 
 | ID | Decision | Status |
 |---|---|---|
-| `DEC-14` | **Contracts.** Four contracts live in `contracts/`: `data-model/`, `mcp/`, `profile/` and `tokens/`. Each has a `version` field, fixtures and a conformance suite beside it. They are data, like `kb/`, so `packages/core` still depends on nothing of ours. They freeze at 0.1.0 when `F-002` to `F-005` merge (checkpoint C0). A change after C0 needs a version bump, a `contracts/CHANGELOG.md` entry and a new `DEC-*`; `T-001-05` enforces it. They are tagged 1.0.0 at M0's exit, as SAD §10.3 asks | proposed |
+| `DEC-14` | **Contracts.** Four contracts live in `contracts/`: `data-model/`, `mcp/`, `profile/` and `tokens/`. Each has a `version` field, fixtures and a conformance suite beside it. They are data, like `kb/`, so `packages/core` still depends on nothing of ours. They freeze at 0.1.0 when `F-002` to `F-005` merge (checkpoint C0). A change after C0 needs a version bump, a `contracts/CHANGELOG.md` entry and a new `DEC-*`; `T-001-05` enforces it. They are tagged 1.0.0 at M0's exit commit, as SAD §10.3 asks: the `version` fields move to 1.0.0 by a `contracts/CHANGELOG.md` entry that names this decision (`T-018-08`) | proposed |
 | `DEC-15` | **Construction method per milestone** (`REQ-CHN-11`). M0: TDD, contract first (fixtures and conformance suites before any implementation). M1: TDD, plus BDD scenarios for the synthetic sessions. M2 onward: TDD | proposed |
-| `DEC-16` | **Test layers** (from `notes/2026-10-17-testing-narthex.md`). L1 components: unit, contract and conformance tests on every PR. L2 invariants: checks tagged `INV-*`, on every PR that touches their packages and nightly. L3 synthetic sessions: persona agents, before each release from M1. L4 real use: dogfooding from M0, the Bloque pilot. M0 has no persona agents; its end-to-end tests are scripted (`F-018`) | proposed |
-| `DEC-17` | **Branches and PRs.** One PR per task. Branch `f-NNN/t-NNN-NN-slug`. The PR title starts with the task id; the body lists the ids it serves and its tests. Plain `git commit` with the author's own signing; no identity or signing override (`INV-8`). Rebase on `main`, CI green, then squash merge, so GitHub signs the merge commit (`REQ-IDN-6`). Who merges waits on item `plan-merge-rule`; until it is answered, the lead merges every PR | pending `plan-merge-rule` |
-| `DEC-18` | **Dispatch.** One agent per feature at a time, in the feature's own git worktree and build directory (`REQ-SKL-7`, `REQ-SKL-29`). Each task goes to a fresh agent in that worktree; the feature's `features/F-NNN-slug/notes.md` carries state between tasks. Sonnet by default. Opus for the contracts (`F-002` to `F-005`), sign-in (`F-010`) and the threat model and review (`F-019`). Haiku for the single CI watcher. At most two helpers at once, plus one CI watcher (`NFR-10`, `NFR-11`). The orchestrator writes no code and reads reports, not diffs | proposed |
+| `DEC-16` | **Test layers** (from `notes/2026-10-17-testing-narthex.md`). L1 components: unit, contract and conformance tests on every PR, plus property tests for the data-model and token contracts. L2 invariants: checks tagged `INV-*`, on every PR that touches their packages and nightly. Each feature builds the L2 checks of its own invariants; `F-018` holds the runner, the nightly run and the checks that need the whole stack. L3 synthetic sessions: persona agents, before each release from M1. L4 real use: dogfooding from M0, the Bloque pilot. M0 has no persona agents; its end-to-end tests are scripted (`F-018`) | proposed |
+| `DEC-17` | **Branches and PRs.** One PR per task. Branch `f-NNN/t-NNN-NN-slug`. The PR title starts with the task id; the body lists the ids it serves and its tests. Plain `git commit` with the author's own signing; no identity or signing override (`INV-8`). DCO sign-off (`git commit -s`) is added only in repos that require it: Narthex does not, specsite does. Agents wait on CI with one blocking shell command, never by polling (`REQ-SKL-28`). Rebase on `main`, CI green, then squash merge, so GitHub signs the merge commit (`REQ-IDN-6`). Who merges waits on item `plan-merge-rule`; until it is answered, the lead merges every PR | pending `plan-merge-rule` |
+| `DEC-18` | **Dispatch.** One agent per feature at a time, in the feature's own git worktree and build directory (`REQ-SKL-7`, `REQ-SKL-29`). Each task goes to a fresh agent in that worktree; the feature's `features/F-NNN-slug/notes.md` carries state between tasks. Sonnet by default, including `F-010` after the spike. Opus only for open design and the independent review: the token-kind spike (`T-010-01`), the contracts (`F-002` to `F-005`), the threat model (`T-019-01`) and the security review (`T-019-02`). Haiku for checks, including the single CI wait. At most two helpers at once, plus one CI watcher (`NFR-10`, `NFR-11`). The orchestrator writes no code and reads reports, not diffs | proposed |
 | `DEC-19` | **Task size** (ADOPTING.md §8). A task fits one helper with an exact brief: one PR; about 400 changed lines or fewer, fixtures excluded; it names the files to read (a contract and one SAD section, never the whole spec); its brief carries the house rules in full (`REQ-SKL-18`); its exit check is a script. A task that grows past this is split before it starts | proposed |
 | `DEC-20` | **Releases.** One version for server, CLI and plugin (ADR-0011). Each milestone exit is a minor release: M0 is 0.2.0 (the plugin is 0.1.0 today), M1 is 0.3.0. Patches as needed. The hosted service deploys tagged releases only, after L1 and L2 are green and, from M1, the L3 pass rates hold. Each hosted release is a reserved `act` item (`INV-4`) | proposed |
-| `DEC-21` | **Technical defaults.** Fastify for HTTP; `node --test` with Node's type stripping; `tsc --noEmit`; Ajv for JSON Schema; Biome for lint and format; Playwright for page tests. Changing one needs a `DEC-*` | proposed |
+| `DEC-21` | **Technical defaults.** Fastify for HTTP; `node --test` with Node's type stripping; `tsc --noEmit`; Ajv for JSON Schema; fast-check for property tests; Biome for lint and format; Playwright for page tests. Changing one needs a `DEC-*` | proposed |
 | `DEC-22` | **First experience level.** M0's question set and persona serve the `maker` level, not `newcomer` as SAD §10 says, because amendment 0006 added `maker` after the SAD and the lead plays one. The other levels follow in M1 (`F-026`) | pending `plan-first-level` (default applies) |
 | `DEC-23` | **Outward actions in the plan.** Registering the GitHub App, creating a test organisation, buying anything, opening the hosting account and each hosted release are `act` items filed by the task that needs them, at that time (`INV-4`, `REQ-SKL-20`). No task performs one on a default | accepted (`INV-4`) |
 
@@ -101,12 +102,12 @@ hosted by Narthex, and the answer reaches the agent without polling.
 
 | # | Criterion | Ids |
 |---|---|---|
-| E1 | The four contracts exist under `contracts/` at version 0.1.0. Every conformance suite passes for every implementation that consumes it: the Python builder, `packages/core`, the server and the stub | `REQ-CHN-12` |
-| E2 | `walking skeleton completes on a self-hosted copy` passes on the compose stack, and again against the hosted instance, from the same image | `REQ-ITK-1`, `REQ-ITK-2`, `REQ-ITK-9`, `REQ-IDN-1`, `REQ-IDN-3`, `REQ-CHN-5`, `REQ-DOC-16`, `REQ-IDN-8` |
+| E1 | The four contracts exist under `contracts/`, frozen at 0.1.0 at C0 and tagged 1.0.0 at this commit (`DEC-14`). Every conformance suite passes for every implementation that consumes it: the Python builder, `packages/core`, the server and the stub | `REQ-CHN-12` |
+| E2 | `walking skeleton completes on a self-hosted copy` passes on the compose stack (`T-018-02`), and `walking skeleton completes on the hosted instance` passes against the hosted instance, from the same image (`T-018-07`) | `REQ-ITK-1`, `REQ-ITK-2`, `REQ-ITK-9`, `REQ-IDN-1`, `REQ-IDN-3`, `REQ-CHN-5`, `REQ-DOC-16`, `REQ-IDN-8` |
 | E3 | `unattended form resumes from one wake-up` passes: the answer lands after the read link expired; the agent is woken once; it makes no `form_read` call before the wake-up and at most one `form_wait`; its next read returns only the changes | `INV-17`, `REQ-DEC-39`, `REQ-DEC-42`, `REQ-DEC-24` |
 | E4 | The L2 invariant suite is green for `INV-2`, `INV-3`, `INV-4`, `INV-9`, `INV-11`, `INV-12`, `INV-16`, `INV-17`. The approval is archived by a signed commit and acknowledged | `REQ-DEC-25`, `INV-2` |
 | E5 | On the recorded skeleton session: every tool response is 16 KB or less, the median 2 KB or less, every tool description 60 words or less. A 200-item form loads in under 2 s on throttled 4G at 375 px. The builder still imports only the standard library | `NFR-8`, `NFR-6`, `NFR-2`, `NFR-4` |
-| E6 | The threat-model amendment is ruled. The security review of `F-010`, `F-011` and `F-013` has no open high or critical finding. All 15 items of "M0 must-have" in `docs/architecture/auth-practices.md` are checked off | `REQ-CHN-7` |
+| E6 | The threat-model amendment is ruled. The security review of `F-010`, `F-011` and `F-013` has no open high or critical finding. Every one of the 15 items of "M0 must-have" in `docs/architecture/auth-practices.md` has a passing test or a recorded drill, and `T-019-02` ticks each | `REQ-CHN-7` |
 | E7 | Every id §7 places in M0 has at least one test whose comment names it; `check-test-tags` reports zero gaps for them | `REQ-VER-4` |
 | E8 | One dogfood run with a real Claude Code session is recorded in `features/F-018-skeleton/dogfood.md` (L4) | `REQ-CHN-13` (as a rehearsal) |
 
@@ -146,43 +147,44 @@ scenarios; intake for all four levels.
 
 | Feature | Title | Model | Depends on | Contracts | Tasks |
 |---|---|---|---|---|---|
-| `F-001` | Workspace, CI and house rules | Sonnet | none | creates the guard for all four | 5 |
+| `F-001` | Workspace, CI and house rules | Sonnet | none | creates the guard for all four | 6 |
 | `F-002` | Contract: data-model schemas | Opus | `F-001` | implements data-model | 4 |
 | `F-003` | Contract: MCP tools and resources | Opus | `F-002`, `F-005` | implements mcp; consumes data-model, tokens | 4 |
 | `F-004` | Contract: profile schema and `product` | Opus | `F-001` | implements profile | 3 |
-| `F-005` | Contract: token model | Opus | `F-001` | implements tokens | 2 |
+| `F-005` | Contract: token model | Opus | `F-001`, `T-010-01` | implements tokens | 2 |
 | `F-006` | Core model | Sonnet | C0 | consumes data-model, profile | 5 |
 | `F-007` | Verify engine and CI action | Sonnet | `F-006` | consumes data-model, profile | 4 |
 | `F-008` | Knowledge base, M0 content | Sonnet | C0 | consumes profile, mcp (kb pieces) | 3 |
 | `F-009` | Server foundation and inbox store | Sonnet | C0 | consumes data-model | 4 |
-| `F-010` | Sign-in and tokens (GitHub) | Opus | `F-009` | implements tokens; consumes mcp | 5 |
-| `F-011` | GitHub App connector | Sonnet | `F-009` | consumes tokens | 4 |
+| `F-010` | Sign-in and tokens (GitHub) | Sonnet (spike `T-010-01`: Opus) | `F-009`; the spike `T-010-01` needs only `T-001-01` and `T-001-06` | implements tokens; consumes mcp | 8 |
+| `F-011` | GitHub App connector | Sonnet | `F-009`, `T-001-06` | consumes tokens | 4 |
 | `F-012` | Form builder store adapter | Sonnet | C0 | consumes data-model, mcp (endpoints) | 4 |
-| `F-013` | Decide service: publish, answers, events | Sonnet | `F-010`, `F-012` | consumes data-model, mcp, tokens | 4 |
-| `F-014` | MCP server, 10 tools, both transports | Sonnet | `F-006`, `F-007`, `F-008`, `F-011`, `F-013` | implements mcp | 5 |
+| `F-013` | Decide service: publish, answers, events | Sonnet | `F-010`, `F-011`, `F-012` | consumes data-model, mcp, tokens | 4 |
+| `F-014` | MCP server, 10 tools, both transports | Sonnet | `F-006`, `F-007`, `F-008`, `F-011`, `F-013` | implements mcp | 6 |
 | `F-015` | Web GUI: sign-in, profile, projects | Sonnet | `F-010`, `F-011` | consumes tokens | 4 |
-| `F-016` | Agent plugin: watcher and skills | Sonnet | C0 | consumes mcp, data-model | 5 |
-| `F-017` | Deploy and operations | Sonnet | `F-009`, `F-015` | none | 4 |
-| `F-018` | Walking skeleton end to end | Sonnet | `F-014`, `F-015`, `F-016`, `F-017` | consumes all four | 5 |
-| `F-019` | Threat model and security review | Opus | none (`T-019-01`); `F-010`, `F-011`, `F-013` (`T-019-02`) | reviews tokens, mcp | 2 |
+| `F-016` | Agent plugin: watcher and skills | Sonnet | C0 | consumes mcp, data-model | 7 |
+| `F-017` | Deploy and operations | Sonnet | `F-009`, `F-015`; `T-017-03` also `F-014` | none | 4 |
+| `F-018` | Walking skeleton end to end | Sonnet | `F-014`, `F-015`, `F-016`, `F-017` | consumes all four | 8 |
+| `F-019` | Threat model and security review | Opus | `T-007-03` (`T-019-01`); `F-010`, `F-011`, `F-013` (`T-019-02`) | reviews tokens, mcp | 2 |
 
-C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
+C0 is the contract freeze: `F-002` to `F-005` merged, which includes the sign-in spike `T-010-01` that `F-005` waits on. M0 has 86 tasks.
 
 #### `F-001` Workspace, CI and house rules
 
 - **Goal:** the empty monorepo of ADR-0011, CI for every layer, the house rules and the guards every later
   agent works under.
-- **Serves:** `REQ-SKL-17`, `REQ-SKL-18`, `REQ-SKL-19`, `REQ-SKL-23`, `REQ-SKL-27`, `REQ-SKL-30`, `REQ-DAT-8`,
-  `INV-8`, `NFR-4`.
+- **Serves:** `REQ-SKL-17`, `REQ-SKL-18`, `REQ-SKL-19`, `REQ-SKL-23`, `REQ-SKL-27`, `REQ-SKL-20`, `REQ-SKL-30`,
+  `REQ-DAT-8`, `INV-8`, `INV-4`, `NFR-4`.
 - **Depends on:** none. **Contracts:** creates the contract guard used by all four.
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
 | `T-001-01` | Root `package.json` with workspaces `apps/*`, `packages/*`; `.nvmrc`; `tsconfig.base.json`; `biome.json`; empty `apps/server`, `apps/web`, `packages/core`, `packages/verify`, `packages/cli`, `packages/form-adapter`; `scripts/check-boundaries.mjs` | `workspace typechecks`; `core imports nothing of ours`; `nothing imports apps` [ADR-0011 boundaries] | `npm ci && npm run check` passes locally and in CI |
 | `T-001-02` | `.github/workflows/ci.yml`: add a Node job (typecheck, lint, `node --test` per workspace) and a PostgreSQL service job; keep the `decision-form` job as it is | existing builder tests; `ci runs every workspace's tests` [`NFR-4`] | CI is green on the PR and the `decision-form` job is unchanged |
-| `T-001-03` | `HOUSE-RULES.md` (identity and signing, worktrees, no `/tmp`, merge rule, test naming); `scripts/check-test-tags.mjs` reading `// verifies:` and `# verifies:` comments | `test without a verifies comment is reported`; `verifies comment with an unknown id is reported` [`REQ-SKL-30`, `REQ-SKL-17`] | the checker runs in CI in report mode |
+| `T-001-03` | `HOUSE-RULES.md` (identity and signing, worktrees, no `/tmp`, merge rule, test naming, waiting on CI with one blocking command); `scripts/check-test-tags.mjs` reading `// verifies:` and `# verifies:` comments; `scripts/check-checklist.mjs <file>`, which fails while a `- [ ]` box is unticked | `test without a verifies comment is reported`; `verifies comment with an unknown id is reported`; `checklist with an unticked box fails` [`REQ-SKL-30`, `REQ-SKL-17`] | the checkers run in CI in report mode |
 | `T-001-04` | `hooks/hooks.json` and `hooks/guard.py` (stock Python) for the plugin: refuse identity or signing overrides and durable writes under `/tmp` | `commit with an author override is refused`; `commit with no-gpg-sign is refused`; `plain commit is allowed`; `write under tmp is refused` [`INV-8`, `REQ-SKL-19`, `REQ-SKL-23`, `REQ-SKL-27`] | tests pass and the plugin manifest registers the hook |
 | `T-001-05` | `.narthex/registry.json` (plan ids, amendment and migration numbers); `scripts/check-registry.mjs`; `scripts/check-contracts.mjs`: a change under `contracts/` needs a version bump and a `contracts/CHANGELOG.md` entry naming a `DEC-*` | `duplicate task id is an error`; `migration number reserved twice is an error`; `contract change without a version bump fails` [`REQ-DAT-8`, `REQ-VER-1`, `DEC-14`] | both scripts run in CI and fail on their fixtures |
+| `T-001-06` | Files the `act` items for the registrations that later tasks need before any hosted instance: a test GitHub App, a GitHub OAuth app for sign-in with a localhost callback, and a test organisation. Ids go in `features/F-001-workspace/notes.md`, secrets go in the secret store, never in the repo. `scripts/check-act-items.mjs` lists `act` items that are still unanswered | `unanswered act item is reported`; `answered act item passes` [`INV-4`, `REQ-SKL-20`] | the three `act` items are answered and `check-act-items` exits 0 for them |
 
 #### `F-002` Contract: data-model schemas
 
@@ -194,8 +196,8 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
-| `T-002-01` | `contracts/data-model/questions.schema.json` and `response.schema.json`, from `skills/decision-form/references/item-format.md`; valid and invalid fixtures, with this repo's `decisions/questions.json` as one valid fixture; `skills/decision-form/tests/test_contract_fixtures.py` | `valid questions fixtures pass the schema`; `invalid questions fixtures fail with the expected error`; `builder accepts every valid questions fixture`; `builder rejects every invalid questions fixture` [`REQ-DEC-1`, `REQ-DEC-43`, `REQ-DAT-6`] | Ajv and the builder agree on every fixture |
-| `T-002-02` | `event.schema.json`: answer, edit, link request, publish, ack; cursors increase strictly per form | `event fixtures pass`; `event without a cursor fails` [`REQ-DEC-24`, `INV-3`] | fixtures pass in CI |
+| `T-002-01` | `contracts/data-model/questions.schema.json` and `response.schema.json`, from `skills/decision-form/references/item-format.md`; valid and invalid fixtures, with this repo's `decisions/questions.json` as one valid fixture; `skills/decision-form/tests/test_contract_fixtures.py` | `valid questions fixtures pass the schema`; `invalid questions fixtures fail with the expected error`; `builder accepts every valid questions fixture`; `builder rejects every invalid questions fixture`; `generated valid items pass the schema and survive a round trip` (property test) [`REQ-DEC-1`, `REQ-DEC-43`, `REQ-DAT-6`] | Ajv and the builder agree on every fixture |
+| `T-002-02` | `event.schema.json`: answer, edit, link request, publish, ack; cursors increase strictly per form | `event fixtures pass`; `event without a cursor fails`; `any generated event sequence has strictly increasing cursors` (property test) [`REQ-DEC-24`, `INV-3`] | fixtures pass in CI |
 | `T-002-03` | `project.schema.json` and `ownership.schema.json`; `.narthex/project.json` for this repo (it names `docs/architecture/SAD.md` and `docs/architecture/adr/`) as a valid fixture | `this repo's project file passes`; `ownership pattern without a team fails` [`REQ-DAT-1`, `REQ-TEM-2`] | fixtures pass in CI |
 | `T-002-04` | `trace.schema.json`, `needs.json` compatible (id, type, title, status, links, source); `contracts/data-model/README.md`; the 0.1.0 entry in `contracts/CHANGELOG.md` | `trace fixtures pass`; `link of an unknown type fails` [`REQ-DAT-20`] | fixtures pass and the contract guard accepts the version |
 
@@ -205,11 +207,11 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
   and a stub that lets consumers build before the server exists.
 - **Serves:** `REQ-IFC-1`, `REQ-IFC-2`, `REQ-IFC-4`, `REQ-IFC-6`, `REQ-IFC-7`, `REQ-IFC-9`, `REQ-KNB-2`,
   `REQ-DEC-24`, `NFR-8`.
-- **Depends on:** `F-002`, `F-005`. **Contracts:** implements mcp; consumes data-model and tokens.
+- **Depends on:** `F-002`, `F-005` (which waits on the spike `T-010-01`). **Contracts:** implements mcp; consumes data-model and tokens.
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
-| `T-003-01` | `contracts/mcp/tools.json`: the 14 tools with group, scope, phase (M0 or M1), description, input and output schemas, byte budgets (2 KB typical, 16 KB at most). Repository text in outputs sits in fields marked untrusted (SAD §6.6) | `contract lists exactly fourteen tools`; `every description is sixty words or less`; `every scope exists in the token contract`; `no tool writes an answer` [`REQ-IFC-1`, `NFR-8`, `INV-4`] | tests pass |
+| `T-003-01` | `contracts/mcp/tools.json`: the 14 tools with group, scope, phase (M0 or M1), description, input and output schemas, byte budgets (2 KB typical, 16 KB at most). Repository text in outputs sits in fields marked untrusted (SAD §6.6) | `contract lists exactly fourteen tools`; `ten tools are in phase M0 and four in phase M1`; `every description is sixty words or less`; `every scope exists in the token contract`; `no tool writes an answer` [`REQ-IFC-1`, `NFR-8`, `INV-4`] | tests pass |
 | `T-003-02` | `resources.json` (`narthex://kb/{id}@{version}`, `narthex://profile/{name}@{version}`), `prompts.json` (`intake`, `spec`), `kb-piece.schema.json` (id, version, class, label, step, level, body) | `kb piece without a class fails`; `supplementary piece labelled normative fails` [`REQ-KNB-2`, `REQ-KNB-3`, `INV-14`] | tests pass |
 | `T-003-03` | `endpoints.json`: the HTTP calls of the form page and the watcher (link exchange, answer submit, event stream, link request), each with its token purpose | `every endpoint names its token purpose`; `no endpoint takes a token in the query string` [`REQ-IFC-9`, `REQ-IFC-10`] | tests pass |
 | `T-003-04` | `contracts/mcp/conformance/` (node:test; target from `NARTHEX_TARGET`, a URL or a stdio command); `contracts/mcp/stub/` that answers from fixtures | `the stub passes conformance over stdio`; `the stub passes conformance over streamable http` [`REQ-IFC-1`, ADR-0002] | both runs pass in CI |
@@ -232,12 +234,12 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
 
 - **Goal:** ADR-0007's table as data at 0.1.0, and a conformance suite any token service must pass.
 - **Serves:** `REQ-IFC-9`, `REQ-IFC-10`, `REQ-IFC-11`, `REQ-IDN-3`, `REQ-IDN-4`, `REQ-IDN-7`, `INV-17`, `NFR-3`.
-- **Depends on:** `F-001`. **Contracts:** implements tokens.
+- **Depends on:** `F-001` and the token-kind finding of `T-010-01`, so the contract is frozen after the spike. **Contracts:** implements tokens.
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
-| `T-005-01` | `contracts/tokens/tokens.json`, `tokens.schema.json`, `tokens.md`: purposes, scopes, lifetimes, audience, transport (fragment, header, cookie), keyed-hash storage. The `watch` purpose is included only as the item `plan-watch-key` rules | `every purpose has a lifetime and a transport`; `answer link has no expiry and is revocable`; `no purpose travels in a query string` [`INV-17`, `REQ-IFC-10`] | tests pass |
-| `T-005-02` | `contracts/tokens/conformance/` with an in-memory reference service and an injected clock | `read link expires after its lifetime`; `answer submits after the read link expired`; `revoked answer link is refused`; `answer link cannot read later state` [`INV-17`, `REQ-IFC-9`, `REQ-IFC-11`] | the reference service passes; C0 can be declared |
+| `T-005-01` | `contracts/tokens/tokens.json`, `tokens.schema.json`, `tokens.md`: purposes, scopes, lifetimes, audience, transport (fragment, header, cookie), keyed-hash storage, written to match the token kind the spike `T-010-01` found. The `watch` purpose is included only as the item `plan-watch-key` rules | `every purpose has a lifetime and a transport`; `answer link has no expiry and is revocable`; `no purpose travels in a query string` [`INV-17`, `REQ-IFC-10`] | tests pass |
+| `T-005-02` | `contracts/tokens/conformance/` with an in-memory reference service and an injected clock | `read link expires after its lifetime`; `answer submits after the read link expired`; `revoked answer link is refused`; `answer link cannot read later state`; `an unrevoked answer link submits at any generated clock offset` (property test) [`INV-17`, `REQ-IFC-9`, `REQ-IFC-11`] | the reference service passes; C0 can be declared |
 
 #### `F-006` Core model
 
@@ -266,7 +268,7 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
 |---|---|---|---|
 | `T-007-01` | Check runner and findings format; dangling references, duplicate ids (including tasks and migrations from the registry), trace gaps | `dangling reference is a finding`; `duplicate migration number is a finding` [`REQ-VER-1`] | tests pass |
 | `T-007-02` | Input-contract check of `PRODUCT.md` against §4.3; each gap yields a draft item valid under `questions.schema.json` | `missing success measures yields one gap item`; `element answered unknown passes as an assumption` [`REQ-CHN-5`, `REQ-ITK-8`] | tests pass |
-| `T-007-03` | The `product` profile's `STEP-1` gate: trace to source, threats mitigated or accepted, profile violations, the acceptance item answered; label check of kb pieces; the builder in `--check` mode | `requirement without a source fails the gate`; `threat without mitigation or acceptance fails the gate`; `the level does not change any finding`; `supplementary piece shown as normative is a finding` [`REQ-CHN-3`, `REQ-CHN-6`, `REQ-CHN-7`, `INV-12`, `INV-14`, `NFR-1`] | tests pass |
+| `T-007-03` | The `product` profile's `STEP-1` gate: trace to source, threats mitigated or accepted, profile violations, the acceptance item answered; label check of kb pieces; the builder in `--check` mode | `requirement without a source fails the gate`; `threat without mitigation or acceptance fails the gate`; `the level does not change any finding` (L2); `supplementary piece shown as normative is a finding` [`REQ-CHN-3`, `REQ-CHN-6`, `REQ-CHN-7`, `INV-12`, `INV-14`, `NFR-1`] | tests pass |
 | `T-007-04` | `narthex verify` in `packages/cli`; `action.yml` (composite action) running it; Narthex runs it on its own repo in CI | `cli and library report the same findings`; `verify runs with no service` [`REQ-VER-3`, `REQ-VER-12`] | CI runs it on this repo |
 
 #### `F-008` Knowledge base, M0 content
@@ -294,36 +296,42 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
 |---|---|---|---|
 | `T-009-01` | Fastify app; config from the environment (SAD §6.4); JSON logs with request ids that never carry tokens or answer text; `/health` | `logs never contain a token value`; `health returns the version` [SAD §8] | tests pass |
 | `T-009-02` | `apps/server/migrations/NNNN-*.sql` with rollback scripts for the tables of SAD §5.2; Kysely types; numbers from the registry | `every migration applies and rolls back on an empty database` [ADR-0005] | tests pass on the CI PostgreSQL |
-| `T-009-03` | Store layer for `event`, `answer`, `cursor`; no update or delete on events or answers except `archived_at` | `a changed answer adds a row and keeps the old one`; `events after a cursor come in order` [`INV-3`, `REQ-DEC-24`, `INV-2`] | tests pass |
+| `T-009-03` | Store layer for `event`, `answer`, `cursor`; no update or delete on events or answers except `archived_at` | `a changed answer adds a row and keeps the old one` (L2); `events after a cursor come in order` (L2) [`INV-3`, `REQ-DEC-24`, `INV-2`] | tests pass |
 | `T-009-04` | In-process job queue on PostgreSQL; audit log writer | `a job runs once under two workers`; `audit entries are append only` [ADR-0005, SAD §8] | tests pass |
 
 #### `F-010` Sign-in and tokens (GitHub)
 
 - **Goal:** people sign in with GitHub; agents connect with OAuth 2.1; the token service passes the token
-  contract. Every task checks its part of "M0 must-have" in `docs/architecture/auth-practices.md`.
+  contract. Every task checks its part of "M0 must-have" in `docs/architecture/auth-practices.md`. The spike
+  `T-010-01` runs in wave 1, before `F-005`. The other tasks run after `F-009` in the order 02, 03, 06, 07, 04, 08,
+  05.
 - **Serves:** `REQ-ITK-2`, `REQ-IDN-3`, `REQ-IFC-9`, `REQ-IFC-10`, `REQ-IFC-11`, `REQ-TEM-4`, `INV-4`, `INV-17`,
   `NFR-3`.
-- **Depends on:** `F-009`. **Contracts:** implements tokens; consumes mcp (scopes).
+- **Depends on:** `F-009`; `T-010-01` needs only `T-001-01` and `T-001-06`. **Contracts:** implements tokens;
+  consumes mcp (scopes).
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
-| `T-010-01` | Spike (ADR-0006), report in `features/F-010-signin/spike.md`: Better Auth pinned, its MCP plugin against a real Claude Code client, GitHub sign-in, an email link, GitLab and Codeberg through generic OAuth, its advisory history; plus "Gaps to close in the spike" of `auth-practices.md` | spike scripts only, not merged as product code | the report states **whether the MCP plugin issues opaque or signed access tokens** and how that meets ADR-0007's opaque rule (or names the change needed); it answers each spike gap; the orchestrator records Better Auth or Keycloak as a new `DEC-*` |
-| `T-010-02` | `apps/server/src/auth/`: GitHub sign-in, sessions, identity keyed on provider and subject. Must-have items 7, 9 and 10 | `session cookie uses the host prefix and is http only and secure`; `session ends after thirty idle days`; `same email from another provider is not linked` [`REQ-ITK-2`] | tests pass and items 7, 9, 10 are checked |
-| `T-010-03` | OAuth 2.1 server for the MCP: code flow with PKCE S256, RFC 9728 metadata, Client ID Metadata Documents, registration off, audience checks, refresh rotation, consent page and connected-agents list. Must-have items 1, 2, 4, 5, 6 | `authorization without pkce is refused`; `token for another audience is refused`; `refresh token reuse revokes the family`; `the mcp purpose passes the token conformance suite` [`REQ-IDN-3`] | tests pass and items 1, 2, 4, 5, 6 are checked |
-| `T-010-04` | Link tokens: read link, answer link, refresh request; fragment-to-session exchange over POST; revoke and reissue; keyed hashes; answer checks (form, routing, reserved items by the lead only, with a fresh session). Must-have items 3, 11, 12 | `the server passes the token conformance suite`; `reserved item answered by a non-lead is refused`; `answer submits after the read link expired` [`INV-4`, `INV-17`, `REQ-IFC-10`, `REQ-TEM-4`] | tests pass and items 3, 11, 12 are checked |
-| `T-010-05` | Throttling per token and per project with a shared store; uniform errors; security headers; audit of sign-ins, issues and revokes; pinned versions and an advisory watch. Must-have items 8, 13, 14, 15 | `too many answers from one token are refused`; `every token issue is audited` [SAD §6.5] | tests pass and items 8, 13, 14, 15 are checked |
+| `T-010-01` | Spike (ADR-0006), run by Opus in wave 1, report in `features/F-010-signin/spike.md`: Better Auth pinned, its MCP plugin against a real Claude Code client, GitHub sign-in (with the OAuth app of `T-001-06`), an email link, GitLab and Codeberg through generic OAuth, its advisory history; plus "Gaps to close in the spike" of `auth-practices.md` | spike scripts only, not merged as product code | the report states **whether the MCP plugin issues opaque or signed access tokens** and how that meets ADR-0007's opaque rule (or names the change needed); it answers each spike gap; the orchestrator records Better Auth or Keycloak as a new `DEC-*`; only then does `T-005-01` start |
+| `T-010-02` | `apps/server/src/auth/`: GitHub sign-in, sessions, identity keyed on provider and subject, idle and absolute timeouts, logout everywhere, the device list. Must-have items 7, 9 and 10 | `session cookie uses the host prefix and is http only and secure`; `session ends after thirty idle days`; `session ends at its absolute limit`; `session id changes on privilege change`; `same email from another provider is not linked`; `implicit account linking is off`; `logout everywhere ends every session`; `device list shows each session and revokes one` [`REQ-ITK-2`] | tests pass and items 7, 9, 10 are checked |
+| `T-010-03` | OAuth 2.1 endpoints for the MCP: code flow with PKCE S256, exact redirect match, RFC 9728 metadata, audience checks, scope challenges, no token passthrough. Must-have items 1 and 2 | `authorization without pkce is refused`; `redirect that is not an exact match is refused`; `token for another audience is refused`; `metadata names the resource and its scopes`; `call without enough scope gets a scope challenge` [`REQ-IDN-3`, `REQ-IFC-9`] | tests pass and items 1, 2 are checked |
+| `T-010-04` | Link tokens: read link, answer link, refresh request; fragment-to-session exchange over POST; revoke and reissue; keyed hashes with versioned secrets and the pepper in the secret store. Must-have items 3 and 12 | `the server passes the token conformance suite`; `token is stored as a keyed hash`; `token carries its purpose prefix`; `token in a query string is refused`; `key rotation keeps links issued under the old key valid until they expire`; `pepper is read from the secret store`; `answer submits after the read link expired` (L2) [`INV-17`, `REQ-IFC-10`] | tests pass and items 3, 12 are checked |
+| `T-010-05` | Throttling per token and per project with a shared store and a trusted IP header; uniform errors; security headers; audit of sign-ins, issues and revokes; pinned versions, an advisory watch and the auth regression suite in CI. Must-have items 8, 13, 14, 15 (the incident drill of item 15 is `T-017-02`) | `too many answers from one token are refused`; `known and unknown accounts get the same error`; `forwarded ip is trusted only from the proxy`; `every token issue is audited`; `responses carry the security headers`; `lockfile pins the auth library`; `auth regression suite runs in ci` [SAD §6.5] | tests pass and items 8, 13, 14, 15 are checked, item 15 apart from the drill |
+| `T-010-06` | Clients and consent: pre-registered clients and Client ID Metadata Documents, dynamic registration off, an SSRF-safe metadata fetcher; the consent page per person and per client; the connected-agents list with revoke. Must-have items 5 and 6 | `registration endpoint is absent`; `client metadata at a private address is refused`; `consent is asked per person and per client`; `revoking a connected agent ends its tokens` [`REQ-IDN-3`] | tests pass and items 5, 6 are checked |
+| `T-010-07` | Refresh tokens: rotation, family revocation on reuse, absolute expiry, a grace of 10 seconds or less; the `mcp` purpose runs the token conformance suite. Must-have item 4 | `refresh token reuse revokes the family`; `refresh token stops at its absolute expiry`; `reuse inside the grace window is allowed once`; `the mcp purpose passes the token conformance suite` [`REQ-IDN-3`, `INV-17`] | tests pass and item 4 is checked |
+| `T-010-08` | Answer checks on the answer endpoint: form and project routing, reserved items by the lead only, a fresh session for reserved answers and for link reissue. Must-have item 11 | `reserved item answered by a non-lead is refused` (L2); `reserved item is never answered by its default` (L2); `reserved answer needs a fresh session`; `link reissue needs a fresh session`; `answer for another form is refused` [`INV-4`, `REQ-TEM-4`] | tests pass and item 11 is checked |
 
 #### `F-011` GitHub App connector
 
 - **Goal:** the adapter interface of ADR-0008 with GitHub as its one implementation.
 - **Serves:** `REQ-IDN-1`, `REQ-IDN-2`, `REQ-IDN-4`, `REQ-IDN-5`, `REQ-IDN-6`, `INV-16`.
-- **Depends on:** `F-009`. **Contracts:** consumes tokens (git task purpose).
+- **Depends on:** `F-009` and `T-001-06` (the test GitHub App). **Contracts:** consumes tokens (git task purpose).
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
 | `T-011-01` | `apps/server/src/githost/adapter.ts`; GitHub task-token minting scoped to repositories and permissions; recorded API fixtures | `task token is scoped to one repository`; `permission beyond the app's is refused` [`REQ-IDN-4`] | tests pass |
 | `T-011-02` | Webhook receiver with signature check; an installation event registers a project | `webhook with a bad signature is refused`; `installation event creates one project` [`REQ-IDN-1`] | tests pass |
-| `T-011-03` | Read files at a commit into a job working copy that is removed after the job; commits and PRs through the API as the app identity | `working copy is removed when the job ends`; `app commits go through the api so github signs them` [`REQ-IDN-2`, `REQ-IDN-5`, `REQ-IDN-6`, `INV-16`] | tests pass |
+| `T-011-03` | Read files at a commit into a job working copy that is removed after the job; commits and PRs through the API as the app identity | `working copy is removed when the job ends`; `app commits go through the api so github signs them` (L2) [`REQ-IDN-2`, `REQ-IDN-5`, `REQ-IDN-6`, `INV-16`] | tests pass |
 | `T-011-04` | `deploy/github-app.md` and `deploy/github-app-manifest.json` for self-hosters (manifest flow) | `manifest permissions match the adr list` [ADR-0008] | test passes |
 
 #### `F-012` Form builder store adapter
@@ -347,19 +355,20 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
   feed events, read, wait and acknowledge.
 - **Serves:** `REQ-DEC-22`, `REQ-DEC-23`, `REQ-DEC-24`, `REQ-DEC-42`, `REQ-IDN-7`, `REQ-IFC-6`, `INV-2`, `INV-9`,
   `INV-11`, `INV-18`.
-- **Depends on:** `F-010`, `F-012` (and `F-009`). **Contracts:** consumes data-model, mcp (endpoints) and tokens.
+- **Depends on:** `F-010`, `F-011`, `F-012` (and `F-009`). **Contracts:** consumes data-model, mcp (endpoints) and
+  tokens.
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
-| `T-013-01` | Publish job: run the builder with `--target narthex` at a commit, store the snapshot and page (disk or S3-compatible), database publish lock, one form per project | `publish with a stale base is refused`; `item from another project is refused`; `publish records who approved it` [`REQ-DEC-22`, `INV-11`, `INV-9`] | tests pass |
-| `T-013-02` | Serve the page on the user-content domain; the answer endpoint appends an answer event | `answer is stored as an event first`; `rebuilding a form keeps every answer` [`INV-2`, `INV-18`] | tests pass |
+| `T-013-01` | Publish job: run the builder with `--target narthex` at a commit, store the snapshot and page (disk or S3-compatible), database publish lock, one form per project | `publish with a stale base is refused`; `item from another project is refused` (L2); `unapproved item is not published` (L2); `publish records who approved it` [`REQ-DEC-22`, `INV-11`, `INV-9`] | tests pass |
+| `T-013-02` | Serve the page on the user-content domain; the answer endpoint appends an answer event | `answer is stored as an event first`; `rebuilding a form keeps every answer` (L2) [`INV-2`, `INV-18`] | tests pass |
 | `T-013-03` | Event stream (server-sent events) after a cursor, resuming from the last event id, with keepalives | `stream resumes after the last cursor`; `idle stream sends only keepalives` [`REQ-DEC-42`, ADR-0010] | tests pass |
 | `T-013-04` | Read since a cursor; short wait then "pending"; acknowledge with the archive commit; link-request events; acknowledged answers age out after 30 days | `read returns only changes after the cursor`; `wait returns pending after its limit`; `only acknowledged answers age out` [`REQ-DEC-24`, `REQ-IFC-6`, `INV-2`] | tests pass |
 
 #### `F-014` MCP server, 10 tools, both transports
 
 - **Goal:** `apps/server/src/mcp` and `narthex mcp --stdio`, passing the MCP conformance suite for the 10 M0
-  tools: `knowledge_search`, `knowledge_get`, `spec_get`, `verify_run`, `items_file`, `form_publish`,
+  tools (the other 4 of the contract's 14 are `F-023` in M1): `knowledge_search`, `knowledge_get`, `spec_get`, `verify_run`, `items_file`, `form_publish`,
   `form_read`, `form_wait`, `form_ack`, `link_get`.
 - **Serves:** `REQ-IFC-1`, `REQ-IFC-2`, `REQ-IFC-4`, `REQ-IFC-7`, `REQ-IFC-12`, `REQ-KNB-2`, `REQ-DEC-20`,
   `REQ-DEC-24`, `REQ-DEC-38`, `REQ-IDN-5`, `REQ-VER-3`, `NFR-8`.
@@ -370,8 +379,9 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
 | `T-014-01` | MCP module on the pinned SDK; Streamable HTTP endpoint; Origin check; access tokens from `F-010`; scope checks; tool registry generated from `contracts/mcp/tools.json` | `tool list equals the m0 tools of the contract`; `call without the tool's scope is refused` [`REQ-IFC-1`, ADR-0002] | tests pass |
 | `T-014-02` | `knowledge_search`, `knowledge_get`, the kb and profile resources, `spec_get` | conformance for these tools; `search returns ids and titles only` [`REQ-IFC-2`, `REQ-KNB-2`] | conformance passes for these tools |
 | `T-014-03` | `verify_run` on a job working copy; `items_file` ending as a commit or PR through the connector | `items file ends as a pull request`; `verify run returns the same findings as the cli` [`REQ-IDN-5`, `REQ-VER-3`] | tests pass |
-| `T-014-04` | `form_publish`, `form_read` (ending with the reminder to update the form), `form_wait`, `form_ack`, `link_get` (suggesting the harness's own browser) | conformance for these tools; `form read ends with the reminder to update the form`; `links say to open in the harness browser` [`REQ-DEC-24`, `REQ-IFC-4`, `REQ-IFC-12`, `REQ-DEC-20`] | conformance passes for these tools |
+| `T-014-04` | `form_publish` and `link_get` (suggesting the harness's own browser) | conformance for these tools; `links say to open in the harness browser` [`REQ-IFC-4`, `REQ-IFC-12`, `REQ-DEC-20`] | conformance passes for these tools |
 | `T-014-05` | `narthex mcp --stdio` in `packages/cli`: knowledge, spec data and verify from the repo and the bundled kb, no account | `local mode passes conformance over stdio`; `local mode needs no account` [`REQ-DEC-38`, `REQ-IDN-8`] | the full suite passes over both transports in CI |
+| `T-014-06` | `form_read` (ending with the reminder to update the form), `form_wait` and `form_ack` | conformance for these tools; `form read ends with the reminder to update the form`; `form wait returns pending and not an error` [`REQ-DEC-24`, `REQ-IFC-6`] | conformance passes for these tools |
 
 #### `F-015` Web GUI: sign-in, profile, projects
 
@@ -398,10 +408,12 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
 | Task | Work | Tests | Done when |
 |---|---|---|---|
 | `T-016-01` | `narthex watch` in `packages/cli`: wait on the event stream after a cursor, exit with one line on the first event, reconnect with the last cursor, give up after a long limit with a message | `watcher exits on the first event after its cursor`; `watcher resumes after a dropped stream without repeating events` [`REQ-DEC-40`, `REQ-IFC-6`, `NFR-9`] | tests pass against the stub |
-| `T-016-02` | `skills/decision-form/` gains the Narthex path: publish through the MCP, start the watcher in the background or ask the person to come back, carry on, archive on read-back, queue upkeep at the start and end of each iteration | `exit check fails when an answer read is not archived`; `exit check fails when the queue is stale`; `relayed ruling is recorded with its source`; `log lists every archived answer` [`REQ-DEC-21`, `REQ-DEC-25`, `REQ-DEC-30`, `REQ-DEC-31`, `REQ-DEC-33`, `REQ-DEC-41`, `REQ-SKL-5`] | exit-check tests pass |
+| `T-016-02` | `skills/decision-form/` gains the Narthex path, part one: publish through the MCP in batched passes, start the watcher in the background or tell the person to come back with the link, carry on without polling | `exit check fails when a published form has neither a watcher nor a come-back message`; `exit check fails when the skill polls the form`; `exit check fails when two passes open in one milestone with no blocking item` [`REQ-DEC-21`, `REQ-DEC-39`, `REQ-DEC-40`, `REQ-DEC-41`] | exit-check tests pass |
 | `T-016-03` | `skills/intake/`: profile through the GUI link, the question set for the level, `PRODUCT.md` and a note; no research or code unasked | `exit check fails when a contract element has no answer and no gap item` [`REQ-SKL-1`, `REQ-SKL-14`] | exit-check tests pass |
 | `T-016-04` | `skills/spec/`: `SPEC.md` and `OVERVIEW.md` under the `product` profile, `verify_run` on the gate, the acceptance item | `exit check fails when the step one gate has findings` [`REQ-SKL-3`, `REQ-SKL-14`] | exit-check tests pass |
 | `T-016-05` | `.claude-plugin/plugin.json`: skills, hooks, the watcher command; Agent Skills format check; no project facts in any skill | `plugin manifest lists every skill`; `no skill contains project specific content` [`REQ-SKL-32`, `REQ-SKL-33`, `REQ-SKL-34`] | tests pass |
+| `T-016-06` | `skills/decision-form/` Narthex path, part two: archive on read-back before acting, record relayed rulings, keep `decisions/LOG.md` | `exit check fails when an answer read is not archived`; `relayed ruling is recorded with its source`; `log lists every archived answer` [`REQ-DEC-25`, `REQ-DEC-31`, `REQ-DEC-33`] | exit-check tests pass |
+| `T-016-07` | `skills/decision-form/` Narthex path, part three: queue upkeep at the start and the end of each iteration | `exit check fails when the queue is stale` [`REQ-DEC-30`, `REQ-SKL-5`] | exit-check tests pass |
 
 #### `F-017` Deploy and operations
 
@@ -413,37 +425,41 @@ C0 is the contract freeze: `F-002` to `F-005` merged. M0 has 76 tasks.
 | Task | Work | Tests | Done when |
 |---|---|---|---|
 | `T-017-01` | `deploy/Dockerfile` (Node and Python 3), `deploy/compose.yaml` (server, PostgreSQL, page storage, a proxy that keeps long responses open), `deploy/.env.example` | `image starts and reports healthy under compose`; `image has python with no extra packages` [`REQ-IDN-8`, `NFR-4`] | tests pass in CI |
-| `T-017-02` | `ops/RB-1-server.md`: updates, backups, restore, incident contact; a draft SLO for answer submits | `restore from backup brings back every answer` [`INV-2`] | the restore test passes against compose |
-| `T-017-03` | OpenTelemetry export; the SAD §8 signals, including response size per tool | `each tool call records its response size` [`NFR-8`] | test passes |
-| `T-017-04` | Files the `act` items for the hosting account, the web address (per item `plan-web-address`) and the GitHub App registration; after they are answered, deploys a tagged image to three domains | none new; the hosted `/health` check | the act items are answered and the hosted health check is green |
+| `T-017-02` | `ops/RB-1-server.md`: updates, backups, restore, incident contact; a draft SLO for answer submits. `ops/RB-2-auth.md`: the auth incident runbook with kill switches (revoke every token of a purpose, disable a provider, rotate secrets, pause sign-ups), drilled once on compose with the record in `ops/drills/auth-1.md` | `restore from backup brings back every answer`; `kill switch revokes every token of a purpose` [`INV-2`] | the restore test passes against compose and `node scripts/check-checklist.mjs ops/drills/auth-1.md` exits 0 |
+| `T-017-03` | OpenTelemetry export; the SAD §8 signals, including response size per tool. Runs after `F-014` | `each tool call records its response size` [`NFR-8`] | test passes |
+| `T-017-04` | Files the `act` items for the hosting account and the web address (per item `plan-web-address`); after they are answered, files an `act` item to point the apps registered by `T-001-06` at the hosted address, then deploys a tagged image to three domains | none new; the hosted `/health` check | the act items are answered and the hosted health check is green |
 
 #### `F-018` Walking skeleton end to end
 
-- **Goal:** prove M0's exit criteria E2 to E5 and E8 with scripted tests and one real run.
+- **Goal:** prove M0's exit criteria E2 to E5 and E8 with scripted tests and one real run, then tag the contracts
+  (E1).
 - **Serves:** `INV-2`, `INV-3`, `INV-4`, `INV-9`, `INV-11`, `INV-12`, `INV-16`, `INV-17`, `REQ-DEC-39`,
   `REQ-DEC-42`, `NFR-8`.
 - **Depends on:** `F-014`, `F-015`, `F-016`, `F-017`. **Contracts:** consumes all four.
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
-| `T-018-01` | `tests/invariants/`: L2 checks, run on PRs that touch their packages and nightly | `answer survives a rebuild`; `changed answer keeps the old one`; `reserved item ignores its default`; `unapproved item is not published`; `other project's item is refused`; `level leaves checks unchanged`; `every app write is a pull request or commit`; `answer lands after the read link expired` [`INV-2`, `INV-3`, `INV-4`, `INV-9`, `INV-11`, `INV-12`, `INV-16`, `INV-17`] | all pass nightly |
+| `T-018-01` | `tests/invariants/`: the L2 runner. It runs every test marked (L2) by invariant id, on PRs that touch their packages and nightly, and fails when an invariant of E4 has no check | `every invariant of exit criterion E4 has an L2 check`; `a failing L2 check fails the nightly run` [`INV-2`, `INV-3`, `INV-4`, `INV-9`, `INV-11`, `INV-12`, `INV-16`, `INV-17`] | the nightly workflow runs the suite and the coverage check exits 0 |
 | `T-018-02` | `tests/e2e/skeleton.test.ts`: a scripted agent (an MCP client) and a scripted person (Playwright) on compose, using a GitHub test organisation and test app (`act` item first) | `walking skeleton completes on a self-hosted copy` [`REQ-ITK-2`, `REQ-IDN-3`, `REQ-CHN-5`, `REQ-DOC-16`] | test passes |
 | `T-018-03` | `tests/e2e/unattended.test.ts`: the clock moves past the read link's expiry; the person answers late; MCP calls are counted | `unattended form resumes from one wake-up` [`REQ-DEC-39`, `REQ-DEC-42`, `INV-17`] | test passes |
-| `T-018-04` | Budget check on the recorded skeleton session | `every tool response stays within its budget` [`NFR-8`] | test passes |
-| `T-018-05` | Dogfood run with a real Claude Code session on the hosted instance; `features/F-018-skeleton/dogfood.md` | none; a run log | the log shows an SRS approved on the Narthex form and the answer returned without polling |
+| `T-018-04` | Budget check on the recorded skeleton session. Needs `T-017-03` | `every tool response stays within its budget` [`NFR-8`] | test passes |
+| `T-018-05` | Dogfood run with a real Claude Code session on the hosted instance, recorded as a checklist in `features/F-018-skeleton/dogfood.md`: the SRS approved on the Narthex form (commit id), the answer returned with no `form_read` before the wake-up, the archive commit (id), the acknowledge call, the date and the instance version | none; a run log | `node scripts/check-checklist.mjs features/F-018-skeleton/dogfood.md` exits 0 |
+| `T-018-06` | `tests/invariants/` checks that need the whole stack on compose | `answer survives a rebuild`; `every app write is a pull request or commit`; `level leaves checks unchanged`; `answer lands after the read link expired` [`INV-2`, `INV-12`, `INV-16`, `INV-17`] | all pass nightly |
+| `T-018-07` | `tests/e2e/skeleton.test.ts` takes its target from `NARTHEX_E2E_TARGET` (`compose` or `hosted`); the hosted run uses the test organisation and test app of `T-001-06`; `scripts/check-same-image.mjs` compares the image digest the two targets report | `walking skeleton completes on the hosted instance`; `compose and hosted report the same image digest` [`REQ-ITK-2`, `REQ-IDN-3`, `REQ-CHN-5`, `REQ-DOC-16`] | `NARTHEX_E2E_TARGET=hosted npm run e2e` and `check-same-image` both exit 0 |
+| `T-018-08` | The M0 exit commit: the `version` fields of the four contracts move to 1.0.0, with a `contracts/CHANGELOG.md` entry naming `DEC-14`; tag `contracts-1.0.0`; `scripts/check-m0-exit.mjs` runs the scripted exit criteria | `no contract file differs from C0 except its version`; `exit script fails when a criterion fails` [`REQ-CHN-12`] | `check-m0-exit` exits 0 and the tag exists |
 
 #### `F-019` Threat model and security review
 
 - **Goal:** close the `STEP-1` gap SAD §6.5 names (no `THR-` items yet), and gate the first outside user on a
   security review (ADR-0006).
 - **Serves:** `REQ-CHN-7`, SAD §6.6.
-- **Depends on:** none for `T-019-01`; `F-010`, `F-011`, `F-013` for `T-019-02`. **Contracts:** reviews tokens
-  and mcp.
+- **Depends on:** `T-007-03` for `T-019-01` (the `STEP-1` gate checks its threats); `F-010`, `F-011`, `F-013` for
+  `T-019-02`. **Contracts:** reviews tokens and mcp.
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
-| `T-019-01` | Draft an amendment with `THR-` items (STRIDE), from SAD §6.5 and §6.6 and `auth-practices.md`. This task may edit `SPEC.md` only through that amendment, after its ruling (`REQ-SKL-26`). Threats to accept become reserved items | `verify` reports no threat without a mitigation or an item | the amendment and its items are filed |
-| `T-019-02` | A read-only security review by an independent Opus reviewer of `F-010`, `F-011`, `F-013` against the `THR-` items and "M0 must-have"; `features/F-019-security/review.md` | none new; findings become fixups or items | no open high or critical finding |
+| `T-019-01` | Draft an amendment with `THR-` items (STRIDE), from SAD §6.5 and §6.6 and `auth-practices.md`. It covers the five areas of SAD §6.6, including the GDPR position for EU hosting and the choice of email provider, which become reserved items for the lead. This task may edit `SPEC.md` only through that amendment, after its ruling (`REQ-SKL-26`). Threats to accept become reserved items | `verify` reports no threat without a mitigation or an item; `each area of SAD §6.6 has a threat or an item` | the amendment and its items are filed and the `STEP-1` gate reports no threat finding |
+| `T-019-02` | A read-only security review by an independent Opus reviewer of `F-010`, `F-011`, `F-013` against the `THR-` items and "M0 must-have"; `features/F-019-security/review.md` holds a checklist: each of the 15 items with the test or drill that covers it, each `THR-` item, and "no open high or critical finding"; each tick names a commit or a finding id | none new; findings become fixups or items | `node scripts/check-checklist.mjs features/F-019-security/review.md` exits 0 |
 
 ### 4.2 M1 features
 
@@ -478,60 +494,69 @@ Features that only consume frozen contracts start in parallel once C0 lands. At 
 ```mermaid
 flowchart LR
   subgraph W0["Wave 0"]
-    F001["F-001 workspace"]
-    F019a["F-019 threat model (T-019-01)"]
+    F001["F-001 workspace, registrations (T-001-06)"]
   end
-  subgraph W1["Wave 1: contracts"]
+  subgraph W1["Wave 1: spike and two contracts"]
+    F010a["F-010 token-kind spike (T-010-01)"]
     F002["F-002 data model"]
     F004["F-004 profile"]
+  end
+  subgraph W2["Wave 2: tokens, then MCP"]
     F005["F-005 tokens"]
     F003["F-003 MCP"]
   end
   C0{{"C0 contract freeze 0.1.0"}}
-  subgraph W2["Wave 2: consumers of frozen contracts"]
+  subgraph W3["Wave 3: consumers of frozen contracts"]
     F006["F-006 core"]
     F008["F-008 knowledge base"]
     F009["F-009 server and store"]
     F012["F-012 form adapter"]
     F016["F-016 plugin and watcher"]
   end
-  subgraph W3["Wave 3"]
+  subgraph W4["Wave 4"]
     F007["F-007 verify"]
-    F010["F-010 sign-in and tokens"]
+    F010b["F-010 sign-in and tokens (T-010-02 on)"]
     F011["F-011 GitHub App"]
   end
-  subgraph W4["Wave 4"]
+  subgraph W5["Wave 5"]
     F013["F-013 decide service"]
     F015["F-015 web GUI"]
-    F017["F-017 deploy"]
-  end
-  subgraph W5["Wave 5"]
-    F014["F-014 MCP server"]
+    F019a["F-019 threat model (T-019-01)"]
   end
   subgraph W6["Wave 6"]
+    F014["F-014 MCP server"]
+    F017a["F-017 deploy (T-017-01, 02, 04)"]
+  end
+  subgraph W7["Wave 7"]
+    F017b["F-017 telemetry (T-017-03)"]
     F018["F-018 end to end"]
     F019b["F-019 security review (T-019-02)"]
   end
-  F001 --> F002 & F004 & F005
-  F002 --> F003
-  F005 --> F003
+  F001 --> F010a & F002 & F004
+  F010a --> F005
+  F002 & F005 --> F003
   F002 & F003 & F004 & F005 --> C0
   C0 --> F006 & F008 & F009 & F012 & F016
   F006 --> F007
-  F009 --> F010 & F011
-  F010 & F012 --> F013
-  F010 & F011 --> F015
-  F009 & F015 --> F017
+  F009 --> F010b & F011
+  F010a --> F010b
+  F010b & F011 & F012 --> F013
+  F010b & F011 --> F015
+  F007 --> F019a
+  F009 & F015 --> F017a
   F006 & F007 & F008 & F011 & F013 --> F014
-  F014 & F015 & F016 & F017 --> F018
-  F010 & F011 & F013 --> F019b
-  F019a --> F019b
+  F014 --> F017b
+  F014 & F015 & F016 & F017a & F017b --> F018
+  F010b & F011 & F013 & F019a --> F019b
 ```
 
-**Critical path:** `F-001` → `F-002` → C0 → `F-009` → `F-010` → `F-013` → `F-014` → `F-018`. That is 7
-features and 32 tasks in sequence. `T-010-01` (the sign-in spike) is the riskiest step on it, so it starts as
-soon as `F-009`'s first task lands. The second helper slot takes the off-path work: `F-004`, `F-005`, `F-006`,
-`F-008`, `F-012`, `F-016`, `F-007`, `F-011`, `F-015`, `F-017`, in that order.
+**Critical path:** `F-001` → `F-002` → `F-003` → C0 → `F-009` → `F-010` → `F-013` → `F-014` → `F-018`. That is 8
+features and 43 tasks in sequence (6 + 4 + 4 + 4 + 7 + 4 + 6 + 8). The sign-in spike `T-010-01` runs in wave 1 and
+is not counted there. It gates `F-005`, so `F-003` starts only when both `F-002` and the spike route are done. The
+spike is the riskiest step and waits on the `act` items of `T-001-06`, so those are filed first. `T-017-03` waits on
+`F-014` but runs beside `F-018`, whose `T-018-04` is the first task to need it. The second helper slot takes the
+off-path work: `F-004`, `F-005`, `F-006`, `F-008`, `F-012`, `F-016`, `F-007`, `F-011`, `F-015`, `F-017`, `F-019`,
+in that order.
 
 **Checks on this table** (`REQ-SKL-6`). Every task traces to at least one identifier. The graph has no cycle.
 No M0 feature depends on an M1 feature. `T-001-05` adds the registry and duplicate checks; the cycle and trace
@@ -546,13 +571,13 @@ on each plan change.
 
 | # | Risk | Mitigation |
 |---|---|---|
-| 1 | **The sign-in library's token kind.** ADR-0007 wants opaque tokens; ADR-0006 has the MCP server check a signature. If the Better Auth MCP plugin issues signed tokens, the token contract and the plugin disagree | `T-010-01` must say which kind the plugin issues before `T-010-03` starts. Options: configure opaque tokens, wrap the plugin, or record a contract change as a `DEC-*` with a version bump. Keycloak stays the ruled fallback |
-| 2 | **The sign-in spike fails or runs long**, on the critical path | Start it early (`§5`); time-box it to one task; the fallback is ruled (ADR-0006), so no new decision is needed |
+| 1 | **The sign-in library's token kind.** ADR-0007 wants opaque tokens; ADR-0006 has the MCP server check a signature. If the Better Auth MCP plugin issues signed tokens, the token contract and the plugin disagree | `T-010-01` must say which kind the plugin issues before `T-005-01` starts, so the token contract is frozen after the spike. Options: configure opaque tokens, wrap the plugin, or record a contract change as a `DEC-*` with a version bump. Keycloak stays the ruled fallback |
+| 2 | **The sign-in spike fails or runs long**, and it gates the token contract | Start it in wave 1, as soon as the `act` items of `T-001-06` are answered (`§5`); time-box it to one task; the fallback is ruled (ADR-0006), so no new decision is needed |
 | 3 | **Contract churn after C0** forces rework in five parallel features | Opus writes the contracts with fixtures first; conformance suites run on every PR; `T-001-05` refuses unversioned changes; each change needs a `DEC-*` |
 | 4 | **The watcher goes deaf.** A 15-minute read token cannot listen for days, and ADR-0010's refresh needs an active agent | Item `plan-watch-key`. Until it is ruled, the acknowledge layer (the person tells the agent) still works, so no answer is lost (`INV-17`) |
 | 5 | **Long HTTP responses get cut** by proxies or clients (Streamable HTTP, the event stream, `form_wait`) | Short `form_wait`; cursors make every retry safe; the compose proxy is configured and tested for long responses (`T-017-01`) |
 | 6 | **Token budget overrun** from many helpers on a large milestone | `DEC-18` and `DEC-19`: Sonnet by default, a fresh helper per task, two at once, one Haiku CI watcher, filtered reads. Usage is reviewed at each wave's end |
-| 7 | **A security gap reaches an outside user** before the threat model exists | `F-019`: the `THR-` amendment starts in wave 0; the review gates any outside user; M0 uses GitHub only; the 15 must-have items are exit criterion E6 |
+| 7 | **A security gap reaches an outside user** before the threat model exists | `F-019`: the `THR-` amendment starts as soon as the `STEP-1` gate exists (`T-007-03`); the review gates any outside user; M0 uses GitHub only; the 15 must-have items are exit criterion E6 |
 | 8 | **The Python builder and the TypeScript side drift** on the item format | Both run the same `contracts/data-model` fixtures in CI (ADR-0001); the builder stays the one form builder |
 
 ### 6.2 Open items that need Pablo
@@ -573,9 +598,11 @@ Each is a `decide` item in group `plan` of the form. Read item `r-plan` first.
 
 Not for Pablo; technical, recorded so they are not lost.
 
-- ADR-0011 and SAD §11 say the schemas live in `packages/core/schemas/`. `DEC-14` puts them in `contracts/`.
-  The ADR and the SAD should say so.
-- SAD §10.3 freezes the contracts at 1.0.0; `DEC-14` freezes them at 0.1.0 at C0 and tags 1.0.0 at M0's exit.
+- **Scripted tests instead of persona agents in M0** (`DEC-16`). SAD §10.3 and the testing note describe the
+  unattended scenario with a persona agent. M0 runs it scripted (`T-018-03`). The persona version arrives with
+  `F-025` in M1.
+- **10 tools in M0, not 14** (`DEC-2`). The contract lists 14. M0 builds 10 and M1 the other 4. ADR-0011 and SAD
+  §10.1 and §11 now say so, and §7.2 marks `REQ-IFC-1` as partly covered.
 - SAD §10 names a `newcomer` persona; `DEC-22` follows the maker level unless `plan-first-level` says otherwise.
 - ADR-0010's watcher token and ADR-0007's table need one line each once `plan-watch-key` is answered.
 
@@ -587,7 +614,7 @@ Not for Pablo; technical, recorded so they are not lost.
 
 | Feature | Requirements and invariants |
 |---|---|
-| `F-001` | `REQ-SKL-17`, `REQ-SKL-18`, `REQ-SKL-19`, `REQ-SKL-23`, `REQ-SKL-27`, `REQ-SKL-30`, `REQ-DAT-8`, `INV-8`, `NFR-4` |
+| `F-001` | `REQ-SKL-17`, `REQ-SKL-18`, `REQ-SKL-19`, `REQ-SKL-20`, `REQ-SKL-23`, `REQ-SKL-27`, `REQ-SKL-30`, `REQ-DAT-8`, `INV-4`, `INV-8`, `NFR-4` |
 | `F-002` | `REQ-DEC-1` to `REQ-DEC-11`, `REQ-DEC-43`, `REQ-DEC-44`, `REQ-DAT-2`, `REQ-DAT-6`, `REQ-DAT-14`, `REQ-DAT-15`, `REQ-DAT-16`, `REQ-DAT-20`, `REQ-TEM-2`, `REQ-CHN-12`, `INV-1` |
 | `F-003` | `REQ-IFC-1`, `REQ-IFC-2`, `REQ-IFC-4`, `REQ-IFC-6`, `REQ-IFC-7`, `REQ-IFC-9`, `REQ-KNB-2`, `REQ-KNB-3`, `REQ-DEC-24`, `NFR-8` |
 | `F-004` | `REQ-DAT-9`, `REQ-DAT-10`, `REQ-DAT-17`, `REQ-DAT-18`, `REQ-KNB-3`, `REQ-KNB-6`, `REQ-KNB-11`, `INV-14` |
@@ -609,7 +636,7 @@ Not for Pablo; technical, recorded so they are not lost.
 | Plan decisions | `REQ-CHN-11` (`DEC-15`), `NFR-10` and `NFR-11` (`DEC-18`) |
 
 `REQ-DEC-21`, `REQ-DEC-31` and `REQ-DEC-33` are rules the `decide` skill already follows and the builder already
-implements (the log). `T-016-02` keeps them and adds tests.
+implements (the log). `T-016-02` and `T-016-06` keep them and add tests.
 
 ### 7.2 Coverage check
 

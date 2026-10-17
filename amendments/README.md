@@ -9,7 +9,8 @@ at 0001 (ruling R19 of 2026-10-17, in `notes/2026-10-17-rulings.md`).
 | `0002-first-rulings-on-v0.3.md` | Applied in SPEC v0.3.2 |
 | `0003-pilot.md` | Applied in SPEC v0.3.3 |
 | `0004-business-model.md` | Applied in SPEC v0.3.4 |
-| `0005-practitioner.md` | Applied in SPEC v0.3.5 |
+| `0005-practitioner.md` | Applied in SPEC v0.3.5; definition superseded by 0006 |
+| `0006-maker-level.md` | Applied in SPEC v0.3.6 |
 
 ## History
 

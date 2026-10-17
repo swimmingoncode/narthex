@@ -1,13 +1,13 @@
 ---
 name: Narthex (codename): overview
-digest_of: SPEC.md v0.3.5 (amendments 0001 to 0005 applied)
+digest_of: SPEC.md v0.3.6 (amendments 0001 to 0006 applied)
 status: informative. Where this and SPEC.md disagree, SPEC.md wins
 date: 2026-10-17
 ---
 
 # Narthex: overview
 
-A short reading of `SPEC.md` v0.3.5 for someone new to the project: what Narthex is, who it is for, how it
+A short reading of `SPEC.md` v0.3.6 for someone new to the project: what Narthex is, who it is for, how it
 works, what exists today, and what is still open. Identifiers in `code` point to the spec. External sources are
 in `REFERENCES.md`.
 
@@ -43,7 +43,7 @@ In this order (R12):
 2. **individual engineers of any discipline:** a civil engineer, a self-taught coder, a software engineer;
 3. **software factories and consultants**, last. They can read the book Pablo plans on the whole system (R6).
 
-At sign-up, Narthex places each person at one of three experience levels: newcomer, practitioner or
+At sign-up, Narthex places each person at one of four experience levels: newcomer, maker, practitioner or
 professional (§3.3). The level changes how much the architect explains and asks. It never loosens a check
 (`INV-12`).
 
@@ -153,7 +153,8 @@ confirmed on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v
   profiles ship first, and nine trust-and-access assumptions are confirmed;
 - amendment 0003 (v0.3.3): `OQ-11`, the pilot is Narthex used across Bloque;
 - amendment 0004 (v0.3.4): the business model, part of `OQ-3`; only prices and plans stay open;
-- amendment 0005 (v0.3.5): a practitioner is a seasoned vibe-coder, not yet an expert.
+- amendment 0005 (v0.3.5), corrected by 0006 (v0.3.6): a new `maker` level for the seasoned vibe-coder, between newcomer
+  and practitioner; a practitioner knows coding but not software engineering.
 
 **Open**, each an item on the form (SPEC §11):
 

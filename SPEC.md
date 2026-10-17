@@ -1,7 +1,7 @@
 ---
 name: Narthex (codename)
 summary: Tools and a knowledge base that turn a user's agentic system into a senior software architect. It guides people from a product specification through requirements, architecture, construction, verification, release and evolution, with decisions as data, living documents, and checks that run in CI.
-spec_version: 0.3.5
+spec_version: 0.3.6
 status: draft
 date: 2026-10-17
 rewrite_of: SDD Studio SPEC v0.2.0
@@ -234,7 +234,7 @@ Bloque's teams come first, so organisations, teams and role-based access are in 
 | **Gate** | The set of checks and decisions that must pass before a step's outputs are accepted |
 | **Trace link** | A typed link between two identifiers, such as a requirement and the check that verifies it |
 | **Sector profile** | A data file that sets the sections, notation, trace rules, evidence and gates for a domain (§6.6). Also "profile" |
-| **Experience level** | How much engineering experience a user has: newcomer, practitioner or professional (§3.3) |
+| **Experience level** | How much engineering experience a user has: newcomer, maker, practitioner or professional (§3.3) |
 | **Guidance level** | How much the architect explains and asks, set by the experience level (§5.3) |
 | **Knowledge base** | The methodology, templates, explanations, question sets and sector material Narthex serves (§7.1) |
 | **Supplementary material** | Checklists, mappings and guidance that help apply a standard. Never normative (R4) |
@@ -290,13 +290,14 @@ shared spec (ASM-1). Several organisations sharing one spec is deferred (`DEF-11
 
 ### 3.3 Experience levels
 
-Intake places each person at one of three levels (R2, ASM-51). The level sets the guidance (§5.3). It never
+Intake places each person at one of four levels (R2, R34, ASM-51). The level sets the guidance (§5.3). It never
 changes a gate (`INV-12`).
 
 | Level | Who | Example |
 |---|---|---|
 | `newcomer` | No engineering training and little or no git; building a first product, or vibe-coding casually | An operations analyst building an internal tool |
-| `practitioner` | A seasoned vibe-coder: has built several products with AI, is starting to grasp the process, reads about building software with AI, but is not yet an expert. Also an engineer of another discipline, or a self-taught coder (R34) | A civil engineer automating a calculation (R12); a vibe-coder on their fifth product |
+| `maker` | A seasoned vibe-coder: has built several products with AI, is starting to grasp the process, reads about building software with AI, but is not fluent in code and not yet an expert (R34) | A vibe-coder on their fifth product |
+| `practitioner` | Acquainted with coding, but not with software engineering: an engineer of another discipline, or a self-taught coder (R34) | A civil engineer automating a calculation (R12) |
 | `professional` | A software engineer | A backend engineer at Bloque |
 
 ---
@@ -453,6 +454,7 @@ Normative. The guidance level follows the experience level (R5). The default ent
 | Level | Guidance | Default entry |
 |---|---|---|
 | `newcomer` | The user's agent asks a guided set of questions from the knowledge base, one contract element at a time, and explains why each matters | The guided questions |
+| `maker` | The guided questions in fewer, larger rounds, explaining only terms that are new to the person; or an AI-reprocessed prompt (their own description restated against the contract) that they confirm (ASM-59) | The guided questions in rounds |
 | `practitioner` | A shorter questionnaire, an AI-reprocessed prompt (the user's own description restated against the contract), or a standard form | The shorter questionnaire |
 | `professional` | The same three choices as a practitioner | The standard form |
 
@@ -1047,6 +1049,7 @@ he overturns is changed by an amendment. Rulings R1 to R22 are not assumptions. 
 | `ASM-56` | Validation is the product-spec owner's answer on the form, judged against the product specification | Assumption (new in the review of v0.3.0) | `REQ-CHN-13` |
 | `ASM-57` | Pablo's note on `v3-oq-8` means that every `read` item and the knowledge base's reading guidance give the full reading chain: an ordered path, each step with its prerequisites and why it matters to the decision. Pablo can correct this reading | Assumption (new in amendment 0002, reading Pablo's note of 2026-10-17) | `REQ-DEC-43`, `REQ-DEC-44`, `REQ-KNB-10` |
 | `ASM-58` | R25 (the knowledge base stays MIT) and R29 (experts' sector packs are paid and not public) are read together: the open core of the knowledge base, which is the method, the profiles, the standard flows and the guidance Narthex writes, is MIT. Experts' sector packs are separate content under their own terms, outside the MIT repository. Pablo can correct this reading | Assumption (new in amendment 0004, reading R25 and R29) | `REQ-KNB-12` |
+| `ASM-59` | A maker gets the guided questions in fewer, larger rounds, with only new terms explained, or an AI-reprocessed prompt they confirm | Assumption (new in amendment 0006) | §5.3 |
 
 ---
 

@@ -582,40 +582,40 @@ Freezing it fixes what each link can do, so forms published in M0 keep working a
 
 Every requirement family is allocated to the components that carry it (`STEP-2` gate). Ranges are inclusive.
 
-| Requirements | Components |
-|---|---|
-| `REQ-CHN-1` to `REQ-CHN-4` | `CMP-8` (gates), `CMP-12` (skills), `CMP-11` (tailoring items) |
-| `REQ-CHN-5` to `REQ-CHN-7` | `CMP-8`, `CMP-9`, `CMP-12` |
-| `REQ-CHN-8` to `REQ-CHN-12` | `CMP-12` (`design`, `plan` skills), `CMP-9` (templates), `CMP-8` (allocation check) |
-| `REQ-CHN-13` to `REQ-CHN-18` | `CMP-8`, `CMP-7` (trace graph), `CMP-12`, `CMP-11` (validation and release items) |
-| `REQ-ITK-1` to `REQ-ITK-3` | `CMP-3`, `CMP-4` |
-| `REQ-ITK-4` to `REQ-ITK-15` | `CMP-3`, `CMP-9`, `CMP-12` (`intake` skill) |
-| `REQ-DAT-1` to `REQ-DAT-13` | `CMP-7`, `CMP-8` |
-| `REQ-DAT-14` to `REQ-DAT-16` | `CMP-11`, `CMP-6`, `CMP-12` |
-| `REQ-DAT-17` to `REQ-DAT-20` | `CMP-7`, `CMP-9` |
-| `REQ-KNB-1` to `REQ-KNB-12` | `CMP-9`, `CMP-1` (serving), `CMP-10` (labels) |
-| `REQ-DEC-1` to `REQ-DEC-11` | `CMP-11`, `CMP-7` (schema) |
-| `REQ-DEC-12` to `REQ-DEC-19` | `CMP-11` (the page), `CMP-3` (the inbox) |
-| `REQ-DEC-20` to `REQ-DEC-22` | `CMP-1`, `CMP-2`, `CMP-12` |
-| `REQ-DEC-23` to `REQ-DEC-32` | `CMP-1`, `CMP-6`, `CMP-12` (`decide` skill) |
-| `REQ-DEC-33` to `REQ-DEC-35` | `CMP-11`, `CMP-12` (`amend` skill) |
-| `REQ-DEC-36` to `REQ-DEC-38` | `CMP-2`, `CMP-12`; `REQ-DEC-38` by local mode (§7.1) |
-| `REQ-DEC-39` to `REQ-DEC-42` | `CMP-12` (watcher), `CMP-1`, `CMP-2` (event feed) |
-| `REQ-DEC-43`, `REQ-DEC-44` | `CMP-11` |
-| `REQ-DOC-1` to `REQ-DOC-16` | `CMP-10` (specsite and publisher), `CMP-3` (modal peek) |
-| `REQ-SKL-1` to `REQ-SKL-35` | `CMP-12`; `REQ-SKL-27` by its hooks |
-| `REQ-EXP-1` to `REQ-EXP-7` | `CMP-12` (`experiment` skill), `CMP-11` (separate logs) |
-| `REQ-VER-1` to `REQ-VER-13` | `CMP-8`; routing by `CMP-2`; `REQ-VER-12` by the user's CI |
-| `REQ-IDN-1` to `REQ-IDN-8` | `CMP-5`, `CMP-4`, deployment (§7) |
-| `REQ-IFC-1` to `REQ-IFC-12` | `CMP-1`, `CMP-3`, `CMP-4`, `CMP-12` |
-| `REQ-TEM-1` to `REQ-TEM-7` | `CMP-4` (roles), `CMP-2` (routing), `CMP-8` (ownership checks), `CMP-12` (`propose-upstream`) |
-| `INV-1` to `INV-4`, `INV-9` to `INV-11`, `INV-17` | `CMP-11`, `CMP-6`, `CMP-4` |
-| `INV-5`, `INV-6`, `INV-13`, `INV-14`, `INV-18` | `CMP-10`, `CMP-9` |
-| `INV-7`, `INV-8`, `INV-12`, `INV-15`, `INV-16` | `CMP-12`, `CMP-5`, `CMP-8` |
-| `NFR-1`, `NFR-4` | `CMP-11` |
-| `NFR-2`, `NFR-3`, `NFR-5`, `NFR-6` | `CMP-3`, `CMP-11`, `CMP-6` |
-| `NFR-7` | All content components |
-| `NFR-8` to `NFR-11` | `CMP-1`, `CMP-12` |
+| Components | Requirements |
+| --- | --- |
+| `CMP-8` (gates), `CMP-12` (skills), `CMP-11` (tailoring items) | `REQ-CHN-1` to `REQ-CHN-4` |
+| `CMP-8`, `CMP-9`, `CMP-12` | `REQ-CHN-5` to `REQ-CHN-7` |
+| `CMP-12` (`design`, `plan` skills), `CMP-9` (templates), `CMP-8` (allocation check) | `REQ-CHN-8` to `REQ-CHN-12` |
+| `CMP-8`, `CMP-7` (trace graph), `CMP-12`, `CMP-11` (validation and release items) | `REQ-CHN-13` to `REQ-CHN-18` |
+| `CMP-3`, `CMP-4` | `REQ-ITK-1` to `REQ-ITK-3` |
+| `CMP-3`, `CMP-9`, `CMP-12` (`intake` skill) | `REQ-ITK-4` to `REQ-ITK-15` |
+| `CMP-7`, `CMP-8` | `REQ-DAT-1` to `REQ-DAT-13` |
+| `CMP-11`, `CMP-6`, `CMP-12` | `REQ-DAT-14` to `REQ-DAT-16` |
+| `CMP-7`, `CMP-9` | `REQ-DAT-17` to `REQ-DAT-20` |
+| `CMP-9`, `CMP-1` (serving), `CMP-10` (labels) | `REQ-KNB-1` to `REQ-KNB-12` |
+| `CMP-11`, `CMP-7` (schema) | `REQ-DEC-1` to `REQ-DEC-11` |
+| `CMP-11` (the page), `CMP-3` (the inbox) | `REQ-DEC-12` to `REQ-DEC-19` |
+| `CMP-1`, `CMP-2`, `CMP-12` | `REQ-DEC-20` to `REQ-DEC-22` |
+| `CMP-1`, `CMP-6`, `CMP-12` (`decide` skill) | `REQ-DEC-23` to `REQ-DEC-32` |
+| `CMP-11`, `CMP-12` (`amend` skill) | `REQ-DEC-33` to `REQ-DEC-35` |
+| `CMP-2`, `CMP-12`; `REQ-DEC-38` by local mode (§7.1) | `REQ-DEC-36` to `REQ-DEC-38` |
+| `CMP-12` (watcher), `CMP-1`, `CMP-2` (event feed) | `REQ-DEC-39` to `REQ-DEC-42` |
+| `CMP-11` | `REQ-DEC-43`, `REQ-DEC-44` |
+| `CMP-10` (specsite and publisher), `CMP-3` (modal peek) | `REQ-DOC-1` to `REQ-DOC-16` |
+| `CMP-12`; `REQ-SKL-27` by its hooks | `REQ-SKL-1` to `REQ-SKL-35` |
+| `CMP-12` (`experiment` skill), `CMP-11` (separate logs) | `REQ-EXP-1` to `REQ-EXP-7` |
+| `CMP-8`; routing by `CMP-2`; `REQ-VER-12` by the user's CI | `REQ-VER-1` to `REQ-VER-13` |
+| `CMP-5`, `CMP-4`, deployment (§7) | `REQ-IDN-1` to `REQ-IDN-8` |
+| `CMP-1`, `CMP-3`, `CMP-4`, `CMP-12` | `REQ-IFC-1` to `REQ-IFC-12` |
+| `CMP-4` (roles), `CMP-2` (routing), `CMP-8` (ownership checks), `CMP-12` (`propose-upstream`) | `REQ-TEM-1` to `REQ-TEM-7` |
+| `CMP-11`, `CMP-6`, `CMP-4` | `INV-1` to `INV-4`, `INV-9` to `INV-11`, `INV-17` |
+| `CMP-10`, `CMP-9` | `INV-5`, `INV-6`, `INV-13`, `INV-14`, `INV-18` |
+| `CMP-12`, `CMP-5`, `CMP-8` | `INV-7`, `INV-8`, `INV-12`, `INV-15`, `INV-16` |
+| `CMP-11` | `NFR-1`, `NFR-4` |
+| `CMP-3`, `CMP-11`, `CMP-6` | `NFR-2`, `NFR-3`, `NFR-5`, `NFR-6` |
+| All content components | `NFR-7` |
+| `CMP-1`, `CMP-12` | `NFR-8` to `NFR-11` |
 
 ---
 

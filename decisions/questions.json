@@ -2273,7 +2273,7 @@
    "chain": [
     {
      "label": "SAD §1 Context and constraints",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#1-context-and-constraints",
+     "url": "docs/sad.html#1-context-and-constraints",
      "why": "What Narthex must do and the limits every choice respects: MIT, hosted and self-hosted, no polling.",
      "before": [],
      "for": [
@@ -2283,7 +2283,7 @@
     },
     {
      "label": "SAD §2 and §3 Components",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#2-components",
+     "url": "docs/sad.html#2-components",
      "why": "The twelve parts, what each does and which requirements it serves; every ADR picks how to build one.",
      "before": [
       "SAD §1 Context and constraints"
@@ -2296,7 +2296,7 @@
     },
     {
      "label": "SAD §4 Key sequences",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#4-key-sequences",
+     "url": "docs/sad.html#4-key-sequences",
      "why": "How an answer given days later reaches the agent, and how CI raises an alarm.",
      "before": [
       "SAD §2 and §3 Components"
@@ -2309,7 +2309,7 @@
     },
     {
      "label": "SAD §5 Data and storage",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#5-data-and-storage",
+     "url": "docs/sad.html#5-data-and-storage",
      "why": "What stays in your repository and what Narthex keeps, and for how long.",
      "before": [
       "SAD §2 and §3 Components"
@@ -2321,7 +2321,7 @@
     },
     {
      "label": "SAD §6 Security model",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#6-security-model",
+     "url": "docs/sad.html#6-security-model",
      "why": "Sign-in, links and who may answer; the background for the two items reserved for you.",
      "before": [
       "SAD §5 Data and storage"
@@ -2334,7 +2334,7 @@
     },
     {
      "label": "SAD §7 Deployment and §9 Cost drivers",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#7-deployment",
+     "url": "docs/sad.html#7-deployment",
      "why": "How Narthex runs hosted or on your own server, and what costs money.",
      "before": [
       "SAD §5 Data and storage"
@@ -2346,7 +2346,7 @@
     },
     {
      "label": "SAD §10 and §11 The first slice",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#10-walking-skeleton-for-m0",
+     "url": "docs/sad.html#10-walking-skeleton-for-m0",
      "why": "The first slice to build, from sign-up to an approved SRS, and the four contracts it freezes.",
      "before": [
       "SAD §4 Key sequences",
@@ -2361,7 +2361,7 @@
     },
     {
      "label": "SAD §13 Open points and risks",
-     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/SAD.md#13-open-points-and-risks",
+     "url": "docs/sad.html#13-open-points-and-risks",
      "why": "Known gaps: GitLab and Codeberg keys, preview features, and no threat model in the spec yet.",
      "before": [
       "SAD §10 and §11 The first slice"

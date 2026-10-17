@@ -75,5 +75,19 @@
  "a-pilot": "0077385ccabe2b0b",
  "d-name-next": "e622c37c8b051345",
  "r-business-models": "2dee898f446b6b0d",
- "d-name-pick": "c98be364cc28b602"
+ "d-name-pick": "c98be364cc28b602",
+ "r-architecture": "ee7ed2c0c7d5dcbd",
+ "adr-0001": "9b5d7dfe31b022e4",
+ "adr-0002": "83afb1174d80a127",
+ "adr-0003": "ef09d6ce103367aa",
+ "adr-0004": "dc60be4eba7bb5e7",
+ "adr-0005": "0c97722c83dbc454",
+ "adr-0006": "34bb0a5a69bd814f",
+ "adr-0007": "b3de5bf2d33e2cb3",
+ "adr-0008": "2437903101d14864",
+ "adr-0009": "15ff8f624893c62b",
+ "adr-0010": "a4978d156f7dc1e4",
+ "adr-0011": "f192085bef323321",
+ "adr-0012": "56d9de5a006145e2",
+ "adr-0013": "5823acc5139161da"
 }

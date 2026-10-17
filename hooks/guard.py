@@ -27,6 +27,21 @@ PROTECTED_CONFIG = re.compile(
 IDENTITY_ENV = re.compile(r"^(?:GIT_(?:AUTHOR|COMMITTER)_\w+|GIT_CONFIG_(?:COUNT|PARAMETERS|GLOBAL|SYSTEM)|GIT_CONFIG_(?:KEY|VALUE)_\d+)=")
 ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 WRITES_COMMITS = {"commit", "commit-tree", "am", "cherry-pick", "rebase", "revert", "merge", "tag", "pull", "stash", "notes"}
+MESSAGE_FLAG = re.compile(r"^-[A-Za-z]*[mF]$")
+SHELL_C_FLAG = re.compile(r"^-[A-Za-z]*c[A-Za-z]*$")
+# Wrapper commands: option letters that take a separate argument.
+WRAPPERS = {
+    "command": "",
+    "sudo": "ughpCDRTrtU",
+    "time": "fo",
+    "nohup": "",
+    "xargs": "ILnPsdEaJ",
+    "exec": "a",
+    "nice": "n",
+    "env": "uCS",
+    "stdbuf": "ioe",
+    "timeout": "sk",
+}
 OPERATORS = {";", "&&", "||", "|", "&", "|&", "(", ")", "{", "}"}
 REDIRECTS = {">", ">>", ">|", "&>", "&>>"}
 
@@ -136,7 +151,16 @@ def check_git(words):
         i += 1 if word not in ("-C", "--git-dir", "--work-tree", "--namespace") else 2
     rest = words[i:]
     sub = rest[0] if rest else ""
+    skip_value = False
     for word in rest if sub in WRITES_COMMITS else []:
+        if skip_value:
+            skip_value = False
+            continue
+        if word in ("--message", "--file") or (MESSAGE_FLAG.match(word) and not word.startswith("-S")):
+            skip_value = True
+            continue
+        if word.startswith(("--message=", "--file=")) or (word.startswith(("-m", "-F")) and len(word) > 2 and not word.startswith("--")):
+            continue
         if word == "--author" or word.startswith("--author="):
             return "git --author overrides the author identity"
         if word == "--no-gpg-sign" or word == "--no-gpgsign":
@@ -201,6 +225,35 @@ def check_temp_writes(words, redirects):
     return None
 
 
+def strip_wrappers(words):
+    """Drop leading wrapper commands and their options so the real command word is resolved.
+
+    Returns (words, reason); reason is set when a wrapper carries an identity override."""
+    while words and os.path.basename(words[0]) in WRAPPERS:
+        name = os.path.basename(words[0])
+        takes_arg = WRAPPERS[name]
+        k = 1
+        while k < len(words):
+            w = words[k]
+            if IDENTITY_ENV.match(w):
+                return words, f"{w.split('=')[0]} overrides committer identity or signing"
+            if ASSIGNMENT.match(w) and name in ("sudo", "env"):
+                k += 1
+            elif w == "--":
+                k += 1
+                break
+            elif w.startswith("--"):
+                k += 1
+            elif w.startswith("-") and len(w) > 1:
+                k += 1 if w[1] not in takes_arg or len(w) > 2 else 2
+            else:
+                break
+        if name == "timeout" and k < len(words):
+            k += 1  # the duration
+        words = words[k:]
+    return words, None
+
+
 def check_command(command, depth=0):
     for words in segments(command):
         redirects = []
@@ -228,20 +281,22 @@ def check_command(command, depth=0):
             for w in words[1:]:
                 if IDENTITY_ENV.match(w):
                     return f"{w.split('=')[0]} overrides committer identity or signing"
-            if os.path.basename(words[0]) == "env":
-                rest = [w for w in words[1:] if not w.startswith("-") and not ASSIGNMENT.match(w)]
-                words = rest
+        words, reason = strip_wrappers(words)
+        if reason:
+            return reason
         if words and os.path.basename(words[0]) == "git":
             reason = check_git(words)
             if reason:
                 return reason
         if words and os.path.basename(words[0]) in ("bash", "sh", "zsh", "dash", "eval") and depth < 3:
+            inner = ""
             if os.path.basename(words[0]) == "eval":
                 inner = " ".join(words[1:])
-            elif "-c" in words[1:] and words.index("-c") + 1 < len(words):
-                inner = words[words.index("-c") + 1]
             else:
-                inner = ""
+                for k, w in enumerate(words[1:], 1):
+                    if SHELL_C_FLAG.match(w) and k + 1 < len(words):
+                        inner = words[k + 1]
+                        break
             if inner:
                 reason = check_command(inner, depth + 1)
                 if reason:

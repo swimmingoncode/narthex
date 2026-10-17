@@ -74,6 +74,14 @@ changes. This repository uses them as they are.
   in context.
 - Read a file by line range when you know where to look.
 - One job per helper, short. Start a fresh helper for the next job.
+- Every spawn names its model; an unset model inherits the parent's, usually Opus.
+- Sonnet by default for bounded coding, reviews, docs and fixes. Opus only for design, code whose design is still
+  open, and incidents.
+- Haiku for mechanical, rule-driven helpers: watch PRs and merge each only when every check passes and its review
+  says clean, re-run a failed check once, append to a state log.
+- At most two helpers at once. One CI watcher across all open PRs, not one per PR.
+- Wait on CI with one blocking shell command, never by polling.
+- A brief points to files instead of pasting them, and carries every repo rule a helper can't infer.
 
 ## Checklists
 

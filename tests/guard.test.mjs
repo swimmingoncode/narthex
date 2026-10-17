@@ -63,12 +63,56 @@ test("words in a message or a heredoc do not trigger the guard", () => {
   allowed(bash("cat <<'EOF' > notes.md\ndon't --author=x\nEOF"));
 });
 
+// verifies: INV-8, REQ-SKL-19, REQ-SKL-27
+test("combined shell -c flags are searched for overrides", () => {
+  refused(bash("bash -lc 'git commit --no-gpg-sign -m x'"));
+  refused(bash('sh -ec "git -c user.name=x commit -m y"'));
+  refused(bash("zsh -ic 'GIT_AUTHOR_NAME=x git commit -m y'"));
+  allowed(bash("bash -lc 'git commit -m x'"));
+  allowed(bash('sh -ec "echo hello"'));
+});
+
+// verifies: INV-8, REQ-SKL-19, REQ-SKL-27
+test("wrappers before git do not hide an override", () => {
+  refused(bash("sudo git -c user.name=x commit -m y"));
+  refused(bash("sudo -u root git commit --no-gpg-sign -m y"));
+  refused(bash("xargs git -c user.email=y commit -m z"));
+  refused(bash("xargs -n 1 git commit --author=A -m z"));
+  refused(bash("command git -c commit.gpgsign=false commit -m x"));
+  refused(bash("time git -c user.name=x commit -m y"));
+  refused(bash("nohup git -c user.name=x commit -m y"));
+  refused(bash("exec git -c user.name=x commit -m y"));
+  refused(bash("nice -n 5 git -c user.name=x commit -m y"));
+  refused(bash("env -u FOO git -c user.name=x commit -m y"));
+  refused(bash("stdbuf -oL git -c user.name=x commit -m y"));
+  refused(bash("timeout 30 git -c user.name=x commit -m y"));
+  refused(bash("sudo env GIT_AUTHOR_NAME=x git commit -m y"));
+  refused(bash("sudo bash -lc 'git commit --no-gpg-sign -m y'"));
+  allowed(bash("sudo git commit -m y"));
+  allowed(bash("xargs -n 1 git log --oneline"));
+  allowed(bash("nice -n 5 git commit -m y"));
+  allowed(bash("timeout 30 git commit -S -m y"));
+  allowed(bash("command git commit -m y"));
+});
+
+// verifies: INV-8, REQ-SKL-19
+test("the value of a message flag is not read as a flag", () => {
+  allowed(bash("git commit -m x -m '--no-gpg-sign'"));
+  allowed(bash("git commit -m '--author=someone'"));
+  allowed(bash("git commit --message '--no-gpg-sign'"));
+  allowed(bash("git commit -am '--no-gpg-sign'"));
+  allowed(bash("git commit -F --no-gpg-sign"));
+  refused(bash("git commit -m x --no-gpg-sign"));
+  refused(bash("git commit -m x -m y --author=A"));
+});
+
 // verifies: REQ-SKL-23, REQ-SKL-27
 test("write under tmp is refused", () => {
   refused(guard("Write", { file_path: "/tmp/brief.md", content: "x" }));
   refused(guard("Write", { file_path: "/private/tmp/brief.md", content: "x" }));
   refused(guard("Edit", { file_path: "/tmp/a/../b.txt", old_string: "a", new_string: "b" }));
   refused(guard("NotebookEdit", { notebook_path: "/var/tmp/n.ipynb" }));
+  refused(guard("MultiEdit", { file_path: "/tmp/a.txt", edits: [] }));
   refused(bash("echo hi > /tmp/out.txt"));
   refused(bash("cat <<'EOF' >> /tmp/out.txt\nhi\nEOF"));
   refused(bash("printf x | tee /tmp/out.txt"));
@@ -112,5 +156,6 @@ test("the plugin registers the guard hook", () => {
   const entry = hooks.hooks.PreToolUse[0];
   assert.match(entry.matcher, /Bash/);
   assert.match(entry.matcher, /Write/);
+  assert.match(entry.matcher, /MultiEdit/);
   assert.match(entry.hooks[0].command, /\$\{CLAUDE_PLUGIN_ROOT\}.*hooks\/guard\.py/);
 });

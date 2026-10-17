@@ -4,3 +4,4 @@ notes/use-cases
 .DS_Store
 decisions/form/docs/
 private/
+node_modules/

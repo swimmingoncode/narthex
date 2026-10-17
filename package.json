@@ -1,0 +1,29 @@
+{
+  "name": "narthex",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "check:boundaries": "node scripts/check-boundaries.mjs",
+    "check": "npm run typecheck && npm run lint && npm run check:boundaries",
+    "test:scripts": "node --test \"tests/*.test.mjs\"",
+    "test:workspaces": "npm run test --workspaces --if-present",
+    "test": "npm run test:scripts && npm run test:workspaces"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}

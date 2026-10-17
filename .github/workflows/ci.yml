@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   decision-form:
     runs-on: ubuntu-latest
@@ -16,3 +19,52 @@ jobs:
         run: python3 -m unittest discover -s skills/decision-form/tests
       - name: Check the decision form
         run: python3 skills/decision-form/scripts/build.py decisions/questions.json --check --strict
+
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Typecheck, lint and boundaries
+        run: npm run check
+      - name: Tests (scripts and every workspace)
+        run: npm test
+
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: narthex
+          POSTGRES_PASSWORD: narthex
+          POSTGRES_DB: narthex_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U narthex -d narthex_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Test credentials for the throwaway service container above; not a secret.
+      NARTHEX_TEST_DATABASE_URL: postgres://narthex:narthex@localhost:5432/narthex_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: PostgreSQL is reachable
+        run: psql "$NARTHEX_TEST_DATABASE_URL" -c 'select version()'
+      - name: Workspace tests against PostgreSQL
+        run: npm run test:workspaces

@@ -3012,7 +3012,7 @@
    "bullets": [
     "Makers have built with AI before but are not fluent in code.",
     "You play a maker, so your own test run is a real one.",
-    "First-time builders and the other levels follow in M1."
+    "First-time builders and the other levels follow in the second milestone."
    ],
    "options": [
     "Makers first (recommended)",
@@ -3041,7 +3041,7 @@
    "section": "decide",
    "group": "plan",
    "title": "Which three practice runs should test Narthex first?",
-   "lead": "In M1, AI agents play users and run through Narthex, so we catch breakage before real people do. We start with three scenarios.",
+   "lead": "In the second milestone, AI agents play users and run through Narthex, so we catch breakage before real people do. We start with three scenarios.",
    "bullets": [
     "Happy path: a maker goes from an idea to an approved spec.",
     "Unattended form: you vanish for days; the agent waits quietly, then resumes.",
@@ -3095,7 +3095,7 @@
      "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-testing-narthex.md#4-questions-for-pablo"
     },
     {
-     "label": "PLAN §3 M1 exit",
+     "label": "PLAN §3, second milestone exit",
      "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#3-milestones"
     }
    ],
@@ -3181,7 +3181,7 @@
     "Recommended: a listening key that lasts until the form closes or you revoke it.",
     "It only learns that something changed, never what you answered.",
     "Without it, you tell the agent yourself once you have answered.",
-    "This adds one kind of key to the rules you accepted (ADR-0007)."
+    "This adds one kind of key to the rules you accepted (the answer-link decision)."
    ],
    "options": [
     "Long-lived listening key, no content (recommended)",
@@ -3194,7 +3194,7 @@
      "url": "https://github.com/swimmingoncode/narthex/blob/main/PLAN.md#61-top-risks"
     },
     {
-     "label": "ADR-0007 (on GitHub)",
+     "label": "The answer-link decision (on GitHub)",
      "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0007-token-model.md"
     }
    ],
@@ -3212,12 +3212,12 @@
    "title": "When should Bloque start using Narthex for real?",
    "lead": "Real use at Bloque tells us whether Narthex builds the right thing. Starting earlier finds problems sooner but meets more rough edges.",
    "bullets": [
-    "Recommended: start after M1, on one Bloque project, while later work goes on.",
+    "Recommended: start after the second milestone, on one Bloque project, while later work goes on.",
     "Waiting for the hosted launch gives smoother tools but later lessons.",
     "Installing Narthex on Bloque's code is a separate step you approve."
    ],
    "options": [
-    "After M1, on one project (recommended)",
+    "After the second milestone, on one project (recommended)",
     "After the hosted launch",
     "Discuss first"
    ],

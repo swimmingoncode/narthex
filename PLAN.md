@@ -1,7 +1,7 @@
 ---
 name: Narthex implementation plan
 plan_version: 0.2.0
-spec_version: 0.3.6
+spec_version: 0.3.7
 status: draft
 date: 2026-10-17
 step: STEP-3

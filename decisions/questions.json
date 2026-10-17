@@ -80,6 +80,11 @@
    "id": "queue",
    "title": "Claude's queue",
    "blurb": "What I'm doing or will do next, in order. No action needed; comment to reorder or stop one."
+  },
+  {
+   "id": "later",
+   "title": "Later",
+   "blurb": "Parked on purpose. Only note if something should move earlier."
   }
  ],
  "items": [
@@ -2217,15 +2222,13 @@
   },
   {
    "id": "d-name-pick",
-   "section": "decide",
-   "group": "v3-product",
+   "section": "later",
    "follows": "d-name-next",
    "spec": [
     "OQ-1"
    ],
-   "reserved": true,
    "title": "Which name goes to a lawyer's clearance search?",
-   "lead": "Twenty candidates were screened on registries, domains and products; none is cleared, and this isn't legal advice.",
+   "lead": "Parked 2026-10-17 to let the names sink in. Next: screen Pronoia, tékton coinages and fennel-root names.",
    "bullets": [
     "Ferula: cleanest screen, free .dev; but Spanish férula means being under someone's thumb.",
     "Calamus / Cálamo: the stalk that carried fire is also the pen that writes the spec; medium risk.",
@@ -2248,7 +2251,9 @@
      "label": "Narthex screen",
      "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-17-name-search.md"
     }
-   ]
+   ],
+   "kind": "later",
+   "keep_open": true
   }
  ]
 }

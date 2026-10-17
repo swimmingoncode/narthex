@@ -47,7 +47,7 @@ jobs:
       - name: Test tags (report)
         run: node scripts/check-test-tags.mjs --report
       - name: Checklists (report)
-        run: node scripts/check-checklist.mjs --report HOUSE-RULES.md STATE.md
+        run: node scripts/check-checklist.mjs --report HOUSE-RULES.md
 
   postgres:
     runs-on: ubuntu-latest

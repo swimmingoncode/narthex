@@ -75,6 +75,11 @@
    "id": "act",
    "title": "Act",
    "blurb": "Only what needs you: review and merge, run, send, or discuss with someone."
+  },
+  {
+   "id": "queue",
+   "title": "Claude's queue",
+   "blurb": "What I'm doing or will do next, in order. No action needed; comment to reorder or stop one."
   }
  ],
  "items": [
@@ -143,7 +148,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-oq-3",
@@ -206,7 +212,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-oq-5",
@@ -239,7 +246,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-oq-6",
@@ -269,7 +277,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-oq-7",
@@ -299,7 +308,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-oq-8",
@@ -331,7 +341,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-oq-9",
@@ -362,7 +373,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-oq-10",
@@ -393,7 +405,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-oq-11",
@@ -451,7 +464,8 @@
    "kind": "decide",
    "section": "decide",
    "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-asm-trust",
@@ -479,7 +493,8 @@
     }
    ],
    "kind": "decide",
-   "origin": "SPEC v0.3.0 rewrite, 2026-10-17"
+   "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
+   "applied": "amendment 0002"
   },
   {
    "id": "v3-asm-method",
@@ -740,7 +755,7 @@
    "applied": "SPEC v0.3.0 §1.5 (R12)",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-1",
+     "label": "v0.2.0 OQ-1",
      "url": null
     }
    ]
@@ -764,7 +779,7 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-2",
+     "label": "v0.2.0 OQ-2",
      "url": null
     }
    ]
@@ -790,7 +805,7 @@
    "applied": "Swimming on Code licence rule (STATE.md); amendment 0004",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-3",
+     "label": "v0.2.0 OQ-3",
      "url": null
     }
    ]
@@ -809,7 +824,7 @@
    "applied": "SPEC v0.3.0 (R1); final name is OQ-1",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-4",
+     "label": "v0.2.0 OQ-4",
      "url": null
     }
    ]
@@ -836,15 +851,15 @@
    "applied": "SPEC v0.3.0 REQ-IFC-3, REQ-IFC-8 (R3)",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-5",
+     "label": "v0.2.0 OQ-5",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-DI-12",
+     "label": "v0.2.0 REQ-DI-12",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-DI-15",
+     "label": "v0.2.0 REQ-DI-15",
      "url": null
     }
    ]
@@ -867,11 +882,11 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-6",
+     "label": "v0.2.0 OQ-6",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 INV-2",
+     "label": "v0.2.0 INV-2",
      "url": null
     }
    ]
@@ -896,7 +911,7 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-7",
+     "label": "v0.2.0 OQ-7",
      "url": null
     }
    ]
@@ -919,11 +934,11 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-8",
+     "label": "v0.2.0 OQ-8",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-DI-20",
+     "label": "v0.2.0 REQ-DI-20",
      "url": null
     }
    ]
@@ -947,15 +962,15 @@
    "superseded_by": "v3-asm-trust",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-9",
+     "label": "v0.2.0 OQ-9",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-DI-4",
+     "label": "v0.2.0 REQ-DI-4",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 INV-4",
+     "label": "v0.2.0 INV-4",
      "url": null
     }
    ]
@@ -975,11 +990,11 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-10",
+     "label": "v0.2.0 OQ-10",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-DI-23",
+     "label": "v0.2.0 REQ-DI-23",
      "url": null
     }
    ]
@@ -1002,7 +1017,7 @@
    "applied": "SPEC v0.3.0 REQ-TEM-3, REQ-TEM-4 (R10)",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-11",
+     "label": "v0.2.0 OQ-11",
      "url": null
     }
    ]
@@ -1021,11 +1036,11 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-12",
+     "label": "v0.2.0 OQ-12",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-DI-19",
+     "label": "v0.2.0 REQ-DI-19",
      "url": null
     }
    ]
@@ -1045,11 +1060,11 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-15",
+     "label": "v0.2.0 OQ-15",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-LD-6",
+     "label": "v0.2.0 REQ-LD-6",
      "url": null
     }
    ]
@@ -1068,11 +1083,11 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-16",
+     "label": "v0.2.0 OQ-16",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-LD-3",
+     "label": "v0.2.0 REQ-LD-3",
      "url": null
     }
    ]
@@ -1091,11 +1106,11 @@
    "superseded_by": "v3-asm-form",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-18",
+     "label": "v0.2.0 OQ-18",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-LD-10",
+     "label": "v0.2.0 REQ-LD-10",
      "url": null
     }
    ]
@@ -1154,19 +1169,19 @@
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 OQ-13",
+     "label": "v0.2.0 OQ-13",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 OQ-14",
+     "label": "v0.2.0 OQ-14",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 OQ-17",
+     "label": "v0.2.0 OQ-17",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-LD-5",
+     "label": "v0.2.0 REQ-LD-5",
      "url": null
     }
    ],
@@ -1220,7 +1235,7 @@
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 OQ-19",
+     "label": "v0.2.0 OQ-19",
      "url": null
     }
    ],
@@ -1245,7 +1260,7 @@
    "superseded_by": "v3-asm-packaging",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-20",
+     "label": "v0.2.0 OQ-20",
      "url": null
     }
    ]
@@ -1269,7 +1284,7 @@
    "superseded_by": "v3-oq-11",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-21",
+     "label": "v0.2.0 OQ-21",
      "url": null
     }
    ]
@@ -1294,11 +1309,11 @@
    "superseded_by": "v3-asm-method",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-22",
+     "label": "v0.2.0 OQ-22",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-WF-6",
+     "label": "v0.2.0 REQ-WF-6",
      "url": null
     }
    ]
@@ -1318,11 +1333,11 @@
    "superseded_by": "v3-asm-trust",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-23",
+     "label": "v0.2.0 OQ-23",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-WF-13",
+     "label": "v0.2.0 REQ-WF-13",
      "url": null
     }
    ]
@@ -1346,15 +1361,15 @@
    "superseded_by": "v3-asm-docs",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-24",
+     "label": "v0.2.0 OQ-24",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 DEF-1",
+     "label": "v0.2.0 DEF-1",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 DEF-2",
+     "label": "v0.2.0 DEF-2",
      "url": null
     }
    ]
@@ -1378,11 +1393,11 @@
    "superseded_by": "v3-asm-trust",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-25",
+     "label": "v0.2.0 OQ-25",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-WF-15",
+     "label": "v0.2.0 REQ-WF-15",
      "url": null
     }
    ]
@@ -1402,11 +1417,11 @@
    "superseded_by": "v3-asm-packaging",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-26",
+     "label": "v0.2.0 OQ-26",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-WF-10",
+     "label": "v0.2.0 REQ-WF-10",
      "url": null
     }
    ]
@@ -1429,11 +1444,11 @@
    "superseded_by": "v3-asm-method",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-27",
+     "label": "v0.2.0 OQ-27",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-WF-17",
+     "label": "v0.2.0 REQ-WF-17",
      "url": null
     }
    ]
@@ -1458,15 +1473,15 @@
    "origin": "aledgent session, relaying Pablo's ruling of 2026-10-04",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 REQ-CO-13",
+     "label": "v0.2.0 REQ-CO-13",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-CO-17",
+     "label": "v0.2.0 REQ-CO-17",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 INV-10",
+     "label": "v0.2.0 INV-10",
      "url": null
     }
    ]
@@ -1489,15 +1504,15 @@
    "superseded_by": "v3-asm-packaging",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-28",
+     "label": "v0.2.0 OQ-28",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-CO-1",
+     "label": "v0.2.0 REQ-CO-1",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-CO-18",
+     "label": "v0.2.0 REQ-CO-18",
      "url": null
     }
    ]
@@ -1516,11 +1531,11 @@
    "superseded_by": "v3-asm-packaging",
    "refs": [
     {
-     "label": "v0.2.0 v0.2.0 OQ-29",
+     "label": "v0.2.0 OQ-29",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-CO-19",
+     "label": "v0.2.0 REQ-CO-19",
      "url": null
     }
    ]
@@ -1582,7 +1597,7 @@
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-WF-12",
+     "label": "v0.2.0 REQ-WF-12",
      "url": null
     }
    ],
@@ -1636,7 +1651,7 @@
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 REQ-WF-7",
+     "label": "v0.2.0 REQ-WF-7",
      "url": null
     }
    ],
@@ -1698,11 +1713,11 @@
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 OQ-1",
+     "label": "v0.2.0 OQ-1",
      "url": null
     },
     {
-     "label": "v0.2.0 v0.2.0 OQ-11",
+     "label": "v0.2.0 OQ-11",
      "url": null
     }
    ],
@@ -1857,7 +1872,8 @@
      "label": "OVERVIEW.md",
      "url": "docs/overview.html"
     }
-   ]
+   ],
+   "applied": "read 2026-10-17"
   },
   {
    "id": "v3-r-references",
@@ -1876,7 +1892,8 @@
      "url": "https://github.com/swimmingoncode/narthex/blob/main/REFERENCES.md"
     }
    ],
-   "origin": "SPEC v0.3.0 rewrite, 2026-10-17"
+   "origin": "SPEC v0.3.0 rewrite, 2026-10-17",
+   "applied": "read 2026-10-17"
   },
   {
    "id": "r-research",
@@ -1976,6 +1993,68 @@
     }
    ],
    "superseded_by": "r-spec"
+  },
+  {
+   "id": "q-name-search",
+   "kind": "queue",
+   "section": "queue",
+   "title": "Run a trademark and domain search for Narthex",
+   "lead": "You chose to search first (v3-oq-1). I will check candidate names against trademarks, domains, npm and GitHub, and report.",
+   "options": [
+    "OK",
+    "Do this first",
+    "Stop it"
+   ],
+   "follows": "v3-oq-1",
+   "origin": "amendment 0002, 2026-10-17"
+  },
+  {
+   "id": "q-business-models",
+   "kind": "queue",
+   "section": "queue",
+   "title": "Draft open-source business-model options for Narthex",
+   "lead": "You asked what an open-source-first business model revolves around (v3-oq-3). I will draft options in notes, and the timing ruling stays.",
+   "options": [
+    "OK",
+    "Do this first",
+    "Stop it"
+   ],
+   "follows": "v3-oq-3",
+   "origin": "amendment 0002, 2026-10-17"
+  },
+  {
+   "id": "q-reading-chains",
+   "kind": "queue",
+   "section": "queue",
+   "title": "Add full reading chains to the form's Read items",
+   "lead": "Your note on v3-oq-8 asks for the full chain, not one reference. I will give each Read item an ordered path with prerequisites and reasons (REQ-DEC-43).",
+   "options": [
+    "OK",
+    "Do this first",
+    "Stop it"
+   ],
+   "follows": "v3-oq-8",
+   "origin": "amendment 0002, 2026-10-17"
+  },
+  {
+   "id": "a-pilot",
+   "kind": "act",
+   "section": "act",
+   "reserved": true,
+   "title": "Name the pilot builder and operations flow",
+   "lead": "You chose an operations flow on the core (v3-oq-11), but the notes behind that option were empty. Name the builder and the flow, so the first milestone's plan can start.",
+   "refs": [
+    {
+     "label": "SPEC.md v0.3.2, OQ-11",
+     "url": null
+    }
+   ],
+   "spec": [
+    "OQ-11"
+   ],
+   "blocks": true,
+   "follows": "v3-oq-11",
+   "origin": "amendment 0002, 2026-10-17"
   }
  ]
 }

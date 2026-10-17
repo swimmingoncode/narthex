@@ -1,11 +1,11 @@
 ---
 name: Narthex (codename)
 summary: Tools and a knowledge base that turn a user's agentic system into a senior software architect. It guides people from a product specification through requirements, architecture, construction, verification, release and evolution, with decisions as data, living documents, and checks that run in CI.
-spec_version: 0.3.1
+spec_version: 0.3.2
 status: draft
 date: 2026-10-17
 rewrite_of: SDD Studio SPEC v0.2.0
-amendments: none
+amendments: 0001, 0002
 ---
 
 # Narthex: system specification
@@ -51,7 +51,8 @@ are kept in `history/amendments-v0/`.
 | item `oq-3` | An answer archived in `decisions/responses/`. Binding when it is a ruling |
 | `(Pablo, 2026-10-07)` | A standing ruling recorded in `ADOPTING.md` §8 or in `skills/decision-form/references/item-format.md` |
 | `(ASM-4)` | The requirement rests on assumption ASM-4 (§13): a recommended option nobody has ruled yet. One answer can overturn it |
-| `(provisional, OQ-8)` | The text states the recommended option of open question `OQ-8`. It stands only until `OQ-8` is ruled |
+| `(provisional, <question>)` | The text states the recommended option of an open question. It stands only until that question is ruled. No requirement carries this mark in v0.3.2 |
+| `(<question>, amendment 0002)` | The open question named was closed by the amendment, on the form answer that its §11 row cites |
 
 ### Normative language
 
@@ -434,7 +435,7 @@ Normative. A product specification accepted by `STEP-1` has these elements (R14)
 |---|---|
 | `REQ-ITK-1` | Sign-up MUST profile the user: their experience level (§3.3), their sector, their role, and which git host account they have, if any (R13, R2). |
 | `REQ-ITK-2` | A user with a GitHub, GitLab or Codeberg account MUST be able to register by signing in with it (R13). Other hosts MAY follow. |
-| `REQ-ITK-3` | A newcomer with no git host account MUST be able to sign in with Google, Outlook or email, or to run on delegated infrastructure such as Claude cloud sessions. Narthex MUST then guide them to set up a GitHub account (R13; hosting alternatives are `OQ-2`). |
+| `REQ-ITK-3` | A newcomer with no git host account MUST be able to sign in with Google, Outlook or email, or to run on delegated infrastructure such as Claude cloud sessions. Narthex MUST then guide them to set up a GitHub account (R13). Hosted git is later (`DEF-3`; `OQ-2`, amendment 0002). |
 
 ### 5.2 Experience profile
 
@@ -556,7 +557,7 @@ Normative. Link types are ASM-53.
 |---|---|
 | `REQ-DAT-17` | A spec MUST declare its `profile`, and its `level` where one applies, in its front matter (ASM-27). |
 | `REQ-DAT-18` | A profile MUST be a data file that lists: the required sections; the allowed identifier families; the mandatory attributes per item; notation checks (RFC 2119 use, EARS patterns); trace rules; which artefact is normative; the exports; the gates; the evidence each gate requires; and the edition of each standard it cites (ASM-27). |
-| `REQ-DAT-19` | A profile MAY declare an executable reference or a formal model normative over the prose spec (provisional, `OQ-5`). Where it does, the prose spec MUST say so and link to the normative artefact. |
+| `REQ-DAT-19` | A profile MAY declare an executable reference or a formal model normative over the prose spec, where the profile says so (`OQ-5`, amendment 0002). Where it does, the prose spec MUST say so and link to the normative artefact. |
 
 ### 6.7 Interchange
 
@@ -578,8 +579,10 @@ Normative. Link types are ASM-53.
 | `REQ-KNB-4` | Supplementary material MUST NOT be presented, rendered or exported as normative (`INV-14`). |
 | `REQ-KNB-5` | Material in "our standard way" MUST say, wherever it appears, that it is Narthex's own method and that no available standard backs it (R4). |
 | `REQ-KNB-6` | Every profile MUST pin the edition of each standard it cites (ASM-27). |
-| `REQ-KNB-7` | The text of an open standard MAY ship (R4). No sector pack with material derived from a copyrighted standard MAY ship before a legal check of that material. Who checks, and when, is `OQ-12` (ASM-55). |
+| `REQ-KNB-7` | The text of an open standard MAY ship (R4). No sector pack with material derived from a copyrighted standard MAY ship before a lawyer has checked that material. The check comes before the first such pack ships (`OQ-12`, amendment 0002; ASM-55). |
 | `REQ-KNB-8` | Every external source the knowledge base or this spec relies on MUST be listed in `REFERENCES.md` (R6). |
+| `REQ-KNB-9` | The first sector release of the knowledge base MUST carry all five profiles of §7.1: `product`, `oss-ledger`, `reg-fintech`, `protocol` and `safety` (`OQ-4`, amendment 0002). Material derived from a copyrighted standard waits for the legal check of `REQ-KNB-7`; the rest of its profile ships. |
+| `REQ-KNB-10` | The reading guidance for each step and experience level, and each golden path, MUST give the full reading chain, not a single reference (`REQ-DEC-43`, ASM-57). |
 
 Normative: classes of sector material (R4, R16).
 
@@ -589,7 +592,7 @@ Normative: classes of sector material (R4, R16).
 | Supplementary | Only an open implementation or non-normative documentation exists | Checklists, mappings to clause numbers, templates and guidance | "supplementary, not normative" |
 | Closed | The standard is closed and nothing derived from it can ship yet | A placeholder, or Narthex's own method | "early preview: available soon", or "our standard way" |
 
-Informative: candidate profiles, from `notes/2026-10-17-research-spec-formats.md`. Which ship first is `OQ-4`.
+Informative: the profiles, from `notes/2026-10-17-research-spec-formats.md`. All five ship first (`OQ-4`, amendment 0002; `REQ-KNB-9`).
 
 | Profile | For | Adds |
 |---|---|---|
@@ -681,6 +684,16 @@ asking: a plugin hook (`REQ-IFC-6`) or a monitor.
 | `REQ-DEC-41` | When no channel is open, the agent MUST tell the person, with the link, to come back and acknowledge once they have answered (R22). |
 | `REQ-DEC-42` | While answers are pending, the agent MUST carry on with the rest of its queue. When it is woken or told the person answered, its next read MUST return only the changes (R8, `REQ-DEC-24`). |
 
+#### 7.2.7 Reading chains
+
+Pablo, 2026-10-17, on item `v3-oq-8`: a reference says what to read, but nothing says in what order or what
+else is needed first. Narthex needs the whole chain. This reading of his note is ASM-57.
+
+| ID | Requirement |
+|---|---|
+| `REQ-DEC-43` | Every `read` item MUST give the full reading chain for the decision it supports: an ordered path of what to read. Each step MUST name the steps it needs first and say why it matters to the decision. A single reference is not a chain (ASM-57). |
+| `REQ-DEC-44` | The builder MUST warn about a `read` item whose chain has one step only, or whose steps lack an order, their prerequisites or the reason. The limits of `REQ-DEC-2` apply to `lead` and `bullets`, not to the chain (ASM-57). |
+
 ### 7.3 Living documentation
 
 | ID | Requirement |
@@ -720,7 +733,7 @@ Normative. Each skill reads and writes files in the layout of `REQ-DAT-1`, and e
 | `REQ-SKL-7` | `dispatch` | MUST start one agent per feature, each in its own git worktree as a subagent (ASM-42), with a brief built from the house rules and the feature plan. It MUST track each agent's branch, PR and CI, collect the items each agent raises, hand a PR to a script that waits for CI and resumes the agent when CI finishes (ASM-9), and back off when agents hit usage limits (ASM-18). |
 | `REQ-SKL-8` | `review` | MUST run read-only adversarial reviewers on each PR against the spec, before merge. Findings that need a fix go back as fixups; findings that need a ruling become items. After any change applied post-review, the reviewers MUST be told what changed (ASM-8). |
 | `REQ-SKL-9` | `experiment` | MUST run an experiment with a bounded scope (§7.5): start it with its question and scope, route its questions to its own log, keep its spec and plan changes as drafts, write the outcome, and promote or close it. |
-| `REQ-SKL-10` | `amend` | MUST write numbered amendments (status, target version, rationale, the rulings applied with item ids, the questions they raise) and apply them to the spec with a version bump: below v1.0.0, the patch version only, listed in the amendment (provisional, `OQ-7`). |
+| `REQ-SKL-10` | `amend` | MUST write numbered amendments (status, target version, rationale, the rulings applied with item ids, the questions they raise) and apply them to the spec with a version bump: below v1.0.0, the patch version only, listed in the amendment; from v1.0.0, the bump semantic versioning requires for the change (`OQ-7`, amendment 0002). |
 | `REQ-SKL-11` | `propose-upstream` | MUST draft a proposal for a spec or repo the project doesn't own (a third party's, or another team's) with measurements, run ids and the PR text. It MUST NOT open it on a third party's repo without an explicit answer (`REQ-SKL-20`). |
 | `REQ-SKL-12` | `release` | MUST run `STEP-5`: check `REQ-CHN-14`, draft the release record, and file the release as a reserved `act` item (ASM-54). |
 | `REQ-SKL-13` | `report` | MUST produce a status that names what was done, what is pending with each question spelled out (`REQ-SKL-22`), and what blocks. It MUST end a milestone with one checklist of what needs a person, and with a requirement-to-evidence table (ASM-12, ASM-24). Long content goes in a page. |
@@ -744,13 +757,13 @@ Normative. Each skill reads and writes files in the layout of `REQ-DAT-1`, and e
 | `REQ-SKL-21` | Chat replies to a person MUST stay at five lines or fewer. Longer content goes into a file or a published page, and the reply points to it. |
 | `REQ-SKL-22` | A status of pending decisions MUST list each question itself, or link the exact place where it is written. A count alone is not a status. |
 | `REQ-SKL-23` | Durable work (briefs, clones, scripts) MUST NOT live in a directory the operating system cleans, such as `/tmp`. |
-| `REQ-SKL-24` | A worker agent that meets a decision the spec or plan does not cover MUST raise an item and record its reading in the feature's notes. It MAY build meanwhile only when its reading is the plan's own or strictly more restrictive; otherwise it MUST stop the task. It MUST NOT change `SPEC.md` or `PLAN.md` before the ruling, and MUST NOT ask in chat (provisional, `OQ-8`). |
+| `REQ-SKL-24` | A worker agent that meets a decision the spec or plan does not cover MUST raise an item and record its reading in the feature's notes. It MAY build meanwhile only when its reading is the plan's own or strictly more restrictive; otherwise it MUST stop the task. It MUST NOT change `SPEC.md` or `PLAN.md` before the ruling, and MUST NOT ask in chat (`OQ-8`, amendment 0002). |
 | `REQ-SKL-25` | A worker agent MUST merge only when its task says it may, with CI green, after rebasing on the current base and checking again (ASM-43, ASM-15). |
 | `REQ-SKL-26` | Only the `amend` skill, or a task that says so, MAY edit `SPEC.md` or `PLAN.md`. |
 | `REQ-SKL-27` | Rules that can be checked mechanically (identity overrides, pushes to protected repos, durable work in `/tmp`) MUST be enforced by hooks that refuse the command, in addition to the text in the brief (ASM-45). |
 | `REQ-SKL-28` | An agent MUST NOT end a turn waiting on CI, or poll CI from the agent. A script does the waiting (ASM-9; Pablo, 2026-10-05). |
 | `REQ-SKL-29` | Each agent MUST have its own worktree and its own build directory. No two agents run verification in one worktree (ASM-15). |
-| `REQ-SKL-30` | Test naming MUST be a per-project setting in the house rules. The default is plain test names, with the identifiers each test verifies in a comment on the test, which the trace checks read (provisional, `OQ-9`). |
+| `REQ-SKL-30` | Test naming MUST be a per-project setting in the house rules. The default is plain test names, with the identifiers each test verifies in a comment on the test, which the trace checks read (`OQ-9`, amendment 0002). |
 | `REQ-SKL-31` | The agent that finds a spec gap MUST draft its item; the session that owns the spec applies the ruling through an amendment; the reviewers are told (ASM-22). |
 
 #### 7.4.4 Packaging
@@ -787,11 +800,11 @@ definitive shape reaches the decision form.
 | `REQ-VER-4` | Each executable check (a conformance, contract or property test, a simulation, a policy) MUST be tagged with the identifiers it verifies (ASM-23). |
 | `REQ-VER-5` | At the `STEP-4` gate, every invariant MUST have at least one check. A profile MAY make an invariant without a check an error at every commit. |
 | `REQ-VER-6` | An alarm MUST fire on: a failed tagged check; a change that touches a requirement or invariant another team owns; or a change whose touchpoints the checks cannot identify (ASM-23). |
-| `REQ-VER-7` | Alarms MUST be routed in three tiers: green merges on the builder's own approval; amber goes to the identifier's owner for review; red blocks the change and pages an engineer reviewer with the check, the product specification and the diff attached (provisional, `OQ-10`). |
+| `REQ-VER-7` | Alarms MUST be routed in three tiers: green merges on the builder's own approval; amber goes to the identifier's owner for review; red blocks the change and pages an engineer reviewer with the check, the product specification and the diff attached (`OQ-10`, amendment 0002). |
 | `REQ-VER-8` | Routing MUST follow identifier ownership (`REQ-TEM-2`). |
 | `REQ-VER-9` | When the norm a running product depends on changes, the product MUST be held until it passes the changed checks, as well as blocked at build time (ASM-23). |
 | `REQ-VER-10` | A low-code or no-code component MUST be verified by contract tests against its interface, in place of code-level traces (R11). |
-| `REQ-VER-11` | Where a profile requires independent review, Narthex MUST record the reviewer's identity per item and check that the reviewer differs from the author. Agents count as independent reviewers under `product` and `oss-ledger`; a person is required under regulated profiles (provisional, `OQ-6`). |
+| `REQ-VER-11` | Where a profile requires independent review, Narthex MUST record the reviewer's identity per item and check that the reviewer differs from the author. Agents count as independent reviewers under `product` and `oss-ledger`; a person is required under regulated profiles (`OQ-6`, amendment 0002). |
 | `REQ-VER-12` | AI-assisted checks MUST run in the user's agent, or in the user's CI with the user's model access. Narthex runs no model of its own in v1 (ASM-7, R9). |
 | `REQ-VER-13` | The `report` skill and the `STEP-4` gate MUST generate the requirement-to-evidence table from the trace graph (ASM-24). |
 
@@ -800,7 +813,7 @@ definitive shape reaches the decision form.
 | ID | Requirement |
 |---|---|
 | `REQ-IDN-1` | Narthex MUST integrate with GitHub, GitLab and Codeberg as an app installed on repositories the user owns (R7). |
-| `REQ-IDN-2` | In v1, Narthex MUST NOT host a user's code. Repositories stay where their owners keep them (R7; a hosted option is `OQ-2` and `DEF-3`). |
+| `REQ-IDN-2` | In v1, Narthex MUST NOT host a user's code. Repositories stay where their owners keep them (R7; a hosted option is `DEF-3`; `OQ-2`, amendment 0002). |
 | `REQ-IDN-3` | Agents MUST authenticate to Narthex's MCP server with OAuth 2.1, as the MCP authorization specification describes (ASM-4). |
 | `REQ-IDN-4` | For each agent and each task, the server MUST mint a short-lived token scoped to the repositories and permissions the task needs, from the git host's app installation. No agent holds a long-lived git-host or repository credential (ASM-4). The long-lived answer token of `REQ-IFC-10` (R20) is not such a credential: it lets a person submit answers to one form and nothing else. |
 | `REQ-IDN-5` | Every write through the MCP change group MUST end as a commit or a pull request in the user's repository (R8, `INV-16`). |
@@ -899,7 +912,7 @@ Ruled by R10 as proposed in `notes/2026-10-17-product-definition-review.md` §3.
 |---|---|---|
 | `DEF-1` | Producing the product specification: product mapping, an AI-assisted design sprint | A complementary product (R5, PD) |
 | `DEF-2` | A natural-language agent of Narthex's own. A narrow "consult" tool (ask the architect a design question, get an answer with cited guidance) is the cheap first test | R9 |
-| `DEF-3` | Hosted git, for newcomers with no git host and for regulated customers who want a managed, audited store | Repositories stay user-owned in v1 (R7, `OQ-2`) |
+| `DEF-3` | Hosted git, for newcomers with no git host and for regulated customers who want a managed, audited store | Repositories stay user-owned in v1 (R7; `OQ-2`, amendment 0002) |
 | `DEF-4` | Agent dispatch board: running agents with their briefs, PRs and CI, stall detection and resume, across sessions | Waits for a need a session cannot meet (ASM-44) |
 | `DEF-5` | Measurement ledger: every benchmark run with its id, conditions and figures, so documents cite runs and stale numbers get flagged | `REQ-CHN-17` covers citing runs for now |
 | `DEF-6` | Meeting notes into rulings: a transcript becomes answered items and new open ones | Not needed by the first customers yet |
@@ -919,22 +932,23 @@ Non-goals: replacing Linear or GitHub as the tracker; a general wiki; certifying
 ## 11. Open questions
 
 Each question is an item on the decision form (`decisions/questions.json`) with the id `v3-oq-N`. The
-recommendation is the item's first option.
+recommendation is the item's first option. Amendment 0002 closed nine of the twelve on 2026-10-17, on the form
+answers archived in `decisions/responses/2026-10-17T18-35.json` (`REQ-DEC-35`). Three stay open. Ids are kept.
 
-| ID | Question | Recommendation | Blocks |
+| ID | Question | Recommendation, or ruling | Blocks |
 |---|---|---|---|
-| `OQ-1` | What is Narthex's final name? | Choose after a trademark and domain search, with the book's title in mind (`notes/2026-10-17-codenames.md`) | Package, repository and domain names; the book's title |
-| `OQ-2` | Where do newcomers' repositories live: a GitHub account they are guided to create (R13), or a hosted git option? | A guided GitHub account in v1; hosted git later (`DEF-3`) | `REQ-ITK-3`, `REQ-IDN-2`, `DEF-3` |
-| `OQ-3` | What are the pricing and the business model? | Decide after the Bloque pilot shows what teams use | Hosting, sign-up plans, limits per organisation |
-| `OQ-4` | Which sector profiles ship first? | `product` and `oss-ledger` | §7.1, the first sector pack |
-| `OQ-5` | May a profile make an executable reference or a formal model normative over `SPEC.md`? | Yes, where the profile says so | `REQ-DAT-19`, the `protocol` profile |
-| `OQ-6` | Does an agent count as an independent reviewer where a profile requires independence? | Agents for `product` and `oss-ledger`; a person for regulated profiles | `REQ-VER-11` |
-| `OQ-7` | Does every amendment bump the spec version? | Below v1.0.0, a patch bump listed in the amendment; from v1.0.0, a bump per amendment | `REQ-SKL-10` |
-| `OQ-8` | What does an agent do when it finds a spec gap? | Build meanwhile only on the plan's own or a stricter reading; otherwise stop | `REQ-SKL-24` |
-| `OQ-9` | How are tests named? | A per-project setting; by default plain names, identifiers in a comment | `REQ-SKL-30`, `REQ-VER-4` |
-| `OQ-10` | When does a builder's change need an engineer? | Three tiers: green, amber, red | `REQ-VER-7` |
-| `OQ-11` | Which builder and which product pilot Narthex at Bloque? | An operations flow on Bloque's core, named by Pablo | The first milestone's plan |
-| `OQ-12` | Who checks the legal side of sector material, and when? | A lawyer, before the first pack with material derived from a copyrighted standard ships | `REQ-KNB-7`, every sector pack |
+| `OQ-1` | What is Narthex's final name? | Open. Item `v3-oq-1` ruled the next step only: run a trademark and domain search first, with the book's title in mind (`notes/2026-10-17-codenames.md`) | Package, repository and domain names; the book's title |
+| `OQ-2` | Where do newcomers' repositories live: a GitHub account they are guided to create (R13), or a hosted git option? | Closed by amendment 0002 (item `v3-oq-2`): a guided GitHub account now; hosted git later (`DEF-3`) | `REQ-ITK-3`, `REQ-IDN-2`, `DEF-3` |
+| `OQ-3` | What are the pricing and the business model? | Open. Item `v3-oq-3` ruled the timing: decide after the Bloque pilot shows what teams use. Pablo asks what an open-source-first business model revolves around; options are being drafted | Hosting, sign-up plans, limits per organisation |
+| `OQ-4` | Which sector profiles ship first? | Closed by amendment 0002 (item `v3-oq-4`): all five candidates, `product`, `oss-ledger`, `reg-fintech`, `protocol` and `safety`. This was not the recommended option (`REQ-KNB-9`) | §7.1, the first sector pack |
+| `OQ-5` | May a profile make an executable reference or a formal model normative over `SPEC.md`? | Closed by amendment 0002 (item `v3-oq-5`): yes, where the profile says so | `REQ-DAT-19`, the `protocol` profile |
+| `OQ-6` | Does an agent count as an independent reviewer where a profile requires independence? | Closed by amendment 0002 (item `v3-oq-6`): agents for `product` and `oss-ledger`; a person for regulated profiles | `REQ-VER-11` |
+| `OQ-7` | Does every amendment bump the spec version? | Closed by amendment 0002 (item `v3-oq-7`): below v1.0.0, a patch bump listed in the amendment; from v1.0.0, a bump per semantic versioning | `REQ-SKL-10` |
+| `OQ-8` | What does an agent do when it finds a spec gap? | Closed by amendment 0002 (item `v3-oq-8`): build meanwhile only on the plan's own or a stricter reading; never change `SPEC.md` or `PLAN.md` before the ruling; otherwise stop and raise an item. Pablo's note on the item added `REQ-DEC-43` (ASM-57) | `REQ-SKL-24` |
+| `OQ-9` | How are tests named? | Closed by amendment 0002 (item `v3-oq-9`): a per-project setting; by default plain names, identifiers in a comment | `REQ-SKL-30`, `REQ-VER-4` |
+| `OQ-10` | When does a builder's change need an engineer? | Closed by amendment 0002 (item `v3-oq-10`): three tiers, green, amber and red | `REQ-VER-7` |
+| `OQ-11` | Which builder and which product pilot Narthex at Bloque? | Open. Item `v3-oq-11` chose an operations flow on Bloque's core, but the notes behind it were empty. Pablo names the builder and the flow | The first milestone's plan |
+| `OQ-12` | Who checks the legal side of sector material, and when? | Closed by amendment 0002 (item `v3-oq-12`): a lawyer, before the first pack with material derived from a copyrighted standard ships | `REQ-KNB-7`, every sector pack |
 
 ---
 
@@ -944,13 +958,13 @@ recommendation is the item's first option.
 |---|---|
 | Sign-up and intake | `REQ-ITK-1` to `REQ-ITK-14`, `REQ-SKL-1`, `REQ-IDN-1`, `INV-12` |
 | Product specification (input) | §4.3, `REQ-CHN-5`, `REQ-ITK-7`, `REQ-ITK-8` |
-| Requirements engineering (`STEP-1`) | `REQ-CHN-1` to `REQ-CHN-7`, `REQ-SKL-2`, `REQ-SKL-3`, `REQ-DAT-5` to `REQ-DAT-10`, `REQ-DAT-17` to `REQ-DAT-19`, `REQ-KNB-1` to `REQ-KNB-8` |
+| Requirements engineering (`STEP-1`) | `REQ-CHN-1` to `REQ-CHN-7`, `REQ-SKL-2`, `REQ-SKL-3`, `REQ-DAT-5` to `REQ-DAT-10`, `REQ-DAT-17` to `REQ-DAT-19`, `REQ-KNB-1` to `REQ-KNB-10` |
 | Architecture and design (`STEP-2`) | `REQ-CHN-8` to `REQ-CHN-10`, `REQ-CHN-12`, `REQ-SKL-4` |
 | Construction (`STEP-3`) | `REQ-CHN-11`, `REQ-SKL-6` to `REQ-SKL-8`, `REQ-SKL-14` to `REQ-SKL-31`, `REQ-IDN-3` to `REQ-IDN-6`, `REQ-VER-4`, `REQ-VER-6` to `REQ-VER-10`, `INV-8`, `INV-16` |
 | Verification and validation (`STEP-4`) | `REQ-CHN-13`, `REQ-DAT-11` to `REQ-DAT-13`, `REQ-VER-1` to `REQ-VER-5`, `REQ-VER-11` to `REQ-VER-13` |
 | Release and operations (`STEP-5`) | `REQ-CHN-14`, `REQ-SKL-12`, `REQ-SKL-20`, `INV-4` |
 | Evolution (`STEP-6`) | `REQ-CHN-15`, `REQ-SKL-10`, `REQ-SKL-11`, `REQ-TEM-5`, `REQ-TEM-7`, `REQ-DEC-34`, `REQ-DEC-35`, `REQ-DOC-10`, `INV-7` |
-| Decisions (`XC-1`) | `REQ-DEC-1` to `REQ-DEC-42`, `REQ-DAT-14` to `REQ-DAT-16`, `REQ-SKL-5`, `REQ-IFC-3` to `REQ-IFC-6`, `REQ-IFC-9` to `REQ-IFC-12`, `INV-17`, `REQ-TEM-3`, `REQ-TEM-4`, `INV-1` to `INV-4`, `INV-9`, `INV-11` |
+| Decisions (`XC-1`) | `REQ-DEC-1` to `REQ-DEC-44`, `REQ-DAT-14` to `REQ-DAT-16`, `REQ-SKL-5`, `REQ-IFC-3` to `REQ-IFC-6`, `REQ-IFC-9` to `REQ-IFC-12`, `INV-17`, `REQ-TEM-3`, `REQ-TEM-4`, `INV-1` to `INV-4`, `INV-9`, `INV-11` |
 | Measurement (`XC-2`) | `REQ-CHN-17`, `REQ-DOC-9`, `REQ-EXP-4`, `DEF-5` |
 | Compliance evidence (`XC-3`) | `REQ-CHN-16`, `REQ-DAT-20`, `REQ-DOC-12`, `REQ-DOC-15`, `REQ-VER-13`, `INV-14`, `INV-15` |
 | Lessons (`XC-4`) | `REQ-CHN-18`, `REQ-TEM-6` |
@@ -965,16 +979,17 @@ recommendation is the item's first option.
 
 Each assumption is a recommended option that nobody has ruled. It is written into the requirements above as if
 ruled, so the spec reads whole. Pablo confirms or overturns them on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v3-asm-docs` and `v3-asm-packaging`. An assumption
-he overturns is changed by an amendment. Rulings R1 to R22 are not assumptions.
+he overturns is changed by an amendment. Rulings R1 to R22 are not assumptions. An assumption he confirms is marked
+"confirmed" with the date, and stays in this table. The nine of the trust-and-access group were confirmed on 2026-10-17.
 
 | ID | Assumption | Tag | Used by |
 |---|---|---|---|
-| `ASM-1` | v1 holds one organisation with several teams on one shared spec | Assumption (recommendation of the product-definition review §3, multiple teams) | §3.2, `REQ-TEM-1`, `DEF-11` |
+| `ASM-1` | v1 holds one organisation with several teams on one shared spec | Assumption (recommendation of the product-definition review §3, multiple teams); confirmed 2026-10-17 (item `v3-asm-trust`) | §3.2, `REQ-TEM-1`, `DEF-11` |
 | `ASM-2` | A project may carry several profiles, one per component | Assumption (recommendation of the review §3, industry first) | `REQ-ITK-11` |
 | `ASM-3` | The threat model uses STRIDE unless the profile names another method | Assumption (recommendation of the review §2, item 2) | `REQ-CHN-7` |
-| `ASM-4` | Agents reach the MCP server with OAuth 2.1, and get a short-lived token per agent and task from the git host's app | Assumption (recommendation of the review §3, repository access) | `REQ-IDN-3`, `REQ-IDN-4` |
-| `ASM-5` | Commits are made as the human with a co-author trailer, or as the platform-signed app; never as a per-agent identity alone | Assumption (recommendation of the review §3, repository access) | `REQ-IDN-6`, `INV-16` |
-| `ASM-6` | Read-only snapshots are shared through expiring links | Assumption (recommendation of the review §3, repository access) | `REQ-IDN-7` |
+| `ASM-4` | Agents reach the MCP server with OAuth 2.1, and get a short-lived token per agent and task from the git host's app | Assumption (recommendation of the review §3, repository access); confirmed 2026-10-17 (item `v3-asm-trust`) | `REQ-IDN-3`, `REQ-IDN-4` |
+| `ASM-5` | Commits are made as the human with a co-author trailer, or as the platform-signed app; never as a per-agent identity alone | Assumption (recommendation of the review §3, repository access); confirmed 2026-10-17 (item `v3-asm-trust`) | `REQ-IDN-6`, `INV-16` |
+| `ASM-6` | Read-only snapshots are shared through expiring links | Assumption (recommendation of the review §3, repository access); confirmed 2026-10-17 (item `v3-asm-trust`) | `REQ-IDN-7` |
 | `ASM-7` | AI-assisted checks run with the user's model access; Narthex runs no model in v1 | Assumption (recommendation of the review §3, natural-language layer, applied to checks) | `REQ-VER-12` |
 | `ASM-8` | A review step and `review` skill before merge | Assumption (recommended option of `0002-adopt`, A1) | `REQ-SKL-8`, `STEP-3` gate |
 | `ASM-9` | No turn ends waiting on CI; a script waits and resumes the agent | Assumption (recommended option of `0002-adopt`, A2) | `REQ-SKL-7`, `REQ-SKL-28` |
@@ -990,19 +1005,19 @@ he overturns is changed by an amendment. Rulings R1 to R22 are not assumptions.
 | `ASM-19` | Items may be deferred with a reason and a target | Assumption (recommended option of `0002-adopt`, A16) | `REQ-DEC-29` |
 | `ASM-20` | Items may carry `due`, a release scope | Assumption (recommended option of `0002-adopt`, A17) | `REQ-DEC-11` |
 | `ASM-21` | `decide` can seed a form from an existing project | Assumption (recommended option of `0002-adopt`, A18) | `REQ-DEC-32` |
-| `ASM-22` | The finder drafts the item; the spec owner applies the ruling | Assumption (recommended option of `0002-d4`) | `REQ-SKL-31` |
+| `ASM-22` | The finder drafts the item; the spec owner applies the ruling | Assumption (recommended option of `0002-d4`); confirmed 2026-10-17 (item `v3-asm-trust`) | `REQ-SKL-31` |
 | `ASM-23` | Checks are tagged with identifiers; anchors show "checked by"; alarms fire on failed checks, foreign identifiers and unknown touchpoints; running products are held; golden paths | Assumption (recommendation of amendment 0003 A3) | `REQ-KNB-1`, `REQ-DOC-12`, `REQ-VER-4`, `REQ-VER-6`, `REQ-VER-9` |
 | `ASM-24` | Each step has a fixed brief and a script-decided exit; reports end with a requirement-to-evidence table | Assumption (recommendation of amendment 0003 A4) | `REQ-SKL-13`, `REQ-SKL-14`, `REQ-VER-13` |
 | `ASM-25` | specsite is the living-docs implementation: Starlight sites and `specsite html` editions; HTML first, PDF after | Assumption (recommended option of `0004-specsite`) | `REQ-DOC-8`, `REQ-DOC-13` |
 | `ASM-26` | A `needs.json`-compatible export | Assumption (recommended option of `0004-needs`) | `REQ-DAT-20` |
 | `ASM-27` | Every profile keeps the universal parts; a profile is a data file; editions are pinned; profile views | Assumption (recommendation of amendment 0005 A1 and A2) | `REQ-DAT-9`, `REQ-DAT-10`, `REQ-DAT-17`, `REQ-DAT-18`, `REQ-KNB-6`, `REQ-DOC-15` |
 | `ASM-28` | Intake proposes a profile and the lead confirms it; a hazard-derived level is never asked; tailoring is recorded as decisions | Assumption (recommendation of amendment 0005 A4) | `REQ-CHN-4`, `REQ-ITK-12` to `REQ-ITK-14` |
-| `ASM-29` | Narthex produces the structure of evidence and claims no certification or tool qualification | Assumption (recommendation of amendment 0005 A5) | §1.7, `INV-15` |
+| `ASM-29` | Narthex produces the structure of evidence and claims no certification or tool qualification | Assumption (recommendation of amendment 0005 A5); confirmed 2026-10-17 (item `v3-asm-trust`) | §1.7, `INV-15` |
 | `ASM-30` | The decisions capability is usable alone | Assumption (recommended option of `oq-2`) | `REQ-DEC-38` |
 | `ASM-31` | The repo is the record of every answer; the store is an inbox | Assumption (recommended option of `oq-6`) | `REQ-DAT-15` |
 | `ASM-32` | Items are written in JSON | Assumption (recommended option of `oq-7`) | `REQ-DAT-14` |
 | `ASM-33` | The log plus amendments record rulings, with no record file per ruling | Assumption (recommended option of `oq-8`) | `REQ-DAT-16` |
-| `ASM-34` | Agents may act on defaults of reversible items before the answer | Assumption (recommended option of `oq-9`) | `REQ-DEC-5` |
+| `ASM-34` | Agents may act on defaults of reversible items before the answer | Assumption (recommended option of `oq-9`); confirmed 2026-10-17 (item `v3-asm-trust`) | `REQ-DEC-5` |
 | `ASM-35` | Notifications go by Claude push notifications first | Assumption (recommended option of `oq-10`) | `REQ-DEC-36` |
 | `ASM-36` | "Discuss first" answers build an agenda page | Assumption (recommended option of `oq-12`) | `REQ-DEC-28` |
 | `ASM-37` | A ref opens its target in a modal | Assumption (recommended option of `oq-15`) | `REQ-DOC-6` |
@@ -1011,9 +1026,9 @@ he overturns is changed by an amendment. Rulings R1 to R22 are not assumptions.
 | `ASM-40` | The skills ship as one Claude Code plugin, plus an Agent Skills install path | Assumption (recommended option of `oq-19`) | §1.8, `REQ-SKL-32` |
 | `ASM-41` | Narthex's repository stays local until a second project runs it | Assumption (recommended option of `oq-20`) | `REQ-SKL-35` |
 | `ASM-42` | Dispatched agents run as subagents in worktrees | Assumption (recommended option of `oq-22`) | `REQ-SKL-7` |
-| `ASM-43` | An agent merges only when its task says so, with CI green | Assumption (recommended option of `oq-23`) | `REQ-SKL-25` |
+| `ASM-43` | An agent merges only when its task says so, with CI green | Assumption (recommended option of `oq-23`); confirmed 2026-10-17 (item `v3-asm-trust`) | `REQ-SKL-25` |
 | `ASM-44` | The traceability graph and the amendment diff are in v1; the dispatch board waits | Assumption (recommended option of `oq-24`) | `REQ-DAT-11`, `REQ-DAT-12`, `REQ-DOC-10`, `DEF-4` |
-| `ASM-45` | Guard hooks enforce the mechanical house rules from v1 | Assumption (recommended option of `oq-25`) | `REQ-SKL-27` |
+| `ASM-45` | Guard hooks enforce the mechanical house rules from v1 | Assumption (recommended option of `oq-25`); confirmed 2026-10-17 (item `v3-asm-trust`) | `REQ-SKL-27` |
 | `ASM-46` | House-rule defaults ship with Narthex, extended by a project file | Assumption (recommended option of `oq-26`) | `REQ-SKL-17` |
 | `ASM-47` | A fast path for changes that touch no identifier | Assumption (recommended option of `oq-27`) | `REQ-SKL-15` |
 | `ASM-48` | Experiment logs are committed under `experiments/` | Assumption (recommended option of `oq-28`) | `REQ-DAT-1`, `REQ-EXP-2` |
@@ -1025,6 +1040,7 @@ he overturns is changed by an amendment. Rulings R1 to R22 are not assumptions.
 | `ASM-54` | Two new skills, `design` and `release`, for `STEP-2` and `STEP-5` | Assumption (new in v0.3.0, from R15) | `REQ-SKL-4`, `REQ-SKL-12` |
 | `ASM-55` | A legal check applies only to sector material derived from a copyrighted standard; the text of an open standard ships without one | Assumption (new in the review of v0.3.0, reading R4) | `REQ-KNB-7`, `OQ-12` |
 | `ASM-56` | Validation is the product-spec owner's answer on the form, judged against the product specification | Assumption (new in the review of v0.3.0) | `REQ-CHN-13` |
+| `ASM-57` | Pablo's note on `v3-oq-8` means that every `read` item and the knowledge base's reading guidance give the full reading chain: an ordered path, each step with its prerequisites and why it matters to the decision. Pablo can correct this reading | Assumption (new in amendment 0002, reading Pablo's note of 2026-10-17) | `REQ-DEC-43`, `REQ-DEC-44`, `REQ-KNB-10` |
 
 ---
 

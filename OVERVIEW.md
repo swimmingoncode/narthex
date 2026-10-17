@@ -138,25 +138,19 @@ The MCP server, the web GUI, the sector profiles and the remaining skills do not
 - no conversational agent of Narthex's own for now;
 - the MIT licence; Markdown as the source of truth; shared tools as public repositories.
 
-**Assumed** until Pablo confirms them: 56 recommended options folded into the spec, listed in SPEC §13 and
+**Assumed** until Pablo confirms them: 57 recommended options (nine confirmed so far) folded into the spec, listed in SPEC §13 and
 confirmed on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v3-asm-docs` and `v3-asm-packaging`.
+
+**Ruled** on 2026-10-17 by amendment 0002 (SPEC v0.3.2), nine of the twelve open questions: `OQ-2` and `OQ-4`
+to `OQ-10`, and `OQ-12`. All five sector profiles ship first. Nine trust-and-access assumptions are confirmed.
 
 **Open**, each an item on the form (SPEC §11):
 
 | Question | ID |
 |---|---|
-| The final name | `OQ-1` |
-| Where newcomers' repositories live | `OQ-2` |
-| Pricing and the business model | `OQ-3` |
-| Which sector profiles ship first | `OQ-4` |
-| Whether a profile may make an executable or formal spec normative | `OQ-5` |
-| Whether an agent counts as an independent reviewer | `OQ-6` |
-| Whether every amendment bumps the spec version | `OQ-7` |
-| What an agent does on a spec gap | `OQ-8` |
-| How tests are named | `OQ-9` |
-| When a builder's change needs an engineer (the alarm tiers) | `OQ-10` |
-| Which builder and product pilot Narthex at Bloque | `OQ-11` |
-| Who checks the legal side of sector material, and when | `OQ-12` |
+| The final name (next step ruled: a trademark and domain search) | `OQ-1` |
+| Pricing and the business model (after the Bloque pilot) | `OQ-3` |
+| Which builder and product pilot Narthex at Bloque (Pablo names them) | `OQ-11` |
 
 ## 7. Where to read more
 

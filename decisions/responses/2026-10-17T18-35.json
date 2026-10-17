@@ -1,0 +1,17 @@
+[
+{"id":"r-spec","data":{"at":"2026-10-17T18:18:18.401Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Read, comments in notes","notes":"No comments for now, I'll provide feedback on the chat."}},
+{"id":"v3-asm-trust","data":{"at":"2026-10-17T18:31:29.424Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Confirm these assumptions (recommended)","notes":""}},
+{"id":"v3-oq-1","data":{"at":"2026-10-17T18:23:34.556Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Run a trademark and domain search first (recommended)","notes":""}},
+{"id":"v3-oq-10","data":{"at":"2026-10-17T18:30:02.483Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Three tiers as described (recommended)","notes":""}},
+{"id":"v3-oq-11","data":{"at":"2026-10-17T18:24:54.277Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"An operations flow on the core (details in notes)","notes":""}},
+{"id":"v3-oq-12","data":{"at":"2026-10-17T18:26:18.863Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"A lawyer, before the first standards-derived pack (recommended)","notes":""}},
+{"id":"v3-oq-2","data":{"at":"2026-10-17T18:23:49.858Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Guided GitHub account now, hosted git later (recommended)","notes":""}},
+{"id":"v3-oq-3","data":{"at":"2026-10-17T18:24:46.085Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Decide after the Bloque pilot (recommended)","notes":"As you already saw, Narthex is open-source first. This means that the business model revolves around …?"}},
+{"id":"v3-oq-4","data":{"at":"2026-10-17T18:25:30.005Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"All five candidates","notes":""}},
+{"id":"v3-oq-5","data":{"at":"2026-10-17T18:25:47.916Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Yes, where the profile says so (recommended)","notes":""}},
+{"id":"v3-oq-6","data":{"at":"2026-10-17T18:26:05.317Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Agents for product and oss-ledger; a person for regulated (recommended)","notes":""}},
+{"id":"v3-oq-7","data":{"at":"2026-10-17T18:26:55.145Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Patch bump below v1.0.0, a bump from v1 (recommended)","notes":""}},
+{"id":"v3-oq-8","data":{"at":"2026-10-17T18:28:55.578Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Build only the plan's or a stricter reading (recommended)","notes":"With a note: so far, reads are only partially useful as they only provide a reference of what to read, but they (nor the form) provide full chaining on what to read, only partial. We need full for Narthex."}},
+{"id":"v3-oq-9","data":{"at":"2026-10-17T18:29:21.579Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Per project; default plain names, ids in comments (recommended)","notes":""}},
+{"id":"v3-r-references","data":{"at":"2026-10-17T18:23:24.555Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Read, no comments","notes":""}}
+]

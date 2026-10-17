@@ -1,7 +1,12 @@
 # Amendments
 
 This folder holds the amendments to `SPEC.md` v0.3.0, the Narthex specification. Their numbering starts again
-at 0001 (ruling R19 of 2026-10-17, in `notes/2026-10-17-rulings.md`). No amendment to v0.3.0 exists yet.
+at 0001 (ruling R19 of 2026-10-17, in `notes/2026-10-17-rulings.md`).
+
+| File | Status |
+|---|---|
+| `0001-own-publishing.md` | Applied in SPEC v0.3.1 |
+| `0002-first-rulings-on-v0.3.md` | Applied in SPEC v0.3.2 |
 
 ## History
 

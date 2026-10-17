@@ -2157,6 +2157,8 @@
   },
   {
    "id": "d-name-next",
+   "applied": "brainstorm in progress (notes/2026-10-17-name-alternatives.md)",
+   "keep_open": true,
    "section": "decide",
    "group": "v3-product",
    "follows": "q-name-search",
@@ -2184,6 +2186,7 @@
   },
   {
    "id": "r-business-models",
+   "applied": "amendment 0004",
    "kind": "read",
    "section": "read",
    "follows": "q-business-models",

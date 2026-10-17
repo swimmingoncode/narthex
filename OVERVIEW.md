@@ -80,6 +80,8 @@ judge (`REQ-CHN-3`). Two steps matter most to a non-engineer:
 The first question of every project is its sector (`REQ-ITK-9`). The sector picks a profile: a data file that
 sets the sections, notation, trace rules, evidence and gates for that domain (§6.6). Candidates run from
 `product` (SaaS and APIs) to `safety` (avionics, automotive, medical), with `oss-ledger` for Bloque's case.
+Intake lists every industry and sector. A sector with no specialised track gets the standard flow, with a clear
+disclaimer (`REQ-ITK-15`, `REQ-KNB-11`).
 
 ## 4. The capabilities
 
@@ -128,7 +130,7 @@ The MCP server, the web GUI, the sector profiles and the remaining skills do not
 
 ## 6. Decided and open
 
-**Decided** by Pablo's rulings R1 to R22 of 2026-10-17 (`notes/2026-10-17-rulings.md`) and earlier answers:
+**Decided** by Pablo's rulings R1 to R33 of 2026-10-17 (`notes/2026-10-17-rulings.md`) and earlier answers:
 
 - the codename, the first customers, and the chain;
 - the interface (MCP plus a web GUI, with links into the GUI), the MCP's five groups, incremental reads,
@@ -136,9 +138,13 @@ The MCP server, the web GUI, the sector profiles and the remaining skills do not
 - user-owned repositories through git-host apps; sign-up that profiles the user;
 - multiple teams, low-code and no-code, the treatment of sector material, the minimum product-spec contract;
 - no conversational agent of Narthex's own for now;
+- the business model (amendment 0004, R24 to R32): everything open is MIT (method, skills, MCP server, GUI and
+  the open core of the knowledge base); Narthex runs a hosted service; experts' sector packs are paid; the book
+  is free online and sold in print; Bloque sponsors and gives feedback; Swimming on Code sells, with copyright
+  "Pablo Dorado" until it is incorporated;
 - the MIT licence; Markdown as the source of truth; shared tools as public repositories.
 
-**Assumed** until Pablo confirms them: 57 recommended options (nine confirmed so far) folded into the spec, listed in SPEC §13 and
+**Assumed** until Pablo confirms them: 58 recommended options (nine confirmed so far) folded into the spec, listed in SPEC §13 and
 confirmed on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v3-asm-docs` and `v3-asm-packaging`.
 
 **Ruled** on 2026-10-17 by amendment 0002 (SPEC v0.3.2), nine of the twelve open questions: `OQ-2` and `OQ-4`
@@ -148,8 +154,8 @@ to `OQ-10`, and `OQ-12`. All five sector profiles ship first. Nine trust-and-acc
 
 | Question | ID |
 |---|---|
-| The final name (next step ruled: a trademark and domain search) | `OQ-1` |
-| Pricing and the business model (after the Bloque pilot) | `OQ-3` |
+| The final name (alternatives are being brainstormed) | `OQ-1` |
+| Prices and plans (after the Bloque pilot; the business model itself is ruled, see above) | `OQ-3` |
 | Which builder and product pilot Narthex at Bloque (Pablo names them) | `OQ-11` |
 
 ## 7. Where to read more

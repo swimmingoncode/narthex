@@ -7,6 +7,8 @@ at 0001 (ruling R19 of 2026-10-17, in `notes/2026-10-17-rulings.md`).
 |---|---|
 | `0001-own-publishing.md` | Applied in SPEC v0.3.1 |
 | `0002-first-rulings-on-v0.3.md` | Applied in SPEC v0.3.2 |
+| `0003-pilot.md` | Applied in SPEC v0.3.3 |
+| `0004-business-model.md` | Applied in SPEC v0.3.4 |
 
 ## History
 

@@ -1,11 +1,11 @@
 ---
 name: Narthex (codename)
 summary: Tools and a knowledge base that turn a user's agentic system into a senior software architect. It guides people from a product specification through requirements, architecture, construction, verification, release and evolution, with decisions as data, living documents, and checks that run in CI.
-spec_version: 0.3.3
+spec_version: 0.3.4
 status: draft
 date: 2026-10-17
 rewrite_of: SDD Studio SPEC v0.2.0
-amendments: 0001, 0002
+amendments: 0001, 0002, 0003, 0004
 ---
 
 # Narthex: system specification
@@ -18,7 +18,7 @@ and `notes/` holds the research.
 
 Narthex is a codename (R1). The final name is open (`OQ-1`).
 
-This version rewrites SDD Studio's SPEC v0.2.0 once, as Pablo allowed on 2026-10-17 (R18). It reflects rulings R1 to R22 of that day. It folds in
+This version rewrites SDD Studio's SPEC v0.2.0 once, as Pablo allowed on 2026-10-17 (R18). It reflects rulings R1 to R22 of that day. Later rulings of the same day enter by amendment. It folds in
 amendments 0001 to 0005, the research in `notes/`, and Pablo's product definition of the same day. Appendix A
 maps every old identifier to its new one. Amendments to this version start again at 0001 (R19). The old ones
 are kept in `history/amendments-v0/`.
@@ -198,8 +198,9 @@ Bloque's teams come first, so organisations, teams and role-based access are in 
 - Every project lives in a git repository the user owns, and git is the record of every document (R7).
 - The user's agents run in a harness that can reach an MCP server. Claude Code is the first harness supported;
   others follow through the Agent Skills format (ASM-40).
-- Narthex's code and documents are released under the MIT licence, with copyright "Pablo Dorado" until the
-  company is incorporated (item `oq-3`, 2026-10-12).
+- Narthex's code and documents are released under the MIT licence, with copyright "Pablo Dorado" until Swimming
+  on Code is incorporated (item `oq-3`, 2026-10-12; R25, R26, amendment 0004). Everything open is MIT: the
+  method, the skills, the MCP server, the GUI and the open core of the knowledge base (`REQ-KNB-12`).
 - The decision form exists today as a claude.ai artifact built by the `decision-form` skill. Narthex's web GUI
   takes over that role (R3). Until it exists, the artifact is the UI.
 
@@ -470,6 +471,7 @@ Normative. The guidance level follows the experience level (R5). The default ent
 | `REQ-ITK-12` | Intake SHOULD propose a profile from: the domain; the deployment context; who is harmed on failure; which regulators or customers want evidence; and whether the code is open or closed source. The lead MUST confirm the profile as an answered decision with its rationale (ASM-28). |
 | `REQ-ITK-13` | Where a profile's level (DAL, ASIL, SIL or IEC 62304 class) comes from hazard analysis, intake MUST NOT ask for it. Intake MUST record "level pending hazard analysis", and the level-dependent gates stay closed until the analysis sets it (ASM-28). |
 | `REQ-ITK-14` | The lead MAY tailor a profile. Each obligation dropped MUST be an answered decision (ASM-28). |
+| `REQ-ITK-15` | Intake MUST list every industry and sector for profiling, not only those with a specialised track (R31, amendment 0004). A user MUST be able to pick any of them. A sector with no specialised track gets the standard flow (`REQ-KNB-11`). |
 
 ---
 
@@ -583,6 +585,8 @@ Normative. Link types are ASM-53.
 | `REQ-KNB-8` | Every external source the knowledge base or this spec relies on MUST be listed in `REFERENCES.md` (R6). |
 | `REQ-KNB-9` | The first sector release of the knowledge base MUST carry all five profiles of §7.1: `product`, `oss-ledger`, `reg-fintech`, `protocol` and `safety` (`OQ-4`, amendment 0002). Material derived from a copyrighted standard waits for the legal check of `REQ-KNB-7`; the rest of its profile ships. |
 | `REQ-KNB-10` | The reading guidance for each step and experience level, and each golden path, MUST give the full reading chain, not a single reference (`REQ-DEC-43`, ASM-57). |
+| `REQ-KNB-11` | A sector with no specialised track MUST get the standard flow, the `product` profile's method, with a clear disclaimer wherever it appears: no sector-specific material backs this project, and the user should check the standards and rules of their sector (R31, amendment 0004; `REQ-KNB-5`). |
+| `REQ-KNB-12` | The open core of the knowledge base MUST be released under the MIT licence: the method, the profiles, the standard flows and the guidance Narthex writes (R25). Experts' sector packs are separate content under their own terms, outside the MIT repository, available for a fee (R29; ASM-58). `REQ-KNB-7` and `REQ-KNB-9` still apply to every pack. |
 
 Normative: classes of sector material (R4, R16).
 
@@ -813,12 +817,13 @@ definitive shape reaches the decision form.
 | ID | Requirement |
 |---|---|
 | `REQ-IDN-1` | Narthex MUST integrate with GitHub, GitLab and Codeberg as an app installed on repositories the user owns (R7). |
-| `REQ-IDN-2` | In v1, Narthex MUST NOT host a user's code. Repositories stay where their owners keep them (R7; a hosted option is `DEF-3`; `OQ-2`, amendment 0002). |
+| `REQ-IDN-2` | In v1, Narthex MUST NOT host a user's code. Repositories stay where their owners keep them. The hosted service of `REQ-IDN-8` does not hold them either (R7; a hosted option is `DEF-3`; `OQ-2`, amendment 0002). |
 | `REQ-IDN-3` | Agents MUST authenticate to Narthex's MCP server with OAuth 2.1, as the MCP authorization specification describes (ASM-4). |
 | `REQ-IDN-4` | For each agent and each task, the server MUST mint a short-lived token scoped to the repositories and permissions the task needs, from the git host's app installation. No agent holds a long-lived git-host or repository credential (ASM-4). The long-lived answer token of `REQ-IFC-10` (R20) is not such a credential: it lets a person submit answers to one form and nothing else. |
 | `REQ-IDN-5` | Every write through the MCP change group MUST end as a commit or a pull request in the user's repository (R8, `INV-16`). |
 | `REQ-IDN-6` | Every commit MUST be verifiable on its platform. Either the agent commits as its human, with the signing that human set up and a co-author trailer naming the agent, or it commits as the Narthex app identity, whose commits the platform signs. A per-agent identity alone MUST NOT be used (ASM-5). |
 | `REQ-IDN-7` | Read-only snapshots (rendered editions, the decision form) MAY be shared with people outside the repository through expiring links (ASM-6). |
+| `REQ-IDN-8` | Narthex MUST run as a hosted service that Swimming on Code operates, so a user needs to install nothing to use it (R27, amendment 0004). Self-hosting MUST stay possible: the MIT code is public (R25). The hosted service MUST NOT be needed to read, build or run any open part. Its plans and prices are `OQ-3`. |
 
 ### 7.8 Interfaces
 
@@ -937,9 +942,9 @@ answers archived in `decisions/responses/2026-10-17T18-35.json` (`REQ-DEC-35`). 
 
 | ID | Question | Recommendation, or ruling | Blocks |
 |---|---|---|---|
-| `OQ-1` | What is Narthex's final name? | Open. Item `v3-oq-1` ruled the next step only: run a trademark and domain search first, with the book's title in mind (`notes/2026-10-17-codenames.md`) | Package, repository and domain names; the book's title |
+| `OQ-1` | What is Narthex's final name? | Open. Item `v3-oq-1` ruled the next step only: run a trademark and domain search first, with the book's title in mind (`notes/2026-10-17-codenames.md`). The name screen came back at medium risk. Item `d-name-next` ruled (R33) that alternatives are brainstormed now, so `OQ-1` stays open while the brainstorm runs (`notes/2026-10-17-name-alternatives.md`) | Package, repository and domain names; the book's title |
 | `OQ-2` | Where do newcomers' repositories live: a GitHub account they are guided to create (R13), or a hosted git option? | Closed by amendment 0002 (item `v3-oq-2`): a guided GitHub account now; hosted git later (`DEF-3`) | `REQ-ITK-3`, `REQ-IDN-2`, `DEF-3` |
-| `OQ-3` | What are the pricing and the business model? | Open. Item `v3-oq-3` ruled the timing: decide after the Bloque pilot shows what teams use. Pablo asks what an open-source-first business model revolves around; options are being drafted | Hosting, sign-up plans, limits per organisation |
+| `OQ-3` | What are the prices and plans of the hosted service, of the experts' packs and of the print book? | Open for pricing only. The business model is closed by amendment 0004 (rulings R24 to R32): MIT for everything open; a hosted service; paid experts' sector packs; the book free online and sold in print; Bloque's sponsorship and feedback; Swimming on Code as seller. Item `v3-oq-3` ruled the timing: set the levels after the Bloque pilot shows what teams use | Hosting plans, sign-up plans, limits per organisation, pack and book prices |
 | `OQ-4` | Which sector profiles ship first? | Closed by amendment 0002 (item `v3-oq-4`): all five candidates, `product`, `oss-ledger`, `reg-fintech`, `protocol` and `safety`. This was not the recommended option (`REQ-KNB-9`) | §7.1, the first sector pack |
 | `OQ-5` | May a profile make an executable reference or a formal model normative over `SPEC.md`? | Closed by amendment 0002 (item `v3-oq-5`): yes, where the profile says so | `REQ-DAT-19`, the `protocol` profile |
 | `OQ-6` | Does an agent count as an independent reviewer where a profile requires independence? | Closed by amendment 0002 (item `v3-oq-6`): agents for `product` and `oss-ledger`; a person for regulated profiles | `REQ-VER-11` |
@@ -956,9 +961,9 @@ answers archived in `decisions/responses/2026-10-17T18-35.json` (`REQ-DEC-35`). 
 
 | Step or activity | Requirements |
 |---|---|
-| Sign-up and intake | `REQ-ITK-1` to `REQ-ITK-14`, `REQ-SKL-1`, `REQ-IDN-1`, `INV-12` |
+| Sign-up and intake | `REQ-ITK-1` to `REQ-ITK-15`, `REQ-SKL-1`, `REQ-IDN-1`, `REQ-IDN-8`, `INV-12` |
 | Product specification (input) | §4.3, `REQ-CHN-5`, `REQ-ITK-7`, `REQ-ITK-8` |
-| Requirements engineering (`STEP-1`) | `REQ-CHN-1` to `REQ-CHN-7`, `REQ-SKL-2`, `REQ-SKL-3`, `REQ-DAT-5` to `REQ-DAT-10`, `REQ-DAT-17` to `REQ-DAT-19`, `REQ-KNB-1` to `REQ-KNB-10` |
+| Requirements engineering (`STEP-1`) | `REQ-CHN-1` to `REQ-CHN-7`, `REQ-SKL-2`, `REQ-SKL-3`, `REQ-DAT-5` to `REQ-DAT-10`, `REQ-DAT-17` to `REQ-DAT-19`, `REQ-KNB-1` to `REQ-KNB-12` |
 | Architecture and design (`STEP-2`) | `REQ-CHN-8` to `REQ-CHN-10`, `REQ-CHN-12`, `REQ-SKL-4` |
 | Construction (`STEP-3`) | `REQ-CHN-11`, `REQ-SKL-6` to `REQ-SKL-8`, `REQ-SKL-14` to `REQ-SKL-31`, `REQ-IDN-3` to `REQ-IDN-6`, `REQ-VER-4`, `REQ-VER-6` to `REQ-VER-10`, `INV-8`, `INV-16` |
 | Verification and validation (`STEP-4`) | `REQ-CHN-13`, `REQ-DAT-11` to `REQ-DAT-13`, `REQ-VER-1` to `REQ-VER-5`, `REQ-VER-11` to `REQ-VER-13` |
@@ -1041,6 +1046,7 @@ he overturns is changed by an amendment. Rulings R1 to R22 are not assumptions. 
 | `ASM-55` | A legal check applies only to sector material derived from a copyrighted standard; the text of an open standard ships without one | Assumption (new in the review of v0.3.0, reading R4) | `REQ-KNB-7`, `OQ-12` |
 | `ASM-56` | Validation is the product-spec owner's answer on the form, judged against the product specification | Assumption (new in the review of v0.3.0) | `REQ-CHN-13` |
 | `ASM-57` | Pablo's note on `v3-oq-8` means that every `read` item and the knowledge base's reading guidance give the full reading chain: an ordered path, each step with its prerequisites and why it matters to the decision. Pablo can correct this reading | Assumption (new in amendment 0002, reading Pablo's note of 2026-10-17) | `REQ-DEC-43`, `REQ-DEC-44`, `REQ-KNB-10` |
+| `ASM-58` | R25 (the knowledge base stays MIT) and R29 (experts' sector packs are paid and not public) are read together: the open core of the knowledge base, which is the method, the profiles, the standard flows and the guidance Narthex writes, is MIT. Experts' sector packs are separate content under their own terms, outside the MIT repository. Pablo can correct this reading | Assumption (new in amendment 0004, reading R25 and R29) | `REQ-KNB-12` |
 
 ---
 

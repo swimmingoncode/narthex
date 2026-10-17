@@ -55,6 +55,7 @@ advisories history. If the spike fails, fall back to C with Keycloak (see the co
 - We own a security-critical dependency. Updates are tracked like a security patch stream.
 - Sessions, sign-in methods and OAuth clients live in our PostgreSQL (ADR-0005).
 - A security review of the auth module is a gate before the first outside user.
+- Practices: docs/architecture/auth-practices.md
 
 ## Why the lead must rule
 

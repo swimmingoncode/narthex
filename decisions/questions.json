@@ -2856,7 +2856,43 @@
     "OK",
     "Do this first",
     "Stop it"
-   ]
+   ],
+   "applied": "ADR 0006 comparison"
+  },
+  {
+   "id": "adr-0006b",
+   "kind": "decide",
+   "section": "decide",
+   "group": "architecture",
+   "follows": "q-auth-servers",
+   "title": "Keep the built-in sign-in library after comparing servers?",
+   "lead": "We compared nine ready-made sign-in servers; none fits Narthex better than the built-in library. Step out of character for this one: it decides who holds sign-in data.",
+   "bullets": [
+    "Built in (Better Auth): one less service, free, fits the small server; we must patch fast.",
+    "Its record is mixed: a critical flaw was disclosed on 30 September 2026.",
+    "Keycloak is mature but heavy; its agent sign-in parts are marked experimental.",
+    "The others lack a free licence, agent sign-in or social sign-in.",
+    "We keep the agent door swappable, so Keycloak stays possible."
+   ],
+   "options": [
+    "Keep the built-in library, with a swap-out seam (recommended)",
+    "Run Keycloak as a separate sign-in server",
+    "Discuss first"
+   ],
+   "reserved": true,
+   "blocks": true,
+   "refs": [
+    {
+     "label": "ADR-0006 comparison (on GitHub)",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0006-identity-and-sign-in.md"
+    }
+   ],
+   "spec": [
+    "REQ-IDN-3",
+    "REQ-ITK-2",
+    "REQ-ITK-3"
+   ],
+   "origin": "ADR 0006 comparison, 2026-10-17"
   }
  ]
 }

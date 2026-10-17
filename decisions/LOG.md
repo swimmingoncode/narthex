@@ -1,6 +1,6 @@
 # Narthex Decisions — log
 
-Generated Sat 2026-10-17 17:10 -05 · commit 53a8228 by the decision-form skill from `responses/`. Do not edit by hand:
+Generated Sat 2026-10-17 17:11 -05 · commit 21b3797 by the decision-form skill from `responses/`. Do not edit by hand:
 every answer ever archived is listed, oldest first. A later answer to the same item supersedes the earlier one.
 
 | When | Item | Question | Answer | Notes | By | Status | Applied by |
@@ -40,5 +40,5 @@ every answer ever archived is listed, oldest first. A later answer to the same i
 | 2026-10-17 20:00 | `oq-4` | Keep the working name "SDD Studio" for now? | Rename now (name in notes) | Pablo, in chat on 2026-10-17, ruling R1: "The name 'SDD Studio' is dropped. Use codenames until a final name is found." He chose the codename Narthex the same day (notes/2026-10-17-codenames.md). | relayed:chat | current | SPEC v0.3.0 (R1); final name is OQ-1 |
 | 2026-10-17 20:00 | `oq-5` | Where does the form live in v1? | Narthex's web GUI, linked from the MCP | Pablo, in chat on 2026-10-17, ruling R3: "Interface: MCP and a GUI. The GUI is web, with optional harness add-ons ... The MCP hands the user links into the UI." Recorded in notes/2026-10-17-rulings.md. | relayed:chat | current | SPEC v0.3.0 REQ-IFC-3, REQ-IFC-8 (R3) |
 | 2026-10-17 22:03 | `adr-0004` | Where should hosted Narthex run, and what may it cost? | One rented server in Europe (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | docs/architecture/adr/0004 accepted |
-| 2026-10-17 22:04 | `adr-0006` | How should people and agents sign in to Narthex? | Run a separate sign-in server | What options do we have and does any of them fit better? If not, built-in it is. | u_I_crGe4UnsTeI8vf31ga_A | current | not applied yet |
+| 2026-10-17 22:04 | `adr-0006` | How should people and agents sign in to Narthex? | Run a separate sign-in server | What options do we have and does any of them fit better? If not, built-in it is. | u_I_crGe4UnsTeI8vf31ga_A | current | ADR 0006 accepted: built-in library, by your rule "if not, built-in it is" |
 | 2026-10-17 22:04 | `adr-0007` | How long may a link for answering a form keep working? | Until revoked or the form closes (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | docs/architecture/adr/0007 accepted |

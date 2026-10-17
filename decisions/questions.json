@@ -89,6 +89,11 @@
    "id": "later",
    "title": "Later",
    "blurb": "Parked on purpose. Only note if something should move earlier."
+  },
+  {
+   "id": "updates",
+   "title": "Updates",
+   "blurb": "What happened, for your information. No action needed; comment if you disagree."
   }
  ],
  "items": [
@@ -2598,7 +2603,7 @@
     "REQ-TEM-4"
    ],
    "origin": "STEP-2 architecture and design, 2026-10-17",
-   "keep_open": true
+   "applied": "ADR 0006 accepted: built-in library, by your rule \"if not, built-in it is\""
   },
   {
    "id": "adr-0007",
@@ -2860,39 +2865,28 @@
    "applied": "ADR 0006 comparison"
   },
   {
-   "id": "adr-0006b",
-   "kind": "decide",
-   "section": "decide",
-   "group": "architecture",
+   "id": "u-auth-result",
+   "kind": "update",
+   "section": "updates",
    "follows": "q-auth-servers",
-   "title": "Keep the built-in sign-in library after comparing servers?",
-   "lead": "We compared nine ready-made sign-in servers; none fits Narthex better than the built-in library. Step out of character for this one: it decides who holds sign-in data.",
+   "title": "Sign-in: no separate server fits better, so built-in it is",
+   "lead": "Nine options were compared; following your answer, Narthex uses the built-in library, with Keycloak as the fallback.",
    "bullets": [
-    "Built in (Better Auth): one less service, free, fits the small server; we must patch fast.",
-    "Its record is mixed: a critical flaw was disclosed on 30 September 2026.",
-    "Keycloak is mature but heavy; its agent sign-in parts are marked experimental.",
-    "The others lack a free licence, agent sign-in or social sign-in.",
-    "We keep the agent door swappable, so Keycloak stays possible."
+    "Keycloak: mature but heavy; its agent-login support is still experimental.",
+    "Zitadel is AGPL; Authentik and Authelia lack features we need.",
+    "The library had a critical flaw fixed in September: we pin versions and patch within days.",
+    "If a first test against a real agent fails, we switch to Keycloak."
    ],
    "options": [
-    "Keep the built-in library, with a swap-out seam (recommended)",
-    "Run Keycloak as a separate sign-in server",
-    "Discuss first"
+    "OK",
+    "Comment (notes)"
    ],
-   "reserved": true,
-   "blocks": true,
    "refs": [
     {
-     "label": "ADR-0006 comparison (on GitHub)",
+     "label": "ADR 0006",
      "url": "https://github.com/swimmingoncode/narthex/blob/main/docs/architecture/adr/0006-identity-and-sign-in.md"
     }
-   ],
-   "spec": [
-    "REQ-IDN-3",
-    "REQ-ITK-2",
-    "REQ-ITK-3"
-   ],
-   "origin": "ADR 0006 comparison, 2026-10-17"
+   ]
   }
  ]
 }

@@ -1,7 +1,6 @@
 # ADR-0006: Sign-in and agent authorization with an embedded open-source library
 
-- **Status:** proposed; Pablo asked for the options of a separate sign-in server (form item `adr-0006`, 2026-10-17). The
-  comparison below recommends keeping the built-in library; follow-up item `adr-0006b`
+- **Status:** accepted (Pablo, 2026-10-17, form item `adr-0006`: "If not, built-in it is"; the comparison below found no separate server that fits better).
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0006` (reserved: a security trade-off)
 - **Concerns:** `REQ-ITK-2`, `REQ-ITK-3`, `REQ-IDN-3`, `REQ-TEM-4`, `REQ-IDN-8`; SAD §6.1

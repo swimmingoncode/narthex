@@ -1,13 +1,13 @@
 ---
 name: Narthex (codename): overview
-digest_of: SPEC.md v0.3.4 (amendments 0001 to 0004 applied)
+digest_of: SPEC.md v0.3.5 (amendments 0001 to 0005 applied)
 status: informative. Where this and SPEC.md disagree, SPEC.md wins
 date: 2026-10-17
 ---
 
 # Narthex: overview
 
-A short reading of `SPEC.md` v0.3.4 for someone new to the project: what Narthex is, who it is for, how it
+A short reading of `SPEC.md` v0.3.5 for someone new to the project: what Narthex is, who it is for, how it
 works, what exists today, and what is still open. Identifiers in `code` point to the spec. External sources are
 in `REFERENCES.md`.
 
@@ -152,7 +152,8 @@ confirmed on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v
 - amendment 0002 (v0.3.2): nine of the twelve open questions, `OQ-2`, `OQ-4` to `OQ-10` and `OQ-12`. All five sector
   profiles ship first, and nine trust-and-access assumptions are confirmed;
 - amendment 0003 (v0.3.3): `OQ-11`, the pilot is Narthex used across Bloque;
-- amendment 0004 (v0.3.4): the business model, part of `OQ-3`; only prices and plans stay open.
+- amendment 0004 (v0.3.4): the business model, part of `OQ-3`; only prices and plans stay open;
+- amendment 0005 (v0.3.5): a practitioner is a seasoned vibe-coder, not yet an expert.
 
 **Open**, each an item on the form (SPEC §11):
 

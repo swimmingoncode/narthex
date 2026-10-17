@@ -1,7 +1,7 @@
 ---
 name: Narthex (codename)
 summary: Tools and a knowledge base that turn a user's agentic system into a senior software architect. It guides people from a product specification through requirements, architecture, construction, verification, release and evolution, with decisions as data, living documents, and checks that run in CI.
-spec_version: 0.3.4
+spec_version: 0.3.5
 status: draft
 date: 2026-10-17
 rewrite_of: SDD Studio SPEC v0.2.0
@@ -295,8 +295,8 @@ changes a gate (`INV-12`).
 
 | Level | Who | Example |
 |---|---|---|
-| `newcomer` | No engineering training; little or no git. R2's "casual vibe-coder" | An operations analyst building an internal tool |
-| `practitioner` | An engineer of another discipline, or a self-taught coder | A civil engineer automating a calculation (R12) |
+| `newcomer` | No engineering training and little or no git; building a first product, or vibe-coding casually | An operations analyst building an internal tool |
+| `practitioner` | A seasoned vibe-coder: has built several products with AI, is starting to grasp the process, reads about building software with AI, but is not yet an expert. Also an engineer of another discipline, or a self-taught coder (R34) | A civil engineer automating a calculation (R12); a vibe-coder on their fifth product |
 | `professional` | A software engineer | A backend engineer at Bloque |
 
 ---

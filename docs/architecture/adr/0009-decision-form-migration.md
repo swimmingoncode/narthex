@@ -1,6 +1,6 @@
 # ADR-0009: Move the decision form to Narthex's host through a store adapter
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0009`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0009`
 - **Concerns:** `REQ-DOC-16`, `INV-18`, `REQ-IFC-8`, `REQ-DEC-17`, `REQ-DEC-19`, `REQ-DEC-22`, `NFR-4`, R23; SAD §2, §4.1

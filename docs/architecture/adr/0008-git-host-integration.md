@@ -1,6 +1,6 @@
 # ADR-0008: GitHub App first; GitLab and Codeberg behind one adapter, later
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0008`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0008`
 - **Concerns:** `REQ-IDN-1`, `REQ-IDN-2`, `REQ-IDN-4` to `REQ-IDN-6`, `INV-8`, `INV-16`, R7; SAD §2, §6, §13

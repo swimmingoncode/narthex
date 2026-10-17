@@ -1,6 +1,6 @@
 # ADR-0013: The knowledge base as versioned files in the repo; paid packs in a separate store
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0013`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0013`
 - **Concerns:** `REQ-KNB-1` to `REQ-KNB-12`, `REQ-ITK-7`, `REQ-DAT-18`, `REQ-IFC-2`, `NFR-7`, R25, R29; SAD §2, §5.1

@@ -1,6 +1,6 @@
 # ADR-0007: Opaque, purpose-bound tokens; answer links valid until revoked
 
-- **Status:** proposed
+- **Status:** accepted (Pablo, 2026-10-17, form item `adr-0007`)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0007` (reserved: a security trade-off)
 - **Concerns:** `REQ-IFC-9` to `REQ-IFC-11`, `REQ-IDN-4`, `REQ-IDN-7`, `INV-17`, `NFR-3`, R20; SAD §6.2, §11.4

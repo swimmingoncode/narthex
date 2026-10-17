@@ -1,6 +1,6 @@
 # ADR-0001: TypeScript on Node.js for the server side
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0001`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0001`
 - **Concerns:** `REQ-IDN-8`, `REQ-IFC-1`, `REQ-DOC-13`, `NFR-4`; SAD §2, §7

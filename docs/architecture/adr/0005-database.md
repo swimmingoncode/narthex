@@ -1,6 +1,6 @@
 # ADR-0005: PostgreSQL as the one database
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0005`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0005`
 - **Concerns:** `REQ-DAT-15`, `REQ-DEC-17`, `REQ-DEC-22`, `REQ-DEC-24`, `INV-2`, `INV-3`, `NFR-5`; SAD §5

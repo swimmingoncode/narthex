@@ -1,6 +1,6 @@
 # ADR-0012: One verify engine, run as a CLI locally, through the MCP and in CI
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0012`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0012`
 - **Concerns:** `REQ-VER-1` to `REQ-VER-9`, `REQ-VER-12`, `REQ-VER-13`, `REQ-CHN-3`, `REQ-DAT-13`, `NFR-1`; SAD §4.3

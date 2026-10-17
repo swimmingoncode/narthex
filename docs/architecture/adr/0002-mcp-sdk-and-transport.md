@@ -1,6 +1,6 @@
 # ADR-0002: The official MCP TypeScript SDK, Streamable HTTP hosted, stdio local
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0002`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0002`
 - **Concerns:** `REQ-IFC-1`, `REQ-IFC-2`, `REQ-IFC-6`, `REQ-IFC-7`, `REQ-IDN-3`, `NFR-8`; SAD §2, §9.2, §11.2

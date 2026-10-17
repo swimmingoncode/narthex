@@ -1,6 +1,6 @@
 # ADR-0011: One monorepo with npm workspaces; specsite stays its own repo
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0011`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0011`
 - **Concerns:** `REQ-DOC-14`, `REQ-SKL-32` to `REQ-SKL-34`, `REQ-KNB-12`, `REQ-CHN-12`; SAD §2, §11

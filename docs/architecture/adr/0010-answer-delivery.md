@@ -1,6 +1,6 @@
 # ADR-0010: Answers reach the agent by layers: channel, watcher, short wait, acknowledge
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0010`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0010`
 - **Concerns:** `REQ-IFC-6`, `REQ-IFC-5`, `REQ-DEC-24`, `REQ-DEC-39` to `REQ-DEC-42`, `NFR-9`, R21, R22; SAD §4.1

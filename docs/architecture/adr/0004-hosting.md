@@ -1,6 +1,6 @@
 # ADR-0004: Host the service on one rented server in the EU, as containers
 
-- **Status:** proposed
+- **Status:** accepted (Pablo, 2026-10-17, form item `adr-0004`)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0004` (no default: cost and hosting style are the lead's call)
 - **Concerns:** `REQ-IDN-8`, R27; SAD §7, §9

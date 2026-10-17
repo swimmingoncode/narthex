@@ -1,0 +1,5 @@
+[
+{"id":"adr-0004","data":{"at":"2026-10-17T22:03:25.252Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"One rented server in Europe (recommended)","notes":""}},
+{"id":"adr-0006","data":{"at":"2026-10-17T22:04:29.166Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Run a separate sign-in server","notes":"What options do we have and does any of them fit better? If not, built-in it is."}},
+{"id":"adr-0007","data":{"at":"2026-10-17T22:04:55.962Z","by":"u_I_crGe4UnsTeI8vf31ga_A","choice":"Until revoked or the form closes (recommended)","notes":""}}
+]

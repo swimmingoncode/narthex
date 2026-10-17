@@ -2523,7 +2523,8 @@
     "REQ-IDN-8"
    ],
    "origin": "STEP-2 architecture and design, 2026-10-17",
-   "reserved": true
+   "reserved": true,
+   "applied": "docs/architecture/adr/0004 accepted"
   },
   {
    "id": "adr-0005",
@@ -2596,7 +2597,8 @@
     "REQ-IDN-3",
     "REQ-TEM-4"
    ],
-   "origin": "STEP-2 architecture and design, 2026-10-17"
+   "origin": "STEP-2 architecture and design, 2026-10-17",
+   "keep_open": true
   },
   {
    "id": "adr-0007",
@@ -2634,7 +2636,8 @@
     "REQ-IFC-11",
     "INV-17"
    ],
-   "origin": "STEP-2 architecture and design, 2026-10-17"
+   "origin": "STEP-2 architecture and design, 2026-10-17",
+   "applied": "docs/architecture/adr/0007 accepted"
   },
   {
    "id": "adr-0008",
@@ -2841,6 +2844,19 @@
     "REQ-KNB-12"
    ],
    "origin": "STEP-2 architecture and design, 2026-10-17"
+  },
+  {
+   "id": "q-auth-servers",
+   "kind": "queue",
+   "section": "queue",
+   "follows": "adr-0006",
+   "title": "Compare self-hosted sign-in servers against the built-in library",
+   "lead": "You picked a separate sign-in server and asked which options fit better; if none does, built-in it is.",
+   "options": [
+    "OK",
+    "Do this first",
+    "Stop it"
+   ]
   }
  ]
 }

@@ -1,6 +1,6 @@
 # ADR-0003: Astro for the web GUI, with small interactive islands
 
-- **Status:** proposed
+- **Status:** accepted by default (form item `adr-0003`, 2026-10-17; Pablo may still object)
 - **Date:** 2026-10-17
 - **Decision item:** `adr-0003`
 - **Concerns:** `REQ-IFC-3`, `REQ-DEC-12` to `REQ-DEC-19`, `REQ-DOC-6`, `REQ-DOC-13`, `NFR-2`, `NFR-3`, `NFR-6`; SAD §2

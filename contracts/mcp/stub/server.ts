@@ -2,7 +2,7 @@
 //   node contracts/mcp/stub/server.ts --stdio
 //   node contracts/mcp/stub/server.ts --http [--port N]     (0 or no port: any free port, printed on start)
 // It lists the 14 tools of tools.json, returns the output of the valid call fixture whose input matches (or the
-// tool's first fixture), refuses input that breaks the tool's schema, and serves the resources and prompts.
+// tool's first fixture; form_read and form_wait keep only the events after `since`), refuses input that breaks the tool's schema, and serves the resources and prompts.
 import { createServer } from "node:http";
 import { join } from "node:path";
 import { createInterface } from "node:readline";
@@ -31,6 +31,18 @@ function fixtureFor(name: string, input: unknown): CallFixture | undefined {
   return own.find((f) => isDeepStrictEqual(f.input, input)) ?? own[0];
 }
 
+// R8: a read returns only the events after `since`. The fixture's events are the store; a wait with none is pending.
+function afterSince(tool: string, since: number, output: Rpc): Rpc {
+  const events = (output.events as { cursor: number }[]).filter((e) => e.cursor > since);
+  const result: Rpc = {
+    ...output,
+    events,
+    cursor: Math.max(since, output.cursor, events.at(-1)?.cursor ?? 0),
+  };
+  if (tool === "form_wait") result.status = events.length > 0 ? "changed" : "pending";
+  return result;
+}
+
 function callTool(params: Rpc): Rpc {
   const tool = tools.find((t) => t.name === params.name);
   if (!tool) throw rpcError(-32602, `unknown tool ${params.name}`);
@@ -42,9 +54,12 @@ function callTool(params: Rpc): Rpc {
   const fixture = fixtureFor(tool.name, params.arguments);
   if (!fixture)
     return { isError: true, content: [{ type: "text", text: `no fixture for ${tool.name}` }] };
+  const incremental = tool.name === "form_read" || tool.name === "form_wait";
   return {
     content: [{ type: "text", text: `${tool.name}: stub answer from a fixture` }],
-    structuredContent: fixture.output,
+    structuredContent: incremental
+      ? afterSince(tool.name, params.arguments.since, fixture.output as Rpc)
+      : fixture.output,
   };
 }
 

@@ -153,3 +153,24 @@ export interface Endpoint {
 export function loadEndpoints(): Endpoint[] {
   return (readJson(join(CONTRACT, "endpoints.json")) as { endpoints: Endpoint[] }).endpoints;
 }
+
+export interface ReadReply {
+  status?: string;
+  cursor: number;
+  events: { cursor: number }[];
+}
+
+// The incremental-read rules of ruling R8 for a form_read or form_wait reply to a read after `since`: only newer
+// events, a cursor that has caught up with them, and no events when the reply is pending.
+export function incrementalReadProblems(since: number, reply: ReadReply): string[] {
+  const problems: string[] = [];
+  for (const event of reply.events) {
+    if (!(event.cursor > since)) problems.push(`event ${event.cursor} is not after since ${since}`);
+  }
+  const last = reply.events.at(-1);
+  if (last && reply.cursor < last.cursor) {
+    problems.push(`cursor ${reply.cursor} is behind the last event ${last.cursor}`);
+  }
+  if (reply.status === "pending" && reply.events.length > 0) problems.push("pending with events");
+  return problems;
+}

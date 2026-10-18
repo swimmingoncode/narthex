@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   CALLS,
   type InvalidCall,
+  incrementalReadProblems,
   jsonFiles,
   loadTools,
   nameOf,
@@ -168,6 +169,27 @@ test("input and output schemas compile and the call fixtures agree with them", (
     );
   }
   assert.deepEqual([...seen].sort(), tools.map((t) => t.name).sort());
+});
+
+// verifies: REQ-IFC-6, REQ-DEC-24, R8
+test("form reads return only events after since, and a pending wait has none", () => {
+  const reads = validCalls().filter((c) => c.tool === "form_read" || c.tool === "form_wait");
+  assert.ok(reads.some((c) => c.tool === "form_read"));
+  assert.ok(reads.some((c) => (c.output as { status?: string }).status === "pending"));
+  for (const call of reads) {
+    const since = (call.input as { since: number }).since;
+    const problems = incrementalReadProblems(
+      since,
+      call.output as Parameters<typeof incrementalReadProblems>[1],
+    );
+    assert.deepEqual(problems, [], `${call.tool} since ${since}`);
+  }
+  const bad = incrementalReadProblems(5, {
+    status: "pending",
+    cursor: 5,
+    events: [{ cursor: 5 }, { cursor: 7 }],
+  });
+  assert.equal(bad.length, 3);
 });
 
 // verifies: REQ-IFC-1, REQ-IFC-9, REQ-DEC-24

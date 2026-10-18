@@ -8,6 +8,7 @@ import {
   CALLS,
   type CallFixture,
   type InvalidCall,
+  incrementalReadProblems,
   jsonFiles,
   loadTools,
   newAjv,
@@ -92,6 +93,27 @@ describe("MCP server conformance", { concurrency: false }, () => {
         `${fixture.tool} summary`,
       );
     }
+  });
+
+  // verifies: REQ-IFC-6, REQ-DEC-24, R8
+  test("a second form_read returns only events after the first one's cursor", async (t) => {
+    if (!withCalls) return t.skip("NARTHEX_CALLS=0");
+    const fixture = validCalls().find((c) => c.tool === "form_read");
+    assert.ok(fixture);
+    const { form, since } = fixture.input as { form: string; since: number };
+    const read = async (from: number) => {
+      const reply = await client.request("tools/call", {
+        name: "form_read",
+        arguments: { form, since: from },
+      });
+      assert.notEqual(reply.result?.isError, true, JSON.stringify(reply));
+      return reply.result?.structuredContent as { cursor: number; events: { cursor: number }[] };
+    };
+    const first = await read(since);
+    assert.deepEqual(incrementalReadProblems(since, first), []);
+    const second = await read(first.cursor);
+    assert.deepEqual(incrementalReadProblems(first.cursor, second), []);
+    assert.ok(second.cursor >= first.cursor, "the cursor went back");
   });
 
   // verifies: REQ-IFC-1, REQ-IFC-9

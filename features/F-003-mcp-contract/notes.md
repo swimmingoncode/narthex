@@ -14,7 +14,7 @@ Readings and gaps found while building the contract. No item is raised from here
 - **Class of non-sector pieces.** REQ-KNB-3 asks a class of sector material only; T-003-02 asks one of every piece.
   Methodology and template pieces are given `closed` with the label "our standard way" until the lead rules.
 - **`snapshot_get` is a fifth endpoint.** T-003-03 names four calls (link exchange, answer submit, event stream,
-  link request). The page also loads the published snapshot (SAD 5.2 sequence), so it is listed too.
+  link request). The page also loads the published snapshot (the SAD 4.1 sequence), so it is listed too.
 - **No MCP SDK.** ADR-0002 picks the official SDK for the server; it is not installed. The conformance client and
   the stub speak JSON-RPC directly (stdio lines; HTTP POST with JSON replies), so the contract has no dependency
   of ours. The stub never streams with SSE; the client reads SSE replies, for a real server.

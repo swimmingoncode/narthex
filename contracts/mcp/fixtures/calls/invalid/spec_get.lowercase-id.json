@@ -1,0 +1,8 @@
+{
+  "tool": "spec_get",
+  "side": "input",
+  "value": {
+    "project": "acme/shop",
+    "id": "req-pay-3"
+  }
+}

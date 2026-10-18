@@ -1,0 +1,9 @@
+{
+  "tool": "form_publish",
+  "side": "output",
+  "value": {
+    "form": "acme-decisions",
+    "commit": "3f9c2ab41d7e",
+    "read_link": "https://narthex.example/f/acme-decisions?token=rd_3Hk9xQ2mP"
+  }
+}

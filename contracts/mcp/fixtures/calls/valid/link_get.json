@@ -1,0 +1,12 @@
+{
+  "tool": "link_get",
+  "input": {
+    "form": "acme-decisions",
+    "kind": "read"
+  },
+  "output": {
+    "kind": "read",
+    "url": "https://narthex.example/f/acme-decisions#rd_7Qp2LmZ4x",
+    "expires_at": "2026-10-17T20:15:00Z"
+  }
+}

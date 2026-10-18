@@ -1,0 +1,31 @@
+{
+  "tool": "form_read",
+  "input": {
+    "form": "acme-decisions",
+    "since": 4
+  },
+  "output": {
+    "form": "acme-decisions",
+    "cursor": 6,
+    "events": [
+      {
+        "form": "acme-decisions",
+        "cursor": 5,
+        "type": "answer",
+        "at": "2026-10-17T20:00:00Z",
+        "item": "oq-3",
+        "choice": "Reuse the key (recommended)"
+      },
+      {
+        "form": "acme-decisions",
+        "cursor": 6,
+        "type": "edit",
+        "at": "2026-10-17T20:00:00Z",
+        "item": "oq-4",
+        "changed": ["title"]
+      }
+    ],
+    "more": false,
+    "reminder": "none"
+  }
+}

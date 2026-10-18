@@ -1,0 +1,14 @@
+{
+  "tool": "form_ack",
+  "input": {
+    "form": "acme-decisions",
+    "commit": "3f9c2ab41d7e",
+    "through": 6
+  },
+  "output": {
+    "form": "acme-decisions",
+    "commit": "3f9c2ab41d7e",
+    "through": 6,
+    "cursor": 7
+  }
+}

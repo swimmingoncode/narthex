@@ -1,0 +1,14 @@
+{
+  "tool": "knowledge_get",
+  "input": {
+    "id": "intake-maker-vision",
+    "version": "0.1.0"
+  },
+  "output": {
+    "id": "intake-maker-vision",
+    "version": "0.1.0",
+    "class": "supplementary",
+    "label": "supplementary, not normative",
+    "body": "Ask what the product does, for whom, and what it must never do."
+  }
+}

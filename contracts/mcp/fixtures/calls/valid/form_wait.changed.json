@@ -1,0 +1,23 @@
+{
+  "tool": "form_wait",
+  "input": {
+    "form": "acme-decisions",
+    "since": 4
+  },
+  "output": {
+    "status": "changed",
+    "form": "acme-decisions",
+    "cursor": 5,
+    "events": [
+      {
+        "form": "acme-decisions",
+        "cursor": 5,
+        "type": "answer",
+        "at": "2026-10-17T20:00:00Z",
+        "item": "oq-3",
+        "choice": "Reuse the key (recommended)"
+      }
+    ],
+    "more": false
+  }
+}

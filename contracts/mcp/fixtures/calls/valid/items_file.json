@@ -1,0 +1,18 @@
+{
+  "tool": "items_file",
+  "input": {
+    "project": "acme/shop",
+    "items": [
+      {
+        "id": "oq-3",
+        "section": "decide",
+        "title": "Should retries reuse the key?"
+      }
+    ]
+  },
+  "output": {
+    "result": "pull_request",
+    "url": "https://github.com/acme/shop/pull/12",
+    "ids": ["oq-3"]
+  }
+}

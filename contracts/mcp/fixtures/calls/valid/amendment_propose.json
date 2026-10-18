@@ -1,0 +1,12 @@
+{
+  "tool": "amendment_propose",
+  "input": {
+    "project": "acme/shop",
+    "title": "Add refunds",
+    "body": "Refunds are in scope for v1."
+  },
+  "output": {
+    "number": 7,
+    "url": "https://github.com/acme/shop/pull/13"
+  }
+}

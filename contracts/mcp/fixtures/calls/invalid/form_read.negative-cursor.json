@@ -1,0 +1,8 @@
+{
+  "tool": "form_read",
+  "side": "input",
+  "value": {
+    "form": "acme-decisions",
+    "since": -1
+  }
+}

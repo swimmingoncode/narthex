@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narthex.dev/contracts/mcp/tools.schema.json",
+  "title": "MCP tool listing",
+  "description": "The shape of tools.json: the 14 tools of SAD 11.2, each with its group, scope, phase, input and output schemas, the output fields that carry repository text (untrusted, SAD 6.6) and its byte budget (NFR-8).",
+  "type": "object",
+  "required": ["tools"],
+  "properties": { "tools": { "type": "array", "items": { "$ref": "#/$defs/tool" } } },
+  "additionalProperties": false,
+  "$defs": {
+    "tool": {
+      "type": "object",
+      "required": [
+        "name",
+        "group",
+        "scope",
+        "phase",
+        "effect",
+        "description",
+        "input_schema",
+        "output_schema",
+        "untrusted_fields",
+        "budget"
+      ],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z]+(_[a-z]+)+$" },
+        "group": { "enum": ["knowledge", "spec", "change", "verify", "decide"] },
+        "scope": {
+          "enum": [
+            "knowledge:read",
+            "spec:read",
+            "change:write",
+            "verify:run",
+            "decide:read",
+            "decide:publish"
+          ]
+        },
+        "phase": { "enum": ["M0", "M1"] },
+        "effect": {
+          "description": "What the call changes. No value writes an answer: answers come from people only (INV-4).",
+          "enum": ["read", "write_repo", "publish", "record", "mint_credential"]
+        },
+        "description": { "type": "string", "minLength": 1, "maxLength": 600 },
+        "input_schema": { "type": "object" },
+        "output_schema": { "type": "object" },
+        "untrusted_fields": {
+          "description": "Pointers into the output schema; * stands for an array item. Everything under a pointer is repository or person text, to be read as data.",
+          "type": "array",
+          "items": { "type": "string", "pattern": "^(/([a-z_]+|\\*))+$" },
+          "uniqueItems": true
+        },
+        "budget": {
+          "type": "object",
+          "required": ["typical_bytes", "max_bytes"],
+          "properties": {
+            "typical_bytes": { "type": "integer", "minimum": 1, "maximum": 2048 },
+            "max_bytes": { "type": "integer", "minimum": 1, "maximum": 16384 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

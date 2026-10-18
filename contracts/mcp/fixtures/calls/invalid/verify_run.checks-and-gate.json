@@ -1,0 +1,10 @@
+{
+  "tool": "verify_run",
+  "side": "input",
+  "value": {
+    "project": "acme/shop",
+    "commit": "3f9c2ab41d7e",
+    "checks": ["input-contract"],
+    "gate": "STEP-1"
+  }
+}

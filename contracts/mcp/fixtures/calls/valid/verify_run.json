@@ -1,0 +1,22 @@
+{
+  "tool": "verify_run",
+  "input": {
+    "project": "acme/shop",
+    "commit": "3f9c2ab41d7e",
+    "gate": "STEP-1"
+  },
+  "output": {
+    "commit": "3f9c2ab41d7e",
+    "passed": false,
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "check": "input-contract",
+        "severity": "error",
+        "path": "SPEC.md",
+        "message": "Section 3 is missing."
+      }
+    ]
+  }
+}

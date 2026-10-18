@@ -15,6 +15,11 @@ Example:
 - Adds the `closed_by` field to the item schema. Decision: DEC-99.
 ```
 
+## mcp 0.1.0
+
+- First release: the 14 tools of SAD 11.2 (`tools.json`, `tools.schema.json`), with call fixtures and a conformance
+  suite in TypeScript. Decision: DEC-14.
+
 ## data-model 0.1.0
 
 - First release: the six schemas of SAD 11.1 (`questions`, `response`, `event`, `project`, `ownership`, `trace`),

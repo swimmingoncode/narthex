@@ -1,0 +1,437 @@
+{
+  "experiment": "2026-10-18-model-groups",
+  "seed": "narthex-m0-2026-10-18",
+  "note": "Arms: compare (both models, blind review picks the winner), haiku (Haiku xhigh), sonnet (Sonnet high), fixed (outside the experiment), done (merged before it began). Every task with arm compare, haiku or sonnet is eligible; scripts/exp-assign.mjs deals those arms from the seed and checks this file.",
+  "tasks": {
+    "T-001-01": {
+      "feature": "F-001",
+      "arm": "done",
+      "reason": "Merged."
+    },
+    "T-001-02": {
+      "feature": "F-001",
+      "arm": "done",
+      "reason": "Merged."
+    },
+    "T-001-03": {
+      "feature": "F-001",
+      "arm": "done",
+      "reason": "Merged."
+    },
+    "T-001-04": {
+      "feature": "F-001",
+      "arm": "done",
+      "reason": "Merged."
+    },
+    "T-001-05": {
+      "feature": "F-001",
+      "arm": "done",
+      "reason": "Merged."
+    },
+    "T-001-06": {
+      "feature": "F-001",
+      "arm": "done",
+      "reason": "Merged as PR #2; run in round 2 of experiments/2026-10-17-haiku-coding/."
+    },
+    "T-002-01": {
+      "feature": "F-002",
+      "arm": "done",
+      "reason": "Merged (contract; built in round 1 of the earlier experiment)."
+    },
+    "T-002-02": {
+      "feature": "F-002",
+      "arm": "done",
+      "reason": "Merged (contract)."
+    },
+    "T-002-03": {
+      "feature": "F-002",
+      "arm": "done",
+      "reason": "Merged (contract)."
+    },
+    "T-002-04": {
+      "feature": "F-002",
+      "arm": "done",
+      "reason": "Merged (contract)."
+    },
+    "T-003-01": {
+      "feature": "F-003",
+      "arm": "fixed",
+      "reason": "Contract: tool list, scopes and budgets are the design."
+    },
+    "T-003-02": {
+      "feature": "F-003",
+      "arm": "fixed",
+      "reason": "Contract: resources, prompts and kb-piece schema."
+    },
+    "T-003-03": {
+      "feature": "F-003",
+      "arm": "fixed",
+      "reason": "Contract: endpoints and token purposes, security-adjacent."
+    },
+    "T-003-04": {
+      "feature": "F-003",
+      "arm": "fixed",
+      "reason": "Contract conformance suite and stub; built beside the contract."
+    },
+    "T-004-01": {
+      "feature": "F-004",
+      "arm": "fixed",
+      "reason": "Contract: profile schema."
+    },
+    "T-004-02": {
+      "feature": "F-004",
+      "arm": "fixed",
+      "reason": "Draft sector profiles: content choices, not a fixed interface."
+    },
+    "T-004-03": {
+      "feature": "F-004",
+      "arm": "fixed",
+      "reason": "Contract-adjacent: the product profile and its STEP-1 gate."
+    },
+    "T-005-01": {
+      "feature": "F-005",
+      "arm": "fixed",
+      "reason": "Contract: token model, security; Opus, after the spike."
+    },
+    "T-005-02": {
+      "feature": "F-005",
+      "arm": "fixed",
+      "reason": "Token conformance suite: security, tied to the contract."
+    },
+    "T-006-01": {
+      "feature": "F-006",
+      "arm": "haiku",
+      "reason": "Loader and validator over frozen contracts; interface fixed."
+    },
+    "T-006-02": {
+      "feature": "F-006",
+      "arm": "compare",
+      "reason": "Id parser with the profile's families as rules; fixtures given."
+    },
+    "T-006-03": {
+      "feature": "F-006",
+      "arm": "fixed",
+      "reason": "Trace graph and impact: new algorithm, design-adjacent."
+    },
+    "T-006-04": {
+      "feature": "F-006",
+      "arm": "haiku",
+      "reason": "Export to the frozen trace schema; output shape fixed."
+    },
+    "T-006-05": {
+      "feature": "F-006",
+      "arm": "sonnet",
+      "reason": "Loader by id@version; kb-piece schema frozen."
+    },
+    "T-007-01": {
+      "feature": "F-007",
+      "arm": "fixed",
+      "reason": "Defines the findings format that later checks reuse."
+    },
+    "T-007-02": {
+      "feature": "F-007",
+      "arm": "compare",
+      "reason": "Rule-driven check; draft items must validate against the frozen schema."
+    },
+    "T-007-03": {
+      "feature": "F-007",
+      "arm": "fixed",
+      "reason": "STEP-1 gate: design-adjacent and depends on profile semantics."
+    },
+    "T-007-04": {
+      "feature": "F-007",
+      "arm": "sonnet",
+      "reason": "CLI wrapper and composite action over the engine; interface fixed."
+    },
+    "T-008-01": {
+      "feature": "F-008",
+      "arm": "fixed",
+      "reason": "Question-set content: judgement and sourcing, not code."
+    },
+    "T-008-02": {
+      "feature": "F-008",
+      "arm": "fixed",
+      "reason": "Template and step content, written to the profile."
+    },
+    "T-008-03": {
+      "feature": "F-008",
+      "arm": "fixed",
+      "reason": "Mixes content labels and a source check; not purely mechanical."
+    },
+    "T-009-01": {
+      "feature": "F-009",
+      "arm": "sonnet",
+      "reason": "Fastify skeleton with config per SAD 6.4; log redaction is test-checked."
+    },
+    "T-009-02": {
+      "feature": "F-009",
+      "arm": "haiku",
+      "reason": "SQL migrations for the tables of SAD 5.2; schema fixed, rollbacks checkable."
+    },
+    "T-009-03": {
+      "feature": "F-009",
+      "arm": "fixed",
+      "reason": "Append-only event store: INV-2 depends on it."
+    },
+    "T-009-04": {
+      "feature": "F-009",
+      "arm": "fixed",
+      "reason": "Job queue concurrency and audit log: design-adjacent."
+    },
+    "T-010-01": {
+      "feature": "F-010",
+      "arm": "fixed",
+      "reason": "Opus spike: open design on the token kind."
+    },
+    "T-010-02": {
+      "feature": "F-010",
+      "arm": "fixed",
+      "reason": "Sign-in and sessions: security, the lead's click."
+    },
+    "T-010-03": {
+      "feature": "F-010",
+      "arm": "fixed",
+      "reason": "OAuth endpoints: security."
+    },
+    "T-010-04": {
+      "feature": "F-010",
+      "arm": "fixed",
+      "reason": "Link tokens and keyed hashes: security."
+    },
+    "T-010-05": {
+      "feature": "F-010",
+      "arm": "fixed",
+      "reason": "Throttling, errors and headers: security."
+    },
+    "T-010-06": {
+      "feature": "F-010",
+      "arm": "fixed",
+      "reason": "Clients and consent: security, SSRF-safe fetch."
+    },
+    "T-010-07": {
+      "feature": "F-010",
+      "arm": "fixed",
+      "reason": "Refresh token rotation: security."
+    },
+    "T-010-08": {
+      "feature": "F-010",
+      "arm": "fixed",
+      "reason": "Answer checks and reserved items: security."
+    },
+    "T-011-01": {
+      "feature": "F-011",
+      "arm": "fixed",
+      "reason": "Mints scoped GitHub tokens: keys and permissions."
+    },
+    "T-011-02": {
+      "feature": "F-011",
+      "arm": "fixed",
+      "reason": "Webhook signature check: security."
+    },
+    "T-011-03": {
+      "feature": "F-011",
+      "arm": "fixed",
+      "reason": "Writes commits and PRs as the app identity; working-copy cleanup."
+    },
+    "T-011-04": {
+      "feature": "F-011",
+      "arm": "haiku",
+      "reason": "Self-hoster doc and manifest that must match the ADR list; fixed content."
+    },
+    "T-012-01": {
+      "feature": "F-012",
+      "arm": "fixed",
+      "reason": "Defines the storage adapter interface; refactor of the form template."
+    },
+    "T-012-02": {
+      "feature": "F-012",
+      "arm": "fixed",
+      "reason": "Adapter with fragment exchange and token handling: security-adjacent."
+    },
+    "T-012-03": {
+      "feature": "F-012",
+      "arm": "haiku",
+      "reason": "Builder flag that inlines a built artefact; behaviour specified."
+    },
+    "T-012-04": {
+      "feature": "F-012",
+      "arm": "sonnet",
+      "reason": "Browser checks with numeric criteria (375 px, 40 px, 2 s); fixed."
+    },
+    "T-013-01": {
+      "feature": "F-013",
+      "arm": "fixed",
+      "reason": "Publish job with a database lock: design-adjacent."
+    },
+    "T-013-02": {
+      "feature": "F-013",
+      "arm": "fixed",
+      "reason": "Answer endpoint appends the event first: INV-2."
+    },
+    "T-013-03": {
+      "feature": "F-013",
+      "arm": "fixed",
+      "reason": "Event stream with the watch key: tokens and resumption."
+    },
+    "T-013-04": {
+      "feature": "F-013",
+      "arm": "fixed",
+      "reason": "Read, wait and acknowledge protocol: INV-17."
+    },
+    "T-014-01": {
+      "feature": "F-014",
+      "arm": "fixed",
+      "reason": "MCP module with scope checks and origin check: auth-adjacent."
+    },
+    "T-014-02": {
+      "feature": "F-014",
+      "arm": "haiku",
+      "reason": "Read-only tools answering from the kb; conformance suite fixes the shape."
+    },
+    "T-014-03": {
+      "feature": "F-014",
+      "arm": "fixed",
+      "reason": "Writes commits and PRs through the connector."
+    },
+    "T-014-04": {
+      "feature": "F-014",
+      "arm": "fixed",
+      "reason": "Issues links: token-adjacent."
+    },
+    "T-014-05": {
+      "feature": "F-014",
+      "arm": "sonnet",
+      "reason": "Local stdio mode over existing library calls; passes conformance."
+    },
+    "T-014-06": {
+      "feature": "F-014",
+      "arm": "fixed",
+      "reason": "Read, wait and acknowledge tools: INV-17, core protocol."
+    },
+    "T-015-01": {
+      "feature": "F-015",
+      "arm": "haiku",
+      "reason": "Astro mount and layout with stated criteria (phone first, themes)."
+    },
+    "T-015-02": {
+      "feature": "F-015",
+      "arm": "fixed",
+      "reason": "Sign-in page and profile: auth-adjacent."
+    },
+    "T-015-03": {
+      "feature": "F-015",
+      "arm": "fixed",
+      "reason": "Installs the GitHub App: outward action and design choices."
+    },
+    "T-015-04": {
+      "feature": "F-015",
+      "arm": "sonnet",
+      "reason": "Accessibility checks with stated criteria."
+    },
+    "T-016-01": {
+      "feature": "F-016",
+      "arm": "fixed",
+      "reason": "Watcher holds the watch key and the reconnect rules."
+    },
+    "T-016-02": {
+      "feature": "F-016",
+      "arm": "fixed",
+      "reason": "Skill prose: workflow design."
+    },
+    "T-016-03": {
+      "feature": "F-016",
+      "arm": "fixed",
+      "reason": "Skill prose: workflow design."
+    },
+    "T-016-04": {
+      "feature": "F-016",
+      "arm": "fixed",
+      "reason": "Skill prose: workflow design."
+    },
+    "T-016-05": {
+      "feature": "F-016",
+      "arm": "sonnet",
+      "reason": "Plugin manifest and format check; listed contents fixed."
+    },
+    "T-016-06": {
+      "feature": "F-016",
+      "arm": "fixed",
+      "reason": "Skill prose: workflow design."
+    },
+    "T-016-07": {
+      "feature": "F-016",
+      "arm": "fixed",
+      "reason": "Skill prose: workflow design."
+    },
+    "T-017-01": {
+      "feature": "F-017",
+      "arm": "haiku",
+      "reason": "Dockerfile and compose from a stated service list."
+    },
+    "T-017-02": {
+      "feature": "F-017",
+      "arm": "fixed",
+      "reason": "Runbooks and an auth incident drill: security."
+    },
+    "T-017-03": {
+      "feature": "F-017",
+      "arm": "compare",
+      "reason": "Telemetry for signals listed in SAD 8; per-tool size assertable."
+    },
+    "T-017-04": {
+      "feature": "F-017",
+      "arm": "fixed",
+      "reason": "Outward actions: hosting account and DNS act items."
+    },
+    "T-018-01": {
+      "feature": "F-018",
+      "arm": "compare",
+      "reason": "Test runner keyed by invariant id; rules stated."
+    },
+    "T-018-02": {
+      "feature": "F-018",
+      "arm": "fixed",
+      "reason": "End-to-end skeleton: design-adjacent."
+    },
+    "T-018-03": {
+      "feature": "F-018",
+      "arm": "fixed",
+      "reason": "Unattended e2e: INV-17."
+    },
+    "T-018-04": {
+      "feature": "F-018",
+      "arm": "sonnet",
+      "reason": "Budget check against numbers fixed in E5."
+    },
+    "T-018-05": {
+      "feature": "F-018",
+      "arm": "fixed",
+      "reason": "Dogfood run needs a real session and the lead."
+    },
+    "T-018-06": {
+      "feature": "F-018",
+      "arm": "fixed",
+      "reason": "Invariant checks needing the whole stack."
+    },
+    "T-018-07": {
+      "feature": "F-018",
+      "arm": "fixed",
+      "reason": "Touches the hosted instance and its act items."
+    },
+    "T-018-08": {
+      "feature": "F-018",
+      "arm": "fixed",
+      "reason": "Contract version bump: waits for the lead's click."
+    },
+    "T-019-01": {
+      "feature": "F-019",
+      "arm": "fixed",
+      "reason": "Opus: threat model."
+    },
+    "T-019-02": {
+      "feature": "F-019",
+      "arm": "fixed",
+      "reason": "Opus: independent security review."
+    }
+  }
+}

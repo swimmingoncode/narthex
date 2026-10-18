@@ -1,0 +1,25 @@
+{
+  "form": {
+    "title": "Test form"
+  },
+  "sections": [
+    {
+      "id": "read",
+      "title": "Read"
+    },
+    {
+      "id": "decide",
+      "title": "Decide"
+    }
+  ],
+  "items": [
+    {
+      "id": "q1",
+      "section": "read",
+      "title": "Pick one",
+      "options": ["A (recommended)", "B"],
+      "kind": "read",
+      "chain": []
+    }
+  ]
+}

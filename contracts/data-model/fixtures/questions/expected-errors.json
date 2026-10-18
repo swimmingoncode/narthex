@@ -1,0 +1,121 @@
+{
+  "invalid/item-id-uppercase.json": {
+    "schema": {
+      "keyword": "pattern",
+      "instancePath": "/items/0/id"
+    },
+    "builder": "id must be lower case"
+  },
+  "invalid/item-kind-unknown.json": {
+    "schema": {
+      "keyword": "enum",
+      "instancePath": "/items/0/kind"
+    },
+    "builder": "kind must be one of"
+  },
+  "invalid/item-without-title.json": {
+    "schema": {
+      "keyword": "required",
+      "instancePath": "/items/0"
+    },
+    "builder": "no title"
+  },
+  "invalid/item-without-section.json": {
+    "schema": {
+      "keyword": "required",
+      "instancePath": "/items/0"
+    },
+    "builder": "unknown section"
+  },
+  "invalid/no-sections.json": {
+    "schema": {
+      "keyword": "minItems",
+      "instancePath": "/sections"
+    },
+    "builder": "no sections"
+  },
+  "invalid/default-negative.json": {
+    "schema": {
+      "keyword": "minimum",
+      "instancePath": "/items/0/default"
+    },
+    "builder": "default must be an option index"
+  },
+  "invalid/reserved-with-default.json": {
+    "schema": {
+      "keyword": "false schema",
+      "instancePath": "/items/0/default"
+    },
+    "builder": "cannot have a default"
+  },
+  "invalid/recommended-not-first.json": {
+    "schema": {
+      "keyword": "not",
+      "instancePath": "/items/0/options/1"
+    },
+    "builder": "recommended option must be the first"
+  },
+  "invalid/chain-on-decide-item.json": {
+    "schema": {
+      "keyword": "const",
+      "instancePath": "/items/0/kind"
+    },
+    "builder": "chain belongs on a read item"
+  },
+  "invalid/chain-empty.json": {
+    "schema": {
+      "keyword": "minItems",
+      "instancePath": "/items/0/chain"
+    },
+    "builder": "chain must be a non-empty list"
+  },
+  "invalid/chain-step-without-label.json": {
+    "schema": {
+      "keyword": "required",
+      "instancePath": "/items/0/chain/0"
+    },
+    "builder": "has no label"
+  },
+  "invalid/chain-step-unknown-key.json": {
+    "schema": {
+      "keyword": "additionalProperties",
+      "instancePath": "/items/0/chain/0"
+    },
+    "builder": "unknown key"
+  },
+  "invalid/ref-without-label.json": {
+    "schema": {
+      "keyword": "required",
+      "instancePath": "/items/0/refs/0"
+    },
+    "builder": "a ref has no label"
+  },
+  "invalid/brand-colour-not-hex.json": {
+    "schema": {
+      "keyword": "pattern",
+      "instancePath": "/form/brand/light/bg"
+    },
+    "builder": "must be a hex colour"
+  },
+  "invalid/brand-fonts-url-off-origin.json": {
+    "schema": {
+      "keyword": "pattern",
+      "instancePath": "/form/brand/fontsUrl"
+    },
+    "builder": "fontsUrl must start with"
+  },
+  "invalid/brand-unknown-key.json": {
+    "schema": {
+      "keyword": "additionalProperties",
+      "instancePath": "/form/brand"
+    },
+    "builder": "unknown key"
+  },
+  "invalid/section-id-not-lower-case.json": {
+    "schema": {
+      "keyword": "pattern",
+      "instancePath": "/sections/1/id"
+    },
+    "builder": "section id"
+  }
+}

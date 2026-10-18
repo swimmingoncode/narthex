@@ -1,0 +1,17 @@
+{
+  "responses": [
+    {
+      "id": "q1",
+      "choice": "A (recommended)",
+      "notes": "",
+      "at": "2026-10-17T20:00:00Z",
+      "by": "u_abc123"
+    },
+    {
+      "id": "q2",
+      "choice": "B",
+      "notes": "Because of cost.",
+      "at": "2026-10-17T20:05:00-05:00"
+    }
+  ]
+}

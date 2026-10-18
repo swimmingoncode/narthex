@@ -1,0 +1,23 @@
+{
+  "form": {
+    "title": "Test form"
+  },
+  "sections": [
+    {
+      "id": "read",
+      "title": "Read"
+    },
+    {
+      "id": "Decide Now",
+      "title": "Decide"
+    }
+  ],
+  "items": [
+    {
+      "id": "q1",
+      "section": "decide",
+      "title": "Pick one",
+      "options": ["A (recommended)", "B"]
+    }
+  ]
+}

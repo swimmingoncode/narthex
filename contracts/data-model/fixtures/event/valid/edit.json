@@ -1,0 +1,9 @@
+{
+  "form": "f-narthex",
+  "cursor": 1,
+  "at": "2026-10-17T20:00:00Z",
+  "type": "edit",
+  "item": "oq-3",
+  "changed": ["title", "options"],
+  "by": "agent:research"
+}

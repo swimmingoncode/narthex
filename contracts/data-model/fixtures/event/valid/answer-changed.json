@@ -1,0 +1,10 @@
+{
+  "form": "f-narthex",
+  "cursor": 9,
+  "at": "2026-10-17T20:00:00Z",
+  "type": "answer",
+  "item": "oq-3",
+  "choice": "New key per retry",
+  "supersedes": 1,
+  "by": "u_abc123"
+}

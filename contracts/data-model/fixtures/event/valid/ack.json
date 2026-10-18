@@ -1,0 +1,9 @@
+{
+  "form": "f-narthex",
+  "cursor": 12,
+  "at": "2026-10-17T20:00:00Z",
+  "type": "ack",
+  "commit": "d80e1fd4784a91c0",
+  "through": 11,
+  "by": "agent:research"
+}

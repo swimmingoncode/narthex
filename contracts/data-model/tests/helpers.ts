@@ -34,3 +34,20 @@ export function runBuilder(questionsFile: string, ...flags: string[]) {
   });
   return { code: run.status, out: run.stdout, err: run.stderr };
 }
+
+export interface FeedEvent {
+  form: string;
+  cursor: number;
+}
+
+// The order rule of a change feed (INV-3, REQ-DEC-24): within one form, each cursor is larger than the one before.
+// Returns the index of the first event that breaks it, or null.
+export function firstCursorViolation(events: readonly FeedEvent[]): number | null {
+  const last = new Map<string, number>();
+  for (const [index, event] of events.entries()) {
+    const before = last.get(event.form);
+    if (before !== undefined && event.cursor <= before) return index;
+    last.set(event.form, event.cursor);
+  }
+  return null;
+}

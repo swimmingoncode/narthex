@@ -97,6 +97,7 @@ other plan items keep their defaults.
 | `DEC-21` | **Technical defaults.** Fastify for HTTP; `node --test` with Node's type stripping; `tsc --noEmit`; Ajv for JSON Schema; fast-check for property tests; Biome for lint and format; Playwright for page tests. Changing one needs a `DEC-*` | proposed |
 | `DEC-22` | **First experience level.** M0's question set and persona serve the `maker` level, not `newcomer` as SAD §10 says, because amendment 0006 added `maker` after the SAD and the lead plays one. The other levels follow in M1 (`F-026`) | pending `plan-first-level` (default applies) |
 | `DEC-23` | **Outward actions in the plan.** Registering the GitHub App, creating a test organisation, buying anything, opening the hosting account and each hosted release are `act` items filed by the task that needs them, at that time (`INV-4`, `REQ-SKL-20`). No task performs one on a default | accepted (`INV-4`) |
+| `DEC-24` | **M0 runs as a controlled experiment of models.** Eligible tasks (mechanical, fixed interface) are dealt from a fixed seed, stratified by feature, to `compare` (both Haiku xhigh and Sonnet high, blind review picks the winner), `haiku` or `sonnet`; everything else stays `fixed` under `DEC-18`. Every task gets the same blind review. If the haiku tasks average more than twice the rework of the sonnet tasks, haiku assignment stops. No task changes. The protocol, the assignment of every task and the results are in `experiments/2026-10-18-model-groups/` | proposed (Pablo's ruling of 2026-10-18; outcome at M0 exit) |
 
 ---
 

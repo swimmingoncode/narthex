@@ -115,7 +115,10 @@ from its 199 helper agents, mostly long-running helpers re-reading a growing con
    - **Helpers default to Sonnet:** bounded coding, reviews, docs and fixes with a precise brief. Sonnet's
      failures came from gaps in the brief, not from the model.
    - **Opus only for design, code whose design is still open, and incidents.**
-   - **Haiku** for mechanical helpers with a tight rule: watch PRs and merge each only when every check
+   - **Haiku at xhigh effort** codes bounded, mechanical tasks whose interface is already fixed (fixtures, scripts
+     against a frozen contract, scaffolds, renames). Measured 2026-10-18: 6x cheaper than Sonnet and better on such a
+     task; on a contract it cost 45% less but needed ~40 minutes of rework (experiments/2026-10-17-haiku-coding/).
+   - **Haiku** also runs mechanical helpers with a tight rule: watch PRs and merge each only when every check
      passes by name and its review says clean, otherwise report and stop; re-run a failed check once; append to a
      state log. Waiting costs nothing in a shell loop; tokens go to reading results and deciding, so hand those
      reads to Haiku when the decision is a rule.

@@ -36,3 +36,30 @@ Proposed rule (not ruled):
 - Run the comparison again on one mechanical task before relaying anything.
 
 Branch A (Sonnet) is the one to merge, after its 5-minute fixes; contracts need Pablo's yes to merge.
+
+## Round 2 (2026-10-18): a mechanical task with a fixed interface
+
+Task: the rest of `T-001-06`, a script that lists unanswered act items, with its tests and notes. It reads the
+contract merged in round 1. Same setup: same brief, separate worktrees, headless runs, blind review.
+
+| | Haiku, xhigh | Sonnet, high |
+|---|---|---|
+| Cost | **$0.044** | $0.281 |
+| Wall time | 2.1 min | 1.2 min |
+| Turns | 25 | 10 |
+| Output tokens | 23.6k | 5.1k |
+| Blind review (behaviour, tests, style) | **4, 3, 5** | 3, 4, 4 |
+| Rework before merge | ~2 min (wire its tests into `npm test`) | ~10 min (malformed input exits like "unanswered") |
+
+Haiku won: it cost 6.3 times less, its behaviour was better (clear errors on bad input, real time comparison),
+and it needed less rework. It merged as PR #2.
+
+## Outcome (after two rounds): adopt, as adapted
+
+- **Haiku at xhigh codes bounded, mechanical tasks whose interface is already fixed.** Round 2: 6x cheaper and
+  better.
+- **Sonnet keeps contract and design-adjacent coding.** Round 1: Haiku was 45% cheaper but its contract needed ~40
+  minutes of rework, which ate the saving.
+- Either way, a blind review before merge stays mandatory. Haiku's misses were wiring and scope (an unwired test,
+  invented required fields), the kind a reviewer catches fast.
+- Two rounds are still a small sample. Keep logging cost, turns and rework per helper, and revisit after M0.

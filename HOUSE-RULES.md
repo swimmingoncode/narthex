@@ -84,6 +84,9 @@ changes. This repository uses them as they are.
 - A brief points to files instead of pasting them, and carries every repo rule a helper can't infer.
 
 
+Haiku at xhigh effort codes bounded, mechanical tasks whose interface is already fixed; Sonnet keeps contract and
+design-adjacent coding; every helper's work gets a blind review before merge (experiments/2026-10-17-haiku-coding/).
+
 ### Opus on call (advisor)
 
 Run the main session on Sonnet with `/advisor opus` (experimental, Anthropic API only). Ask the advisor before a

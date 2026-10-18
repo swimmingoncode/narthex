@@ -18,7 +18,7 @@
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "check:act-items": "node scripts/check-act-items.mjs",
     "check": "npm run typecheck && npm run lint && npm run check:boundaries",
-    "test:scripts": "node --test \"tests/*.test.mjs\"",
+    "test:scripts": "node --test \"tests/*.test.mjs scripts/*.test.mjs\"",
     "test:workspaces": "npm run test --workspaces --if-present",
     "test": "npm run test:scripts && npm run test:contracts && npm run test:workspaces",
     "test:contracts": "node --test \"contracts/*/tests/*.test.ts\""

@@ -117,7 +117,7 @@ test("generated valid items pass the schema and survive a round trip", () => {
         const built = runBuilder(file);
         assert.equal(built.code, 0, built.err);
       }),
-      { numRuns: 25 },
+      { numRuns: 80 },
     );
   } finally {
     rmSync(dir, { recursive: true, force: true });

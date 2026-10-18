@@ -1,0 +1,118 @@
+{
+  "created": "2026-10-17T20:00:00Z",
+  "project": "acme",
+  "current_version": "0.1.0",
+  "versions": {
+    "0.1.0": {
+      "created": "2026-10-17T20:00:00Z",
+      "needs_amount": 8,
+      "needs": {
+        "PS-1": {
+          "id": "PS-1",
+          "type": "product-spec",
+          "title": "What the product is",
+          "status": "accepted",
+          "links": [],
+          "source": {
+            "file": "PRODUCT.md",
+            "line": 3
+          }
+        },
+        "REQ-DAT-1": {
+          "id": "REQ-DAT-1",
+          "type": "requirement",
+          "title": "Documents in a fixed layout",
+          "status": "accepted",
+          "links": [
+            "0006",
+            "ADR-0011",
+            "CHK-1",
+            "CMP-7",
+            "PS-1",
+            "a1b2c3d",
+            "oq-3",
+            "packages/core/src/layout.ts"
+          ],
+          "source": {
+            "file": "SPEC.md",
+            "line": 486
+          },
+          "derives-from": ["PS-1"],
+          "allocated-to": ["CMP-7"],
+          "decided-by": ["oq-3", "ADR-0011"],
+          "implemented-by": ["packages/core/src/layout.ts", "a1b2c3d"],
+          "verified-by": ["CHK-1"],
+          "amended-by": ["0006"]
+        },
+        "INV-3": {
+          "id": "INV-3",
+          "type": "invariant",
+          "title": "The log is append-only",
+          "status": "accepted",
+          "links": ["CHK-1"],
+          "source": {
+            "file": "SPEC.md",
+            "line": 894
+          },
+          "verified-by": ["CHK-1"]
+        },
+        "CMP-7": {
+          "id": "CMP-7",
+          "type": "component",
+          "title": "Core model",
+          "status": "accepted",
+          "links": [],
+          "source": {
+            "file": "docs/architecture/SAD.md",
+            "line": 85
+          }
+        },
+        "ADR-0011": {
+          "id": "ADR-0011",
+          "type": "architecture-decision",
+          "title": "Monorepo layout",
+          "status": "accepted",
+          "links": [],
+          "source": {
+            "file": "docs/architecture/adr/0011-monorepo-layout.md",
+            "line": 1
+          }
+        },
+        "CHK-1": {
+          "id": "CHK-1",
+          "type": "check",
+          "title": "Layout test",
+          "status": null,
+          "links": ["EV-1"],
+          "source": {
+            "file": "packages/core/test/layout.test.ts",
+            "line": 7
+          },
+          "evidenced-by": ["EV-1"]
+        },
+        "EV-1": {
+          "id": "EV-1",
+          "type": "evidence-record",
+          "title": "Layout test, run 42",
+          "status": "passed",
+          "links": [],
+          "source": {
+            "file": "ci/runs/42.json",
+            "line": 1
+          }
+        },
+        "oq-3": {
+          "id": "oq-3",
+          "type": "decision-item",
+          "title": "Should retries reuse the client's idempotency key?",
+          "status": "answered",
+          "links": [],
+          "source": {
+            "file": "decisions/questions.json",
+            "line": 120
+          }
+        }
+      }
+    }
+  }
+}

@@ -117,5 +117,12 @@
       "instancePath": "/sections/1/id"
     },
     "builder": "section id"
+  },
+  "invalid/chain-step-label-blank.json": {
+    "schema": {
+      "keyword": "pattern",
+      "instancePath": "/items/0/chain/0/label"
+    },
+    "builder": "has no label"
   }
 }

@@ -1,0 +1,66 @@
+{
+  "invalid/link-of-unknown-type.json": {
+    "keyword": "additionalProperties",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1"
+  },
+  "invalid/link-targets-not-a-list.json": {
+    "keyword": "type",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1/verified-by"
+  },
+  "invalid/link-target-empty.json": {
+    "keyword": "minLength",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1/verified-by/0"
+  },
+  "invalid/need-without-id.json": {
+    "keyword": "required",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1"
+  },
+  "invalid/need-without-type.json": {
+    "keyword": "required",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1"
+  },
+  "invalid/need-without-title.json": {
+    "keyword": "required",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1"
+  },
+  "invalid/need-without-status.json": {
+    "keyword": "required",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1"
+  },
+  "invalid/need-without-links.json": {
+    "keyword": "required",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1"
+  },
+  "invalid/need-without-source.json": {
+    "keyword": "required",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1"
+  },
+  "invalid/source-without-file.json": {
+    "keyword": "required",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1/source"
+  },
+  "invalid/source-line-zero.json": {
+    "keyword": "minimum",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1/source/line"
+  },
+  "invalid/type-not-a-slug.json": {
+    "keyword": "pattern",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1/type"
+  },
+  "invalid/id-with-spaces.json": {
+    "keyword": "pattern",
+    "instancePath": "/versions/0.1.0/needs/REQ-A-1/id"
+  },
+  "invalid/needs-as-a-list.json": {
+    "keyword": "type",
+    "instancePath": "/versions/0.1.0/needs"
+  },
+  "invalid/without-versions.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/without-needs-amount.json": {
+    "keyword": "required",
+    "instancePath": "/versions/0.1.0"
+  }
+}

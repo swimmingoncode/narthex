@@ -1,0 +1,9 @@
+{
+  "invalid/without-class.json": { "keyword": "required", "instancePath": "" },
+  "invalid/supplementary-labelled-normative.json": { "keyword": "const", "instancePath": "/label" },
+  "invalid/open-standard-without-edition.json": { "keyword": "pattern", "instancePath": "/label" },
+  "invalid/closed-labelled-normative.json": { "keyword": "enum", "instancePath": "/label" },
+  "invalid/unknown-class.json": { "keyword": "enum", "instancePath": "/class" },
+  "invalid/without-body.json": { "keyword": "required", "instancePath": "" },
+  "invalid/extra-field.json": { "keyword": "unevaluatedProperties", "instancePath": "" }
+}

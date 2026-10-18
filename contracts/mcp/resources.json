@@ -1,0 +1,28 @@
+{
+  "resources": [
+    {
+      "name": "kb-piece",
+      "uri_template": "narthex://kb/{id}@{version}",
+      "description": "One knowledge piece at one version, as the kb-piece schema describes it.",
+      "mime_type": "application/json",
+      "scope": "knowledge:read",
+      "schema": "kb-piece.schema.json",
+      "variables": {
+        "id": { "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$" },
+        "version": { "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }
+      }
+    },
+    {
+      "name": "profile",
+      "uri_template": "narthex://profile/{name}@{version}",
+      "description": "One sector profile at one version: its gates, checks and the standards it pins.",
+      "mime_type": "application/json",
+      "scope": "knowledge:read",
+      "schema": null,
+      "variables": {
+        "name": { "pattern": "^[a-z][a-z0-9-]{0,63}$" },
+        "version": { "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }
+      }
+    }
+  ]
+}

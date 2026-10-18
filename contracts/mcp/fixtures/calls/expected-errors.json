@@ -29,7 +29,7 @@
   },
   "invalid/knowledge_get.unknown-class.json": {
     "keyword": "enum",
-    "instancePath": "/class"
+    "instancePath": "/piece/class"
   },
   "invalid/form_wait.unknown-status.json": {
     "keyword": "enum",

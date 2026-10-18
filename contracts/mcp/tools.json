@@ -96,31 +96,14 @@
       "output_schema": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"
-          },
-          "version": {
-            "type": "string",
-            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
-            "maxLength": 20
-          },
-          "class": {
-            "enum": ["open_standard", "supplementary", "closed"]
-          },
-          "label": {
-            "type": "string",
-            "maxLength": 120
-          },
-          "body": {
-            "type": "string",
-            "maxLength": 8000
+          "piece": {
+            "$ref": "https://narthex.dev/contracts/mcp/kb-piece.schema.json"
           }
         },
-        "required": ["id", "version", "class", "label", "body"],
+        "required": ["piece"],
         "additionalProperties": false
       },
-      "untrusted_fields": ["/label", "/body"],
+      "untrusted_fields": ["/piece"],
       "budget": {
         "typical_bytes": 2048,
         "max_bytes": 16384

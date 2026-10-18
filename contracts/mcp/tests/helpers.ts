@@ -1,6 +1,8 @@
+import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { ValidateFunction } from "ajv";
 import Ajv2020 from "ajv/dist/2020.js";
 
 export const CONTRACT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -31,17 +33,59 @@ export function jsonFiles(dir: string): string[] {
     .map((name) => join(dir, name));
 }
 
-// An Ajv that already knows the frozen data-model schemas, so tool schemas can $ref them by their $id.
+// An Ajv that already knows the frozen data-model schemas and this contract's own, so schemas can $ref each
+// other by their $id.
 export function newAjv() {
   const ajv = new AjvClass({ allErrors: true, strict: true, strictTuples: false });
-  for (const file of jsonFiles(DATA_MODEL).filter((f) => f.endsWith(".schema.json"))) {
-    ajv.addSchema(readJson(file) as object);
+  for (const dir of [DATA_MODEL, CONTRACT]) {
+    for (const file of jsonFiles(dir).filter((f) => f.endsWith(".schema.json"))) {
+      ajv.addSchema(readJson(file) as object);
+    }
   }
   return ajv;
 }
 
 export function validatorFor(schemaFile: string) {
-  return newAjv().compile(readJson(join(CONTRACT, schemaFile)) as object);
+  const schema = readJson(join(CONTRACT, schemaFile)) as { $id: string };
+  const ajv = newAjv();
+  const validate = ajv.getSchema(schema.$id);
+  assert(validate, `${schemaFile} is not loaded`);
+  return validate;
+}
+
+type ExpectedErrors = Record<string, { keyword: string; instancePath: string }>;
+
+// Every file of <fixtures>/invalid fails, with the error that <fixtures>/expected-errors.json names for it.
+export function invalidFixtureProblems(validate: ValidateFunction, fixtures: string): string[] {
+  const expected = readJson(join(fixtures, "expected-errors.json")) as ExpectedErrors;
+  const files = jsonFiles(join(fixtures, "invalid"));
+  const problems: string[] = [];
+  if (files.length !== Object.keys(expected).length) {
+    problems.push(
+      `${files.length} invalid fixtures but ${Object.keys(expected).length} expected errors`,
+    );
+  }
+  for (const file of files) {
+    const name = `invalid/${basename(file)}`;
+    const want = expected[name];
+    if (!want) {
+      problems.push(`${name} has no expected error`);
+      continue;
+    }
+    if (validate(readJson(file))) {
+      problems.push(`${name} should fail`);
+      continue;
+    }
+    const found = (validate.errors ?? []).some(
+      (e) => e.keyword === want.keyword && e.instancePath === want.instancePath,
+    );
+    if (!found) {
+      problems.push(
+        `${name}: wanted ${JSON.stringify(want)}, got ${JSON.stringify(validate.errors)}`,
+      );
+    }
+  }
+  return problems;
 }
 
 export interface Tool {

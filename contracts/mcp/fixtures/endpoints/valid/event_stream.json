@@ -1,0 +1,14 @@
+{
+  "endpoint": "event_stream",
+  "query": { "since": 4 },
+  "response": {
+    "event": {
+      "form": "acme-decisions",
+      "cursor": 5,
+      "type": "answer",
+      "at": "2026-10-17T20:00:00Z",
+      "item": "oq-3",
+      "choice": "Reuse the key (recommended)"
+    }
+  }
+}

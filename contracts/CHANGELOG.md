@@ -18,8 +18,8 @@ Example:
 ## mcp 0.1.0
 
 - First release: the 14 tools of SAD 11.2 (`tools.json`, `tools.schema.json`), the resources and prompts
-  (`resources.json`, `prompts.json`) and the knowledge piece schema (`kb-piece.schema.json`), with fixtures and
-  conformance suites in TypeScript. Decision: DEC-14.
+  (`resources.json`, `prompts.json`), the knowledge piece schema (`kb-piece.schema.json`) and the HTTP endpoints of
+  the form page and the watcher (`endpoints.json`), with fixtures and conformance suites in TypeScript. Decision: DEC-14.
 
 ## data-model 0.1.0
 

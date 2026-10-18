@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narthex.dev/contracts/mcp/endpoints.schema.json",
+  "title": "HTTP endpoint listing",
+  "description": "The shape of endpoints.json: the HTTP calls of the form page and the watcher. Each endpoint names the token purposes it accepts and where the token travels; none takes a token in the query string (REQ-IFC-9, REQ-IFC-10, ADR-0007).",
+  "type": "object",
+  "required": ["endpoints"],
+  "properties": { "endpoints": { "type": "array", "items": { "$ref": "#/$defs/endpoint" } } },
+  "additionalProperties": false,
+  "$defs": {
+    "endpoint": {
+      "type": "object",
+      "required": ["name", "method", "path", "summary", "token_purpose", "token_in", "response"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z]+(_[a-z]+)*$" },
+        "method": { "enum": ["GET", "POST"] },
+        "path": { "type": "string", "pattern": "^/api/forms/\\{form\\}(/[a-z-]+)*$" },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "token_purpose": {
+          "description": "The token purposes the endpoint accepts, from the token model of ADR-0007.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "mcp_access",
+              "read_link",
+              "answer_link",
+              "refresh_request",
+              "git_task",
+              "session"
+            ]
+          }
+        },
+        "token_in": {
+          "description": "Where the token travels. Never the query string.",
+          "enum": ["body", "header", "cookie"]
+        },
+        "scope": {
+          "description": "The MCP scope, for an endpoint that takes an mcp_access token.",
+          "enum": [
+            "knowledge:read",
+            "spec:read",
+            "change:write",
+            "verify:run",
+            "decide:read",
+            "decide:publish"
+          ]
+        },
+        "query": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "required"],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[a-z_]+$" },
+              "required": { "type": "boolean" },
+              "description": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "request_schema": { "type": "object" },
+        "response": {
+          "type": "object",
+          "required": ["status", "content_type", "schema"],
+          "properties": {
+            "status": { "type": "integer", "minimum": 200, "maximum": 299 },
+            "content_type": { "enum": ["application/json", "text/event-stream"] },
+            "schema": { "type": "object" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

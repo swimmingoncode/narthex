@@ -1,0 +1,1 @@
+{ "endpoint": "link_exchange", "side": "request", "value": { "token": "abc" } }

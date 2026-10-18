@@ -1,0 +1,5 @@
+{
+  "endpoint": "answer_submit",
+  "request": { "item": "oq-3", "choice": "Reuse the key (recommended)" },
+  "response": { "cursor": 5 }
+}

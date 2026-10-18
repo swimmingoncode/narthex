@@ -1,0 +1,12 @@
+{
+  "endpoint": "snapshot_get",
+  "response": {
+    "commit": "3f9c2ab41d7e",
+    "cursor": 0,
+    "questions": {
+      "form": { "title": "Acme Decisions" },
+      "sections": [{ "id": "decide", "title": "Decide" }],
+      "items": [{ "id": "oq-3", "section": "decide", "title": "Should retries reuse the key?" }]
+    }
+  }
+}

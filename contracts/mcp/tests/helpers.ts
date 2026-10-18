@@ -19,6 +19,16 @@ export const TOKEN_SCOPES = [
   "decide:publish",
 ];
 
+// The token purposes of ADR-0007, under the same caveat as the scopes.
+export const TOKEN_PURPOSES = [
+  "mcp_access",
+  "read_link",
+  "answer_link",
+  "refresh_request",
+  "git_task",
+  "session",
+];
+
 // Ajv's CommonJS build is the class itself at runtime and a module with `default` for the types.
 const AjvClass = Ajv2020.default;
 
@@ -125,4 +135,20 @@ export function validCalls(): CallFixture[] {
 
 export function nameOf(file: string): string {
   return basename(file);
+}
+
+export interface Endpoint {
+  name: string;
+  method: "GET" | "POST";
+  path: string;
+  token_purpose: string[];
+  token_in: string;
+  scope?: string;
+  query?: { name: string; required: boolean }[];
+  request_schema?: Record<string, unknown>;
+  response: { status: number; content_type: string; schema: Record<string, unknown> };
+}
+
+export function loadEndpoints(): Endpoint[] {
+  return (readJson(join(CONTRACT, "endpoints.json")) as { endpoints: Endpoint[] }).endpoints;
 }

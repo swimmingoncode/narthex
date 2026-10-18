@@ -1,0 +1,8 @@
+{
+  "invalid/exchange-token-too-short.json": { "keyword": "pattern", "instancePath": "/token" },
+  "invalid/exchange-token-in-url.json": { "keyword": "additionalProperties", "instancePath": "" },
+  "invalid/answer-without-item.json": { "keyword": "required", "instancePath": "" },
+  "invalid/answer-with-nothing-to-say.json": { "keyword": "anyOf", "instancePath": "" },
+  "invalid/stream-event-without-cursor.json": { "keyword": "required", "instancePath": "/event" },
+  "invalid/exchange-unknown-purpose.json": { "keyword": "enum", "instancePath": "/purpose" }
+}

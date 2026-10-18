@@ -138,3 +138,13 @@ from its 199 helper agents, mostly long-running helpers re-reading a growing con
    change, and always before a compaction, so that the compacted session picks up from the file instead of a
    lossy summary. The session is not replaced; it hands the file to itself. A `SessionStart` hook with the
    `compact` matcher can print `STATE.md` back into context after each compaction.
+
+10. **Opus on call as the advisor** (Pablo, 2026-10-17). Run the main session on Sonnet and turn on Claude
+    Code's advisor with `/advisor opus` (or `--advisor opus`, or `advisorModel` in settings). It's experimental
+    and works only on the Anthropic API. The advisor sees the whole conversation; Claude consults it on its own.
+    Ask for a consultation explicitly at three moments:
+    - before a plan or architecture locks: are invariants, auth or contracts missing?
+    - when the same test or error fails twice: root cause, or a rabbit hole?
+    - before calling work done or committing: did the diff break a rule or regress something?
+    Subagents default to Sonnet (`CLAUDE_CODE_SUBAGENT_MODEL=sonnet` as the fallback); every spawn still names
+    its model, and Haiku does mechanical lookups. Changing settings files needs the user's yes.

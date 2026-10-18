@@ -83,6 +83,13 @@ changes. This repository uses them as they are.
 - Wait on CI with one blocking shell command, never by polling.
 - A brief points to files instead of pasting them, and carries every repo rule a helper can't infer.
 
+
+### Opus on call (advisor)
+
+Run the main session on Sonnet with `/advisor opus` (experimental, Anthropic API only). Ask the advisor before a
+plan locks, when the same test or error fails twice, and before calling work done or committing. Subagents
+default to Sonnet; every spawn names its model; Haiku does mechanical lookups. See ADOPTING.md §8, rule 10.
+
 ## Checklists
 
 - A checklist that ends a milestone or a task has every box ticked before the work counts as done.

@@ -3,6 +3,7 @@ import { createInterface } from "node:readline";
 
 // A minimal MCP client for the conformance suite: JSON-RPC over a stdio command or over Streamable HTTP.
 // The target is NARTHEX_TARGET: a URL (http or https) or a shell command that speaks MCP on stdin and stdout.
+// Over HTTP, NARTHEX_TOKEN, when set, goes in an Authorization: Bearer header on every request.
 
 export type Rpc = Record<string, any>;
 
@@ -84,6 +85,7 @@ function httpClient(url: string): Client {
     };
     if (session) headers["mcp-session-id"] = session;
     if (version) headers["mcp-protocol-version"] = version;
+    if (process.env.NARTHEX_TOKEN) headers.authorization = `Bearer ${process.env.NARTHEX_TOKEN}`;
     return fetch(url, { method: "POST", headers, body: JSON.stringify(body) });
   };
   return {

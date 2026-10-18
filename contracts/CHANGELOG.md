@@ -21,6 +21,8 @@ Example:
   (`resources.json`, `prompts.json`), the knowledge piece schema (`kb-piece.schema.json`) and the HTTP endpoints of
   the form page and the watcher (`endpoints.json`), with fixtures, a conformance suite for any server (`conformance/`) and a stub that answers from the fixtures
   (`stub/`). Decision: DEC-14.
+- Adds the `snapshot_get` endpoint, beyond the four calls listed for `T-003-03`: the answer link loads the published
+  snapshot of its form (SAD §4.1). Decision: DEC-14.
 
 ## data-model 0.1.0
 

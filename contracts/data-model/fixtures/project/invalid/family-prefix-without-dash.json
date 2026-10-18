@@ -1,0 +1,9 @@
+{
+  "name": "a",
+  "families": [
+    {
+      "prefix": "REQ",
+      "type": "requirement"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "default": "core",
+  "rules": [
+    {
+      "pattern": "REQ-VER-*",
+      "team": "verification"
+    },
+    {
+      "pattern": "INV-?",
+      "team": "core"
+    },
+    {
+      "pattern": "T-007-*",
+      "team": "platform-eu"
+    },
+    {
+      "pattern": "CMP-4",
+      "team": "identity"
+    }
+  ]
+}

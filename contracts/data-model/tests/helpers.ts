@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 
@@ -50,4 +50,40 @@ export function firstCursorViolation(events: readonly FeedEvent[]): number | nul
     last.set(event.form, event.cursor);
   }
   return null;
+}
+
+type ExpectedErrors = Record<string, { keyword: string; instancePath: string }>;
+type Validate = ReturnType<typeof validatorFor>;
+
+// Every file of <fixtures>/invalid fails, with the error that <fixtures>/expected-errors.json names for it.
+export function invalidFixtureProblems(validate: Validate, fixtures: string): string[] {
+  const expected = readJson(join(fixtures, "expected-errors.json")) as ExpectedErrors;
+  const files = jsonFiles(join(fixtures, "invalid"));
+  const problems: string[] = [];
+  if (files.length !== Object.keys(expected).length) {
+    problems.push(
+      `${files.length} invalid fixtures but ${Object.keys(expected).length} expected errors`,
+    );
+  }
+  for (const file of files) {
+    const name = `invalid/${basename(file)}`;
+    const want = expected[name];
+    if (!want) {
+      problems.push(`${name} has no expected error`);
+      continue;
+    }
+    if (validate(readJson(file))) {
+      problems.push(`${name} should fail`);
+      continue;
+    }
+    const found = (validate.errors ?? []).some(
+      (e) => e.keyword === want.keyword && e.instancePath === want.instancePath,
+    );
+    if (!found) {
+      problems.push(
+        `${name}: wanted ${JSON.stringify(want)}, got ${JSON.stringify(validate.errors)}`,
+      );
+    }
+  }
+  return problems;
 }

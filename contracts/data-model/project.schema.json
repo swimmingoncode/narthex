@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narthex.dev/contracts/data-model/project.schema.json",
+  "title": "Project configuration",
+  "description": "The project configuration file, .narthex/project.json (REQ-DAT-1, REQ-DAT-5). A project keeps its documents in the layout of REQ-DAT-1; a renamed document is configured here, never guessed. Missing documents are allowed, so every key is optional except the name. Paths are relative to the repository root and stay inside it.",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": { "type": "string", "minLength": 1 },
+    "documents": {
+      "type": "object",
+      "description": "Where each document lives when it is not at its default place: PRODUCT.md, SPEC.md, ARCHITECTURE.md, adr/, PLAN.md, amendments/, features/, notes/, decisions/, experiments/, ops/, STATE.md.",
+      "properties": {
+        "product": { "$ref": "#/$defs/path" },
+        "spec": { "$ref": "#/$defs/path" },
+        "architecture": { "$ref": "#/$defs/path" },
+        "adr": { "$ref": "#/$defs/path" },
+        "plan": { "$ref": "#/$defs/path" },
+        "amendments": { "$ref": "#/$defs/path" },
+        "features": { "$ref": "#/$defs/path" },
+        "notes": { "$ref": "#/$defs/path" },
+        "decisions": { "$ref": "#/$defs/path" },
+        "experiments": { "$ref": "#/$defs/path" },
+        "ops": { "$ref": "#/$defs/path" },
+        "state": { "$ref": "#/$defs/path" }
+      },
+      "additionalProperties": false
+    },
+    "families": {
+      "type": "array",
+      "description": "The identifier families the project uses: a prefix, the kind of item it names and, optionally, the document it lives in.",
+      "items": {
+        "type": "object",
+        "required": ["prefix", "type"],
+        "properties": {
+          "prefix": { "type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z][A-Z0-9]*)*-$" },
+          "type": { "type": "string", "minLength": 1 },
+          "document": {
+            "enum": [
+              "product",
+              "spec",
+              "architecture",
+              "adr",
+              "plan",
+              "amendments",
+              "features",
+              "notes",
+              "decisions",
+              "experiments",
+              "ops",
+              "state"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "houseRules": { "$ref": "#/$defs/path" },
+    "ownership": { "$ref": "#/$defs/path" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "path": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    }
+  }
+}

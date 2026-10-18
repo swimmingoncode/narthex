@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narthex.dev/contracts/data-model/ownership.schema.json",
+  "title": "Ownership file",
+  "description": "The ownership file (REQ-TEM-2), in the style of CODEOWNERS: identifier patterns to owning teams. A pattern is an identifier with * (any run of characters) and ? (one character). Each identifier has one owning team; when several rules match, the last one wins. An identifier no rule matches belongs to the default team, if there is one.",
+  "type": "object",
+  "required": ["rules"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "default": { "$ref": "#/$defs/team" },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pattern", "team"],
+        "properties": {
+          "pattern": { "type": "string", "pattern": "^[A-Z0-9*?][A-Z0-9*?-]*$" },
+          "team": { "$ref": "#/$defs/team" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "team": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" }
+  }
+}

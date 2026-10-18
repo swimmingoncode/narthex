@@ -1,0 +1,9 @@
+{
+  "rules": [
+    {
+      "pattern": "INV-*",
+      "team": "core",
+      "reviewer": "x"
+    }
+  ]
+}

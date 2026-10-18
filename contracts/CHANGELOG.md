@@ -14,3 +14,8 @@ Example:
 
 - Adds the `closed_by` field to the item schema. Decision: DEC-99.
 ```
+
+## data-model 0.1.0
+
+- First release: the six schemas of SAD 11.1 (`questions`, `response`, `event`, `project`, `ownership`, `trace`),
+  with fixtures and conformance suites in TypeScript and Python. Decision: DEC-14.

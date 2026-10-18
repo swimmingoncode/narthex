@@ -1,0 +1,26 @@
+{
+  "form": {
+    "title": "Test form",
+    "brand": {
+      "fontsUrl": "https://example.com/font.css"
+    }
+  },
+  "sections": [
+    {
+      "id": "read",
+      "title": "Read"
+    },
+    {
+      "id": "decide",
+      "title": "Decide"
+    }
+  ],
+  "items": [
+    {
+      "id": "q1",
+      "section": "decide",
+      "title": "Pick one",
+      "options": ["A (recommended)", "B"]
+    }
+  ]
+}

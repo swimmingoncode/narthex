@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "pattern": "REQ-VER-*",
+      "team": "Platform Team"
+    }
+  ]
+}

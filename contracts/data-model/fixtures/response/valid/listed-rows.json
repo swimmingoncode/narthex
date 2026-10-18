@@ -1,0 +1,19 @@
+[
+  {
+    "id": "q1",
+    "data": {
+      "choice": "Discuss first",
+      "notes": "Can we talk?",
+      "at": "2026-10-17T19:49:59.321Z",
+      "by": "u_abc123"
+    }
+  },
+  {
+    "id": "q2",
+    "data": {
+      "choice": "",
+      "notes": "Free text only.",
+      "at": "2026-10-17T19:50:00Z"
+    }
+  }
+]

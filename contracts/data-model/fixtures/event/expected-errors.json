@@ -1,0 +1,66 @@
+{
+  "invalid/without-cursor.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/cursor-zero.json": {
+    "keyword": "minimum",
+    "instancePath": "/cursor"
+  },
+  "invalid/cursor-not-an-integer.json": {
+    "keyword": "type",
+    "instancePath": "/cursor"
+  },
+  "invalid/cursor-is-text.json": {
+    "keyword": "type",
+    "instancePath": "/cursor"
+  },
+  "invalid/without-form.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/without-time.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/type-unknown.json": {
+    "keyword": "enum",
+    "instancePath": "/type"
+  },
+  "invalid/answer-without-choice-or-notes.json": {
+    "keyword": "anyOf",
+    "instancePath": ""
+  },
+  "invalid/answer-item-not-lower-case.json": {
+    "keyword": "pattern",
+    "instancePath": "/item"
+  },
+  "invalid/answer-without-item.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/edit-changes-nothing.json": {
+    "keyword": "minItems",
+    "instancePath": "/changed"
+  },
+  "invalid/link-request-without-recipient.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/publish-commit-not-hex.json": {
+    "keyword": "pattern",
+    "instancePath": "/commit"
+  },
+  "invalid/ack-without-through.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/unknown-field.json": {
+    "keyword": "unevaluatedProperties",
+    "instancePath": ""
+  },
+  "invalid/field-of-another-type.json": {
+    "keyword": "unevaluatedProperties",
+    "instancePath": ""
+  }
+}

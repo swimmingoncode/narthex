@@ -1,0 +1,7 @@
+{
+  "rules": [
+    {
+      "pattern": "REQ-VER-*"
+    }
+  ]
+}

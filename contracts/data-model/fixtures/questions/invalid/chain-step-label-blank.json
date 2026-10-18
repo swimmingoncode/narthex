@@ -1,0 +1,26 @@
+{
+  "form": {
+    "title": "Test form"
+  },
+  "sections": [
+    {
+      "id": "read",
+      "title": "Read"
+    }
+  ],
+  "items": [
+    {
+      "id": "q1",
+      "kind": "read",
+      "section": "read",
+      "title": "Item q1",
+      "options": ["A (recommended)", "B"],
+      "chain": [
+        {
+          "label": "  ",
+          "why": "x"
+        }
+      ]
+    }
+  ]
+}

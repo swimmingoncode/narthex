@@ -1,0 +1,35 @@
+{
+  "$schema": "https://narthex.dev/contracts/data-model/project.schema.json",
+  "name": "acme",
+  "documents": {
+    "product": "docs/PRODUCT.md",
+    "spec": "docs/SRS.md",
+    "architecture": "docs/SAD.md",
+    "adr": "docs/adr/",
+    "plan": "PLAN.md",
+    "amendments": "amendments/",
+    "features": "features/",
+    "notes": "research/",
+    "decisions": "decisions/",
+    "experiments": "experiments/",
+    "ops": "ops/",
+    "state": "STATE.md"
+  },
+  "families": [
+    {
+      "prefix": "REQ-",
+      "type": "requirement",
+      "document": "spec"
+    },
+    {
+      "prefix": "HAZ-",
+      "type": "hazard"
+    },
+    {
+      "prefix": "REQ-CAR-",
+      "type": "requirement"
+    }
+  ],
+  "houseRules": "docs/house-rules.md",
+  "ownership": ".narthex/ownership.json"
+}

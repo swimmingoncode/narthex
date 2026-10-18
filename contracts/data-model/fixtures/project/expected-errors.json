@@ -1,0 +1,50 @@
+{
+  "invalid/without-name.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/name-empty.json": {
+    "keyword": "minLength",
+    "instancePath": "/name"
+  },
+  "invalid/document-path-absolute.json": {
+    "keyword": "pattern",
+    "instancePath": "/documents/spec"
+  },
+  "invalid/document-path-leaves-the-repo.json": {
+    "keyword": "pattern",
+    "instancePath": "/documents/adr"
+  },
+  "invalid/document-path-not-text.json": {
+    "keyword": "type",
+    "instancePath": "/documents/plan"
+  },
+  "invalid/document-unknown.json": {
+    "keyword": "additionalProperties",
+    "instancePath": "/documents"
+  },
+  "invalid/family-prefix-lower-case.json": {
+    "keyword": "pattern",
+    "instancePath": "/families/0/prefix"
+  },
+  "invalid/family-prefix-without-dash.json": {
+    "keyword": "pattern",
+    "instancePath": "/families/0/prefix"
+  },
+  "invalid/family-without-type.json": {
+    "keyword": "required",
+    "instancePath": "/families/0"
+  },
+  "invalid/family-document-unknown.json": {
+    "keyword": "enum",
+    "instancePath": "/families/0/document"
+  },
+  "invalid/house-rules-path-absolute.json": {
+    "keyword": "pattern",
+    "instancePath": "/houseRules"
+  },
+  "invalid/unknown-field.json": {
+    "keyword": "additionalProperties",
+    "instancePath": ""
+  }
+}

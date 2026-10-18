@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "pattern": "req-ver-*",
+      "team": "core"
+    }
+  ]
+}

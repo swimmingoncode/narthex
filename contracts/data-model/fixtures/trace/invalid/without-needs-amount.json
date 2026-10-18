@@ -1,0 +1,10 @@
+{
+  "created": "2026-10-17T20:00:00Z",
+  "project": "acme",
+  "current_version": "0.1.0",
+  "versions": {
+    "0.1.0": {
+      "needs": {}
+    }
+  }
+}

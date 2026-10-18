@@ -1,0 +1,20 @@
+{
+  "name": "narthex",
+  "documents": {
+    "architecture": "docs/architecture/SAD.md",
+    "adr": "docs/architecture/adr/"
+  },
+  "families": [
+    { "prefix": "REQ-", "type": "requirement", "document": "spec" },
+    { "prefix": "INV-", "type": "invariant", "document": "spec" },
+    { "prefix": "NFR-", "type": "non-functional requirement", "document": "spec" },
+    { "prefix": "ASM-", "type": "assumption", "document": "spec" },
+    { "prefix": "OQ-", "type": "open question", "document": "spec" },
+    { "prefix": "CMP-", "type": "component", "document": "architecture" },
+    { "prefix": "ADR-", "type": "architecture decision", "document": "adr" },
+    { "prefix": "DEC-", "type": "plan decision", "document": "plan" },
+    { "prefix": "F-", "type": "feature", "document": "plan" },
+    { "prefix": "T-", "type": "task", "document": "plan" }
+  ],
+  "houseRules": "HOUSE-RULES.md"
+}

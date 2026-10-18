@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narthex.dev/contracts/data-model/trace.schema.json",
+  "title": "Trace export",
+  "description": "A project's items and trace links as a needs.json-compatible file (REQ-DAT-20, ASM-26, SPEC 6.3 and 6.4). The shape is that of the sphinx-needs export: versions, then needs keyed by identifier. Each need has an id, a type, a title, a status, its links and its source location. `links` lists every identifier the need points at; the typed arrays say how, one per link type of SPEC 6.4. The schema checks the shape; that each key equals its need's id and that needs_amount counts the needs belongs to the conformance suite.",
+  "type": "object",
+  "required": ["project", "current_version", "versions"],
+  "properties": {
+    "created": { "type": "string" },
+    "project": { "type": "string", "minLength": 1 },
+    "current_version": { "type": "string" },
+    "versions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/version" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "version": {
+      "type": "object",
+      "required": ["needs_amount", "needs"],
+      "properties": {
+        "created": { "type": "string" },
+        "needs_amount": { "type": "integer", "minimum": 0 },
+        "needs": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/need" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "need": {
+      "type": "object",
+      "required": ["id", "type", "title", "status", "links", "source"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" },
+        "type": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
+        "title": { "type": "string" },
+        "status": { "type": ["string", "null"] },
+        "description": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "links": { "$ref": "#/$defs/ids" },
+        "derives-from": { "$ref": "#/$defs/ids" },
+        "mitigates": { "$ref": "#/$defs/ids" },
+        "allocated-to": { "$ref": "#/$defs/ids" },
+        "decided-by": { "$ref": "#/$defs/ids" },
+        "implemented-by": { "$ref": "#/$defs/ids" },
+        "verified-by": { "$ref": "#/$defs/ids" },
+        "evidenced-by": { "$ref": "#/$defs/ids" },
+        "amended-by": { "$ref": "#/$defs/ids" },
+        "source": {
+          "type": "object",
+          "required": ["file"],
+          "properties": {
+            "file": { "type": "string", "minLength": 1 },
+            "line": { "type": "integer", "minimum": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

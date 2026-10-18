@@ -1,0 +1,46 @@
+{
+  "invalid/pattern-without-team.json": {
+    "keyword": "required",
+    "instancePath": "/rules/0"
+  },
+  "invalid/pattern-with-two-teams.json": {
+    "keyword": "type",
+    "instancePath": "/rules/0/team"
+  },
+  "invalid/team-empty.json": {
+    "keyword": "pattern",
+    "instancePath": "/rules/0/team"
+  },
+  "invalid/team-with-spaces.json": {
+    "keyword": "pattern",
+    "instancePath": "/rules/0/team"
+  },
+  "invalid/team-without-pattern.json": {
+    "keyword": "required",
+    "instancePath": "/rules/0"
+  },
+  "invalid/pattern-lower-case.json": {
+    "keyword": "pattern",
+    "instancePath": "/rules/0/pattern"
+  },
+  "invalid/pattern-empty.json": {
+    "keyword": "pattern",
+    "instancePath": "/rules/0/pattern"
+  },
+  "invalid/pattern-is-a-path.json": {
+    "keyword": "pattern",
+    "instancePath": "/rules/0/pattern"
+  },
+  "invalid/without-rules.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/default-team-with-spaces.json": {
+    "keyword": "pattern",
+    "instancePath": "/default"
+  },
+  "invalid/rule-with-unknown-field.json": {
+    "keyword": "additionalProperties",
+    "instancePath": "/rules/0"
+  }
+}

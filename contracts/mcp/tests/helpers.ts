@@ -19,7 +19,7 @@ export const TOKEN_SCOPES = [
   "decide:publish",
 ];
 
-// The token purposes of ADR-0007, under the same caveat as the scopes.
+// The token purposes of ADR-0007 and the `watch` key that DEC-7 adds, under the same caveat as the scopes.
 export const TOKEN_PURPOSES = [
   "mcp_access",
   "read_link",
@@ -27,6 +27,7 @@ export const TOKEN_PURPOSES = [
   "refresh_request",
   "git_task",
   "session",
+  "watch",
 ];
 
 // Ajv's CommonJS build is the class itself at runtime and a module with `default` for the types.

@@ -82,6 +82,18 @@ test("the event stream starts after a cursor and carries change-feed events", ()
   assert.equal(stream.response.content_type, "text/event-stream");
 });
 
+// verifies: REQ-DEC-42, DEC-7
+test("the event stream takes only a watch key and carries no answer content", () => {
+  const stream = byName.get("event_stream") as Endpoint;
+  assert.deepEqual(stream.token_purpose, ["watch"]);
+  assert.equal(stream.scope, undefined);
+  const props = Object.keys((stream.response.schema.properties ?? {}) as object);
+  assert.deepEqual(props.sort(), ["cursor", "type"]);
+  assert.equal(stream.response.schema.additionalProperties, false);
+  const takers = endpoints.filter((e) => e.token_purpose.includes("watch")).map((e) => e.name);
+  assert.deepEqual(takers, ["event_stream"]);
+});
+
 // verifies: REQ-IFC-9, REQ-IFC-10
 test("endpoint fixtures pass and invalid ones fail with the expected error", () => {
   const ajv = newAjv();

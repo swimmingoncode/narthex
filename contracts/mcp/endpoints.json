@@ -94,10 +94,9 @@
       "name": "event_stream",
       "method": "GET",
       "path": "/api/forms/{form}/events",
-      "summary": "The watcher's stream of change-feed events after a cursor. It ends when an event arrives; the watcher reconnects with its last cursor.",
-      "token_purpose": ["mcp_access"],
+      "summary": "The watcher's stream of change-feed notices after a cursor: the cursor and the kind of each event, never its content. It ends when an event arrives; the watcher reconnects with its last cursor, then reads the changes with form_read.",
+      "token_purpose": ["watch"],
       "token_in": "header",
-      "scope": "decide:read",
       "query": [
         { "name": "since", "required": true, "description": "The last cursor the agent has seen." }
       ],
@@ -106,9 +105,10 @@
         "content_type": "text/event-stream",
         "schema": {
           "type": "object",
-          "required": ["event"],
+          "required": ["cursor", "type"],
           "properties": {
-            "event": { "$ref": "https://narthex.dev/contracts/data-model/event.schema.json" }
+            "cursor": { "type": "integer", "minimum": 1 },
+            "type": { "enum": ["answer", "edit", "link_request", "publish", "ack"] }
           },
           "additionalProperties": false
         }

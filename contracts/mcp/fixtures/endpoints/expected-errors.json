@@ -3,6 +3,10 @@
   "invalid/exchange-token-in-url.json": { "keyword": "additionalProperties", "instancePath": "" },
   "invalid/answer-without-item.json": { "keyword": "required", "instancePath": "" },
   "invalid/answer-with-nothing-to-say.json": { "keyword": "anyOf", "instancePath": "" },
-  "invalid/stream-event-without-cursor.json": { "keyword": "required", "instancePath": "/event" },
+  "invalid/stream-event-without-cursor.json": { "keyword": "required", "instancePath": "" },
+  "invalid/stream-event-with-choice.json": {
+    "keyword": "additionalProperties",
+    "instancePath": ""
+  },
   "invalid/exchange-unknown-purpose.json": { "keyword": "enum", "instancePath": "/purpose" }
 }

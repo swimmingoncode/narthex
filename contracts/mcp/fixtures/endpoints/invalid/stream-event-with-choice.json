@@ -1,0 +1,5 @@
+{
+  "endpoint": "event_stream",
+  "side": "response",
+  "value": { "cursor": 5, "type": "answer", "choice": "Reuse the key (recommended)" }
+}

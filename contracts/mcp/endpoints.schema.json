@@ -17,7 +17,7 @@
         "path": { "type": "string", "pattern": "^/api/forms/\\{form\\}(/[a-z-]+)*$" },
         "summary": { "type": "string", "minLength": 1, "maxLength": 300 },
         "token_purpose": {
-          "description": "The token purposes the endpoint accepts, from the token model of ADR-0007.",
+          "description": "The token purposes the endpoint accepts, from the token model of ADR-0007 and the `watch` key of DEC-7.",
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
@@ -28,7 +28,8 @@
               "answer_link",
               "refresh_request",
               "git_task",
-              "session"
+              "session",
+              "watch"
             ]
           }
         },

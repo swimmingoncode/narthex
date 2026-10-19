@@ -48,6 +48,9 @@ const SECTIONS = ["read", "decide", "act", "queue", "updates"];
 const text = (max: number) =>
   fc.string({ minLength: 1, maxLength: max }).filter((s) => !s.includes("(recommended)"));
 
+// A chain step label needs a visible character: the schema (pattern \S) and the builder (str.strip) both reject " ".
+const chainLabel = text(20).filter((s) => s.trim() !== "");
+
 const itemArb = fc
   .record(
     {
@@ -72,7 +75,7 @@ const itemArb = fc
       ),
       spec: fc.array(text(12), { maxLength: 3 }),
       origin: text(40),
-      chainLabels: fc.uniqueArray(text(20), { minLength: 1, maxLength: 3 }),
+      chainLabels: fc.uniqueArray(chainLabel, { minLength: 1, maxLength: 3 }),
     },
     { requiredKeys: ["id", "section", "title"], noNullPrototype: true },
   )
@@ -119,6 +122,35 @@ test("generated valid items pass the schema and survive a round trip", () => {
       }),
       { numRuns: 80 },
     );
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// verifies: REQ-DEC-43, REQ-DAT-6
+// Regression (T-002-02): the property test once failed on seed -813493125 with a whitespace-only chain label.
+// The generator was too loose; schema and builder agree that such a label is invalid.
+test("a blank chain label fails the schema and the builder alike", () => {
+  const doc = {
+    form: { title: "Generated form" },
+    sections: SECTIONS.map((id) => ({ id, title: id })),
+    items: [
+      {
+        id: "a",
+        kind: "read",
+        section: "read",
+        title: " ",
+        chain: [{ label: " ", why: "It matters.", before: [] }],
+      },
+    ],
+  };
+  assert.equal(validate(doc), false);
+  assert.ok((validate.errors ?? []).some((e) => e.instancePath === "/items/0/chain/0/label"));
+  const dir = mkdtempSync(join(tmpdir(), "narthex-questions-"));
+  try {
+    const file = join(dir, "questions.json");
+    writeFileSync(file, JSON.stringify(doc));
+    assert.notEqual(runBuilder(file).code, 0);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

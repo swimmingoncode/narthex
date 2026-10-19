@@ -1,0 +1,13 @@
+{
+  "id": "ADR-0002",
+  "type": "architecture-decision",
+  "statement": "The official MCP TypeScript SDK, Streamable HTTP hosted, stdio local",
+  "status": "accepted",
+  "source": {
+    "file": "docs/architecture/adr/0002-mcp-sdk-and-transport.md",
+    "line": 1
+  },
+  "links": {
+    "decided-by": ["adr-0002"]
+  }
+}

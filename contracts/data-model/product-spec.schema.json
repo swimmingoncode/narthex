@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narthex.dev/contracts/data-model/product-spec.schema.json",
+  "title": "Product specification",
+  "description": "The product specification input contract of SPEC 4.3 as data (REQ-CHN-5, REQ-ITK-6): the six elements, each answered or marked \"unknown\" by the product-spec owner, each with its source, and the gaps. The intake check (T-007-02) and the form's gap items read this one shape. An element the owner has not answered at all is left out of `elements` and listed in `gaps` with the reason `missing`; an element answered \"unknown\" has the status `unknown` and a gap with the reason `unknown` (the SRS then records it as an assumption); an element whose answer is unclear stays answered and has a gap with the reason `unclear`. The schema checks the shape. That every element is answered or listed, and that each gap agrees with its element, belongs to the conformance suite and to the intake check. The shape is the same at every experience level (INV-12, REQ-ITK-6): `level` records the guidance used and changes nothing here.",
+  "type": "object",
+  "required": ["project", "owner", "elements", "gaps"],
+  "properties": {
+    "created": { "type": "string" },
+    "project": { "type": "string", "minLength": 1 },
+    "owner": { "type": "string", "minLength": 1 },
+    "level": { "$ref": "spec-item.schema.json#/$defs/level" },
+    "elements": {
+      "type": "object",
+      "properties": {
+        "problem-descriptors": { "$ref": "#/$defs/element" },
+        "goals-and-non-goals": { "$ref": "#/$defs/element" },
+        "product-map": { "$ref": "#/$defs/element" },
+        "success-measures": { "$ref": "#/$defs/element" },
+        "constraints": { "$ref": "#/$defs/element" },
+        "open-questions": { "$ref": "#/$defs/element" }
+      },
+      "additionalProperties": false
+    },
+    "gaps": { "type": "array", "items": { "$ref": "#/$defs/gap" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "element-name": {
+      "enum": [
+        "problem-descriptors",
+        "goals-and-non-goals",
+        "product-map",
+        "success-measures",
+        "constraints",
+        "open-questions"
+      ]
+    },
+    "source": {
+      "description": "Where the answer, or the owner's \"unknown\", came from: a person, a document or a form item.",
+      "type": "object",
+      "required": ["kind", "ref"],
+      "properties": {
+        "kind": { "enum": ["person", "document", "form-item"] },
+        "ref": { "type": "string", "minLength": 1 },
+        "at": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "element": {
+      "type": "object",
+      "required": ["status", "source"],
+      "properties": {
+        "status": { "enum": ["answered", "unknown"] },
+        "answer": { "type": "string", "minLength": 1 },
+        "source": { "$ref": "#/$defs/source" }
+      },
+      "additionalProperties": false,
+      "if": { "properties": { "status": { "const": "answered" } }, "required": ["status"] },
+      "then": { "properties": { "answer": true }, "required": ["answer"] },
+      "else": { "properties": { "answer": false } }
+    },
+    "gap": {
+      "type": "object",
+      "required": ["element", "reason"],
+      "properties": {
+        "element": { "$ref": "#/$defs/element-name" },
+        "part": {
+          "description": "The part of the element that is short, such as `revenue structure` of the problem descriptors.",
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": { "enum": ["missing", "unknown", "unclear"] },
+        "detail": { "type": "string", "minLength": 1 },
+        "item": {
+          "description": "The form item raised for this gap and routed to the product-spec owner (REQ-CHN-5). Same id rule as REQ-DAT-6.",
+          "type": "string",
+          "pattern": "^[a-z0-9.-]{1,64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

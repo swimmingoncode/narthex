@@ -1,0 +1,10 @@
+{
+  "id": "DEC-14",
+  "type": "decision",
+  "statement": "**Contracts.** Four contracts live in `contracts/`: `data-model/`, `mcp/`, `profile/` and `tokens/`. Each has a `version` field, fixtures and a conformance suite beside it. They are data, like `kb/`, so `packages/core` still depends on nothing of ours. They freeze at 0.1.0 when `F-002` to `F-005` merge (checkpoint C0). A change after C0 needs a version bump, a `contracts/CHANGELOG.md` entry and a new `DEC-*`; `T-001-05` enforces it. They are tagged 1.0.0 at M0's exit commit, as SAD §10.3 asks: the `version` fields move to 1.0.0 by a `contracts/CHANGELOG.md` entry that names this decision (`T-018-08`)",
+  "status": "accepted",
+  "source": {
+    "file": "PLAN.md",
+    "line": 90
+  }
+}

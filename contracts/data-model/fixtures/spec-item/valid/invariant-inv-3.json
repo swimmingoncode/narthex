@@ -1,0 +1,14 @@
+{
+  "id": "INV-3",
+  "type": "invariant",
+  "statement": "The log is append-only. A changed answer is a new entry that supersedes the old one, and both remain.",
+  "strength": "MUST",
+  "status": "accepted",
+  "source": {
+    "file": "SPEC.md",
+    "line": 894
+  },
+  "links": {
+    "verified-by": ["CHK-event-cursors"]
+  }
+}

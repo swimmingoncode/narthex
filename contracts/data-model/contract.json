@@ -1,12 +1,14 @@
 {
   "name": "data-model",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "schemas": [
     "questions.schema.json",
     "response.schema.json",
     "event.schema.json",
     "project.schema.json",
     "ownership.schema.json",
-    "trace.schema.json"
+    "trace.schema.json",
+    "spec-item.schema.json",
+    "product-spec.schema.json"
   ]
 }

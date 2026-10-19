@@ -1,0 +1,31 @@
+{
+  "project": "p",
+  "owner": "o",
+  "elements": {},
+  "gaps": [
+    {
+      "element": "problem-descriptors",
+      "reason": "missing"
+    },
+    {
+      "element": "goals-and-non-goals",
+      "reason": "missing"
+    },
+    {
+      "element": "product-map",
+      "reason": "missing"
+    },
+    {
+      "element": "success-measures",
+      "reason": "missing"
+    },
+    {
+      "element": "constraints",
+      "reason": "missing"
+    },
+    {
+      "element": "open-questions",
+      "reason": "missing"
+    }
+  ]
+}

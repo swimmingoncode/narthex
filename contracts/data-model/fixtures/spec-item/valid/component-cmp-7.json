@@ -1,0 +1,13 @@
+{
+  "id": "CMP-7",
+  "type": "component",
+  "statement": "Core model: the data model and its JSON Schemas; parsing the repo layout; identifiers; the trace graph and its three queries; the needs.json export. No I/O of its own.",
+  "status": "accepted",
+  "source": {
+    "file": "docs/architecture/SAD.md",
+    "line": 85
+  },
+  "links": {
+    "derives-from": ["REQ-DAT-1"]
+  }
+}

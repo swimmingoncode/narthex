@@ -1,0 +1,12 @@
+{
+  "id": "CHK-spec-item-fixtures-pass",
+  "type": "check",
+  "statement": "The valid spec item fixtures pass the schema and quote this repository.",
+  "status": "accepted",
+  "source": {
+    "file": "contracts/data-model/tests/spec-item.test.ts"
+  },
+  "links": {
+    "evidenced-by": ["EV-1"]
+  }
+}

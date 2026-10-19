@@ -1,0 +1,12 @@
+{
+  "id": "AC-1",
+  "type": "acceptance-criterion",
+  "statement": "Given an item of type assumption without assumes, validation fails naming assumes.",
+  "status": "draft",
+  "source": {
+    "file": "SPEC.md"
+  },
+  "links": {
+    "derives-from": ["REQ-DAT-17"]
+  }
+}

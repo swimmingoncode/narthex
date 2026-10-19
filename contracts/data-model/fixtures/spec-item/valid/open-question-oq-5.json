@@ -1,0 +1,14 @@
+{
+  "id": "OQ-5",
+  "type": "open-question",
+  "statement": "May a profile make an executable reference or a formal model normative over `SPEC.md`?",
+  "status": "closed",
+  "source": {
+    "file": "SPEC.md",
+    "line": 966
+  },
+  "links": {
+    "decided-by": ["v3-oq-5"],
+    "amended-by": ["0002"]
+  }
+}

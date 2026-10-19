@@ -1,0 +1,12 @@
+{
+  "id": "SLO-1",
+  "type": "slo",
+  "statement": "Answer submits succeed within a bound the server runbook states.",
+  "status": "draft",
+  "source": {
+    "file": "ops/RB-1-server.md"
+  },
+  "links": {
+    "allocated-to": ["CMP-2"]
+  }
+}

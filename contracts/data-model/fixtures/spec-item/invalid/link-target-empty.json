@@ -1,0 +1,16 @@
+{
+  "id": "REQ-X-1",
+  "type": "requirement",
+  "statement": "The export MUST list every item.",
+  "strength": "MUST",
+  "status": "draft",
+  "source": {
+    "file": "SPEC.md",
+    "line": 1,
+    "commit": "57f7975"
+  },
+  "verification_method": "inspection",
+  "links": {
+    "verified-by": [""]
+  }
+}

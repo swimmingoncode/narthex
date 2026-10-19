@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narthex.dev/contracts/data-model/spec-item.schema.json",
+  "title": "Spec item",
+  "description": "One item of a spec as data (SPEC 6.3, REQ-DAT-17, REQ-DAT-18): an id, a type, a statement, a strength, a status, where it was written, who owns it, the attributes its type needs and its trace links (SPEC 6.4). The schema checks the shape of one item and the rules that hold under every profile: a statement, and what an assumption assumes. Which attributes a type MUST carry is the profile's to say (REQ-DAT-9, REQ-DAT-18), so a MUST without a `verification_method` is schema-valid; the conformance suite checks it against the profile's requirements. The type is open, as in `trace.schema.json`: a lower-case name, so a profile can add types (REQ-DAT-9). The known set is that of SPEC 6.3: `product-spec`, `requirement`, `invariant`, `acceptance-criterion`, `non-functional`, `threat`, `hazard`, `component`, `architecture-decision`, `decision`, `feature`, `task`, `check`, `evidence-record`, `runbook`, `slo`, `open-question`, `amendment`, `decision-item`, plus `deferred` and `assumption`. A profile adds attributes under `attributes`. `trace.schema.json` takes its id, link-target and source definitions from `$defs` here.",
+  "type": "object",
+  "required": ["id", "type", "statement", "status", "source"],
+  "properties": {
+    "id": { "$ref": "#/$defs/id" },
+    "type": { "$ref": "#/$defs/type" },
+    "statement": { "type": "string", "minLength": 1 },
+    "strength": {
+      "description": "The RFC 2119 keyword of the statement. Absent or null: the statement is informative.",
+      "type": ["string", "null"],
+      "enum": ["MUST", "SHOULD", "MAY", null]
+    },
+    "status": { "type": "string", "minLength": 1 },
+    "source": { "$ref": "#/$defs/source" },
+    "owner": { "type": "string", "minLength": 1 },
+    "level": { "$ref": "#/$defs/level" },
+    "verification_method": { "type": "string", "minLength": 1 },
+    "assumption": {
+      "description": "True when the item rests on something not yet known; `assumes` then says on what.",
+      "type": "boolean"
+    },
+    "assumes": { "type": "string", "minLength": 1 },
+    "attributes": {
+      "description": "Attributes a profile adds to a type (REQ-DAT-9). The profile's data file says which and what shape.",
+      "type": "object"
+    },
+    "links": { "$ref": "#/$defs/links" }
+  },
+  "additionalProperties": false,
+  "if": {
+    "anyOf": [
+      { "properties": { "type": { "const": "assumption" } }, "required": ["type"] },
+      { "properties": { "assumption": { "const": true } }, "required": ["assumption"] }
+    ]
+  },
+  "then": { "properties": { "assumes": true }, "required": ["assumes"] },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" },
+    "ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "type": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
+    "level": { "enum": ["newcomer", "maker", "practitioner", "professional"] },
+    "source": {
+      "type": "object",
+      "required": ["file"],
+      "properties": {
+        "file": { "type": "string", "minLength": 1 },
+        "line": { "type": "integer", "minimum": 1 },
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" }
+      },
+      "additionalProperties": false
+    },
+    "links": {
+      "description": "One array of target identifiers per link type of SPEC 6.4.",
+      "type": "object",
+      "properties": {
+        "derives-from": { "$ref": "#/$defs/ids" },
+        "mitigates": { "$ref": "#/$defs/ids" },
+        "allocated-to": { "$ref": "#/$defs/ids" },
+        "decided-by": { "$ref": "#/$defs/ids" },
+        "implemented-by": { "$ref": "#/$defs/ids" },
+        "verified-by": { "$ref": "#/$defs/ids" },
+        "evidenced-by": { "$ref": "#/$defs/ids" },
+        "amended-by": { "$ref": "#/$defs/ids" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

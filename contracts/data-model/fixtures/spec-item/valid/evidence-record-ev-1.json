@@ -1,0 +1,10 @@
+{
+  "id": "EV-1",
+  "type": "evidence-record",
+  "statement": "Layout test, run 42",
+  "status": "passed",
+  "source": {
+    "file": "ci/runs/42.json",
+    "line": 1
+  }
+}

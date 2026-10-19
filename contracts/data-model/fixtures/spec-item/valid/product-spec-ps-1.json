@@ -1,0 +1,10 @@
+{
+  "id": "PS-1",
+  "type": "product-spec",
+  "statement": "What the product is",
+  "status": "accepted",
+  "source": {
+    "file": "PRODUCT.md",
+    "line": 3
+  }
+}

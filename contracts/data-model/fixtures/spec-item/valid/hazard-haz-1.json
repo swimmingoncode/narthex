@@ -1,0 +1,9 @@
+{
+  "id": "HAZ-1",
+  "type": "hazard",
+  "statement": "A wrong answer is archived as the record of a ruling.",
+  "status": "draft",
+  "source": {
+    "file": "SPEC.md"
+  }
+}

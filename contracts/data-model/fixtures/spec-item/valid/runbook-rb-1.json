@@ -1,0 +1,9 @@
+{
+  "id": "RB-1",
+  "type": "runbook",
+  "statement": "updates, backups, restore, incident contact",
+  "status": "planned",
+  "source": {
+    "file": "ops/RB-1-server.md"
+  }
+}

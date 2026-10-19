@@ -1,0 +1,27 @@
+{
+  "prompts": [
+    {
+      "name": "intake",
+      "step": "intake",
+      "description": "Start the guided intake for a project: ask the question set for the person's level, one contract element at a time.",
+      "scope": "knowledge:read",
+      "arguments": [
+        { "name": "project", "required": true, "description": "The project, as owner/repo." },
+        {
+          "name": "level",
+          "required": false,
+          "description": "The experience level: newcomer, maker, practitioner or professional."
+        }
+      ]
+    },
+    {
+      "name": "spec",
+      "step": "spec",
+      "description": "Write the product specification and SRS from the confirmed intake, under the project's profile.",
+      "scope": "knowledge:read",
+      "arguments": [
+        { "name": "project", "required": true, "description": "The project, as owner/repo." }
+      ]
+    }
+  ]
+}

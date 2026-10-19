@@ -1,0 +1,42 @@
+{
+  "invalid/form_read.negative-cursor.json": {
+    "keyword": "minimum",
+    "instancePath": "/since"
+  },
+  "invalid/link_get.answer-without-recipient.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/form_wait.timeout-too-long.json": {
+    "keyword": "maximum",
+    "instancePath": "/timeout_seconds"
+  },
+  "invalid/verify_run.checks-and-gate.json": {
+    "keyword": "oneOf",
+    "instancePath": ""
+  },
+  "invalid/items_file.no-items.json": {
+    "keyword": "minItems",
+    "instancePath": "/items"
+  },
+  "invalid/spec_get.lowercase-id.json": {
+    "keyword": "pattern",
+    "instancePath": "/id"
+  },
+  "invalid/form_publish.token-in-query.json": {
+    "keyword": "pattern",
+    "instancePath": "/read_link"
+  },
+  "invalid/knowledge_get.unknown-class.json": {
+    "keyword": "enum",
+    "instancePath": "/piece/class"
+  },
+  "invalid/form_wait.unknown-status.json": {
+    "keyword": "enum",
+    "instancePath": "/status"
+  },
+  "invalid/form_read.event-without-cursor.json": {
+    "keyword": "required",
+    "instancePath": "/events/0"
+  }
+}

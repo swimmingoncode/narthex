@@ -1,0 +1,13 @@
+{
+  "tool": "link_get",
+  "input": {
+    "form": "acme-decisions",
+    "kind": "answer",
+    "recipient": "ana"
+  },
+  "output": {
+    "kind": "answer",
+    "url": "https://narthex.example/f/acme-decisions#an_Zk3pQ9vL2",
+    "open_in_browser": false
+  }
+}

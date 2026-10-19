@@ -1,0 +1,17 @@
+{
+  "tool": "knowledge_search",
+  "input": {
+    "step": "STEP-1",
+    "level": "maker"
+  },
+  "output": {
+    "pieces": [
+      {
+        "id": "intake-maker-vision",
+        "version": "0.1.0",
+        "title": "Describe the product in your own words",
+        "class": "supplementary"
+      }
+    ]
+  }
+}

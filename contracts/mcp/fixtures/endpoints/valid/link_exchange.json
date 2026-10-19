@@ -1,0 +1,5 @@
+{
+  "endpoint": "link_exchange",
+  "request": { "token": "rd_3Hk9xQ2mPzzzzzzzzzzzz" },
+  "response": { "purpose": "read_link", "expires_at": "2026-10-17T20:15:00Z" }
+}

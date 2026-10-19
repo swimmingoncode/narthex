@@ -1,0 +1,22 @@
+{
+  "tool": "spec_get",
+  "input": {
+    "project": "acme/shop",
+    "id": "REQ-PAY-3"
+  },
+  "output": {
+    "id": "REQ-PAY-3",
+    "commit": "3f9c2ab41d7e",
+    "statement": "A retried payment MUST reuse the client's idempotency key.",
+    "attributes": [
+      {
+        "name": "status",
+        "value": "approved"
+      }
+    ],
+    "source": {
+      "path": "SPEC.md",
+      "line": 212
+    }
+  }
+}

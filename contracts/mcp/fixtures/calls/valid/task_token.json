@@ -1,0 +1,12 @@
+{
+  "tool": "task_token",
+  "input": {
+    "project": "acme/shop",
+    "task": "t-001-02",
+    "permissions": ["contents:write", "pull_requests:write"]
+  },
+  "output": {
+    "token": "ghs_exampleexampleexample1234",
+    "expires_at": "2026-10-17T21:00:00Z"
+  }
+}

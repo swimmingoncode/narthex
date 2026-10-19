@@ -1,0 +1,13 @@
+{
+  "tool": "form_publish",
+  "input": {
+    "project": "acme/shop",
+    "commit": "3f9c2ab41d7e"
+  },
+  "output": {
+    "form": "acme-decisions",
+    "commit": "3f9c2ab41d7e",
+    "read_link": "https://narthex.example/f/acme-decisions#rd_3Hk9xQ2mP",
+    "open_in_browser": true
+  }
+}

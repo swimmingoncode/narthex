@@ -1,0 +1,6 @@
+{
+  "name": "mcp",
+  "version": "0.1.0",
+  "schemas": ["tools.schema.json", "kb-piece.schema.json", "endpoints.schema.json"],
+  "listings": ["tools.json", "resources.json", "prompts.json", "endpoints.json"]
+}

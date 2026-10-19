@@ -1,0 +1,7 @@
+{
+  "id": "method-traceability",
+  "version": "0.1.0",
+  "class": "closed",
+  "label": "our standard way",
+  "body": "Narthex's own method: every requirement names the test that verifies it."
+}

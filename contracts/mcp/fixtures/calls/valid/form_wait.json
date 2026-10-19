@@ -1,0 +1,15 @@
+{
+  "tool": "form_wait",
+  "input": {
+    "form": "acme-decisions",
+    "since": 6,
+    "timeout_seconds": 20
+  },
+  "output": {
+    "status": "pending",
+    "form": "acme-decisions",
+    "cursor": 6,
+    "events": [],
+    "more": false
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "endpoint": "link_exchange",
+  "side": "response",
+  "value": { "purpose": "mcp_access", "expires_at": "2026-10-17T20:15:00Z" }
+}

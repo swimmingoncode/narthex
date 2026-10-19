@@ -1,0 +1,8 @@
+{
+  "id": "std-semver",
+  "version": "0.1.0",
+  "class": "open_standard",
+  "label": "normative: Semantic Versioning, 2.0.0",
+  "step": "STEP-1",
+  "body": "Given a version number MAJOR.MINOR.PATCH, increment the MAJOR version for incompatible changes."
+}

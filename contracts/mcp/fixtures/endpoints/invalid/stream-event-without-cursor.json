@@ -1,0 +1,5 @@
+{
+  "endpoint": "event_stream",
+  "side": "response",
+  "value": { "type": "publish" }
+}

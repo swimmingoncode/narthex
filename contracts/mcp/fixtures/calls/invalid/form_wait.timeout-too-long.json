@@ -1,0 +1,9 @@
+{
+  "tool": "form_wait",
+  "side": "input",
+  "value": {
+    "form": "acme-decisions",
+    "since": 1,
+    "timeout_seconds": 300
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narthex.dev/contracts/mcp/kb-piece.schema.json",
+  "title": "Knowledge piece",
+  "description": "One piece of the knowledge base as knowledge_get and narthex://kb/{id}@{version} serve it (REQ-KNB-2). Every piece carries one class and the label that class shows (REQ-KNB-3); only an open standard may be labelled normative (REQ-KNB-4, INV-14).",
+  "type": "object",
+  "required": ["id", "version", "class", "label", "body"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$", "maxLength": 20 },
+    "class": { "enum": ["open_standard", "supplementary", "closed"] },
+    "label": { "type": "string", "maxLength": 120 },
+    "step": { "type": "string", "pattern": "^STEP-[0-9]{1,6}$" },
+    "level": { "enum": ["newcomer", "maker", "practitioner", "professional"] },
+    "body": { "type": "string", "maxLength": 8000 }
+  },
+  "allOf": [
+    {
+      "if": { "required": ["class"], "properties": { "class": { "const": "open_standard" } } },
+      "then": {
+        "properties": {
+          "label": { "type": "string", "pattern": "^normative: [^,]+, .+$" }
+        }
+      }
+    },
+    {
+      "if": { "required": ["class"], "properties": { "class": { "const": "supplementary" } } },
+      "then": { "properties": { "label": { "const": "supplementary, not normative" } } }
+    },
+    {
+      "if": { "required": ["class"], "properties": { "class": { "const": "closed" } } },
+      "then": {
+        "properties": { "label": { "enum": ["early preview: available soon", "our standard way"] } }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

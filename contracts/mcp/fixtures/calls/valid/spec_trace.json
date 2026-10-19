@@ -1,0 +1,19 @@
+{
+  "tool": "spec_trace",
+  "input": {
+    "project": "acme/shop",
+    "id": "REQ-PAY-3",
+    "mode": "impact"
+  },
+  "output": {
+    "id": "REQ-PAY-3",
+    "mode": "impact",
+    "items": [
+      {
+        "id": "REQ-PAY-7",
+        "title": "Refunds reuse the original key"
+      }
+    ],
+    "truncated": false
+  }
+}

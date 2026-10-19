@@ -1,0 +1,5 @@
+{
+  "endpoint": "event_stream",
+  "query": { "since": 4 },
+  "response": { "cursor": 5, "type": "answer" }
+}

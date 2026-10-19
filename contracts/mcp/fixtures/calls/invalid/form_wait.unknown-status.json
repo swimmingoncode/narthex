@@ -1,0 +1,11 @@
+{
+  "tool": "form_wait",
+  "side": "output",
+  "value": {
+    "status": "timeout",
+    "form": "acme-decisions",
+    "cursor": 6,
+    "events": [],
+    "more": false
+  }
+}

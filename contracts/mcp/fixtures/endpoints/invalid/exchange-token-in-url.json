@@ -1,0 +1,8 @@
+{
+  "endpoint": "link_exchange",
+  "side": "request",
+  "value": {
+    "token": "rd_3Hk9xQ2mPzzzzzzzzzzzz",
+    "url": "https://narthex.example/?token=rd_3Hk9xQ2mPzzzzzzzzzzzz"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "tool": "knowledge_get",
+  "side": "output",
+  "value": {
+    "piece": {
+      "id": "intake-maker-vision",
+      "version": "0.1.0",
+      "class": "normative",
+      "label": "normative",
+      "body": "x"
+    }
+  }
+}

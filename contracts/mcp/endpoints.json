@@ -1,0 +1,142 @@
+{
+  "endpoints": [
+    {
+      "name": "link_exchange",
+      "method": "POST",
+      "path": "/api/forms/{form}/session",
+      "summary": "Trade the token from the link's fragment for a short session. The page reads the fragment and POSTs it; the token never reaches a URL the server sees.",
+      "token_purpose": ["read_link", "answer_link"],
+      "token_in": "body",
+      "request_schema": {
+        "type": "object",
+        "required": ["token"],
+        "properties": { "token": { "type": "string", "pattern": "^[A-Za-z0-9_-]{20,255}$" } },
+        "additionalProperties": false
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["purpose", "expires_at"],
+          "properties": {
+            "purpose": { "enum": ["read_link", "answer_link"] },
+            "expires_at": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T[0-9:.]+(?:Z|[+-]\\d{2}:\\d{2})$",
+              "maxLength": 40
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "name": "snapshot_get",
+      "method": "GET",
+      "path": "/api/forms/{form}/snapshot",
+      "summary": "Load the published snapshot of the form: its questions file at the published commit, and the answers so far.",
+      "token_purpose": ["session"],
+      "token_in": "cookie",
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["commit", "cursor", "questions"],
+          "properties": {
+            "commit": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
+            "cursor": { "type": "integer", "minimum": 0 },
+            "questions": {
+              "$ref": "https://narthex.dev/contracts/data-model/questions.schema.json"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "name": "answer_submit",
+      "method": "POST",
+      "path": "/api/forms/{form}/answers",
+      "summary": "Submit one answer to one item routed to the holder. Saved at once; a changed answer adds an event and keeps the old one.",
+      "token_purpose": ["answer_link"],
+      "token_in": "cookie",
+      "request_schema": {
+        "type": "object",
+        "required": ["item"],
+        "properties": {
+          "item": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{0,63}$" },
+          "choice": { "type": "string" },
+          "notes": { "type": "string" }
+        },
+        "anyOf": [
+          {
+            "required": ["choice"],
+            "properties": { "choice": { "type": "string", "minLength": 1 } }
+          },
+          { "required": ["notes"], "properties": { "notes": { "type": "string", "minLength": 1 } } }
+        ],
+        "additionalProperties": false
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["cursor"],
+          "properties": { "cursor": { "type": "integer", "minimum": 1 } },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "name": "event_stream",
+      "method": "GET",
+      "path": "/api/forms/{form}/events",
+      "summary": "The watcher's stream of change-feed notices after a cursor: the cursor and the kind of each event, never its content. It ends when an event arrives; the watcher reconnects with its last cursor, then reads the changes with form_read.",
+      "token_purpose": ["watch"],
+      "token_in": "header",
+      "query": [
+        { "name": "since", "required": true, "description": "The last cursor the agent has seen." }
+      ],
+      "response": {
+        "status": 200,
+        "content_type": "text/event-stream",
+        "schema": {
+          "type": "object",
+          "required": ["cursor", "type"],
+          "properties": {
+            "cursor": { "type": "integer", "minimum": 1 },
+            "type": { "enum": ["answer", "edit", "link_request", "publish", "ack"] }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "name": "link_request",
+      "method": "POST",
+      "path": "/api/forms/{form}/link-requests",
+      "summary": "Ask the agent, through the form's store, for a fresh read link. Adds a link_request event; needs no session.",
+      "token_purpose": ["refresh_request"],
+      "token_in": "header",
+      "request_schema": {
+        "type": "object",
+        "required": ["recipient"],
+        "properties": { "recipient": { "type": "string", "minLength": 1, "maxLength": 120 } },
+        "additionalProperties": false
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["cursor"],
+          "properties": { "cursor": { "type": "integer", "minimum": 1 } },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

@@ -15,6 +15,15 @@ Example:
 - Adds the `closed_by` field to the item schema. Decision: DEC-99.
 ```
 
+## mcp 0.1.0
+
+- First release: the 14 tools of SAD 11.2 (`tools.json`, `tools.schema.json`), the resources and prompts
+  (`resources.json`, `prompts.json`), the knowledge piece schema (`kb-piece.schema.json`) and the HTTP endpoints of
+  the form page and the watcher (`endpoints.json`), with fixtures, a conformance suite for any server (`conformance/`) and a stub that answers from the fixtures
+  (`stub/`). Decision: DEC-14.
+- Adds the `snapshot_get` endpoint, beyond the four calls listed for `T-003-03`: the answer link loads the published
+  snapshot of its form (SAD §4.1). Decision: DEC-14.
+
 ## data-model 0.1.0
 
 - First release: the six schemas of SAD 11.1 (`questions`, `response`, `event`, `project`, `ownership`, `trace`),

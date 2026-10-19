@@ -1,0 +1,10 @@
+{
+  "id": "0002",
+  "type": "amendment",
+  "statement": "First rulings on v0.3",
+  "status": "applied",
+  "source": {
+    "file": "amendments/0002-first-rulings-on-v0.3.md",
+    "line": 1
+  }
+}

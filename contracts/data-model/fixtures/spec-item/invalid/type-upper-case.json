@@ -1,6 +1,6 @@
 {
   "id": "REQ-X-1",
-  "type": "epic",
+  "type": "Epic",
   "statement": "The export MUST list every item.",
   "strength": "MUST",
   "status": "draft",

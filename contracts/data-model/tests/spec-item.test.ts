@@ -15,6 +15,32 @@ const validate = validatorFor("spec-item.schema.json");
 const validateTrace = validatorFor("trace.schema.json");
 const FIXTURES = join(CONTRACT, "fixtures", "spec-item");
 
+// The item types SPEC 6.3 names, in kebab-case, plus `deferred` and `assumption`. The schema's type is open (REQ-DAT-9),
+// so this is the known set, not a limit: the schema and the README list it, and a valid fixture exists for each.
+const KNOWN_TYPES = [
+  "product-spec",
+  "requirement",
+  "invariant",
+  "acceptance-criterion",
+  "non-functional",
+  "threat",
+  "hazard",
+  "component",
+  "architecture-decision",
+  "decision",
+  "feature",
+  "task",
+  "check",
+  "evidence-record",
+  "runbook",
+  "slo",
+  "open-question",
+  "amendment",
+  "decision-item",
+  "deferred",
+  "assumption",
+];
+
 type Item = {
   id: string;
   type: string;
@@ -86,9 +112,28 @@ test("spec item fixtures pass and quote this repository", () => {
       assert.ok(text.includes(item.statement), `${file}: statement differs from ${doc}:${number}`);
     }
   }
-  const typeEnum = (readJson(join(CONTRACT, "spec-item.schema.json")) as SchemaFile).$defs.type
-    .enum;
-  assert.deepEqual([...types].sort(), [...typeEnum].sort(), "a valid fixture for every item type");
+  assert.deepEqual(
+    [...types].sort(),
+    [...KNOWN_TYPES].sort(),
+    "a valid fixture for every known type",
+  );
+});
+
+// verifies: REQ-DAT-9
+test("item types are open: a profile's type passes, a malformed one fails", () => {
+  const base = readJson(join(FIXTURES, "valid", "minimal.json")) as Item;
+  assert.equal(validate({ ...base, type: "risk-register" }), true, JSON.stringify(validate.errors));
+  for (const type of ["Risk", "risk register", "1-risk", "", "-risk"]) {
+    assert.equal(validate({ ...base, type }), false, type);
+  }
+  // The schema and the README name every known type.
+  const description = (readJson(join(CONTRACT, "spec-item.schema.json")) as { description: string })
+    .description;
+  const readme = readFileSync(join(CONTRACT, "README.md"), "utf8");
+  for (const type of KNOWN_TYPES) {
+    assert.ok(description.includes(`\`${type}\``), `schema description lacks ${type}`);
+    assert.ok(readme.includes(`\`${type}\``), `README lacks ${type}`);
+  }
 });
 
 // verifies: REQ-DAT-17
@@ -160,7 +205,7 @@ test("invalid spec item fixtures fail with the expected error", () => {
 });
 
 interface SchemaFile {
-  $defs: { type: { enum: string[] }; links: { properties: Record<string, unknown> } };
+  $defs: { type: { pattern: string }; links: { properties: Record<string, unknown> } };
 }
 
 // verifies: REQ-DAT-20
@@ -179,15 +224,14 @@ test("trace items take their definitions from the spec item schema", () => {
     .map(([name]) => name)
     .sort();
   assert.deepEqual(traceLinkTypes, linkTypes);
-  // Every item type of the spec item schema is a type the trace export accepts.
-  const typePattern = new RegExp(
-    (
-      readJson(join(CONTRACT, "trace.schema.json")) as {
-        $defs: { need: { properties: { type: { pattern: string } } } };
-      }
-    ).$defs.need.properties.type.pattern,
-  );
-  for (const type of spec.$defs.type.enum) assert.match(type, typePattern);
+  // The item type is the same open pattern in both, so every known type is a type the trace export accepts.
+  const tracePattern = (
+    readJson(join(CONTRACT, "trace.schema.json")) as {
+      $defs: { need: { properties: { type: { pattern: string } } } };
+    }
+  ).$defs.need.properties.type.pattern;
+  assert.equal(spec.$defs.type.pattern, tracePattern);
+  for (const type of KNOWN_TYPES) assert.match(type, new RegExp(tracePattern));
 });
 
 // verifies: REQ-DAT-20

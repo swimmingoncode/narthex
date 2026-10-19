@@ -1,0 +1,9 @@
+{
+  "id": "oq-3",
+  "type": "decision-item",
+  "statement": "Should retries reuse the client's idempotency key?",
+  "status": "answered",
+  "source": {
+    "file": "decisions/questions.json"
+  }
+}

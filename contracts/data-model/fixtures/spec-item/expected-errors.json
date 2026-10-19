@@ -23,12 +23,12 @@
     "keyword": "required",
     "instancePath": ""
   },
-  "invalid/type-unknown.json": {
-    "keyword": "enum",
+  "invalid/type-upper-case.json": {
+    "keyword": "pattern",
     "instancePath": "/type"
   },
   "invalid/type-with-space.json": {
-    "keyword": "enum",
+    "keyword": "pattern",
     "instancePath": "/type"
   },
   "invalid/strength-lower-case.json": {

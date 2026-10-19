@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://narthex.dev/contracts/data-model/spec-item.schema.json",
   "title": "Spec item",
-  "description": "One item of a spec as data (SPEC 6.3, REQ-DAT-17, REQ-DAT-18): an id, a type, a statement, a strength, a status, where it was written, who owns it, the attributes its type needs and its trace links (SPEC 6.4). The schema checks the shape of one item and the rules that hold under every profile: a statement, and what an assumption assumes. Which attributes a type MUST carry is the profile's to say (REQ-DAT-9, REQ-DAT-18), so a MUST without a `verification_method` is schema-valid; the conformance suite checks it against the profile's requirements. A profile adds attributes under `attributes`. `trace.schema.json` takes its id, link-target and source definitions from `$defs` here.",
+  "description": "One item of a spec as data (SPEC 6.3, REQ-DAT-17, REQ-DAT-18): an id, a type, a statement, a strength, a status, where it was written, who owns it, the attributes its type needs and its trace links (SPEC 6.4). The schema checks the shape of one item and the rules that hold under every profile: a statement, and what an assumption assumes. Which attributes a type MUST carry is the profile's to say (REQ-DAT-9, REQ-DAT-18), so a MUST without a `verification_method` is schema-valid; the conformance suite checks it against the profile's requirements. The type is open, as in `trace.schema.json`: a lower-case name, so a profile can add types (REQ-DAT-9). The known set is that of SPEC 6.3: `product-spec`, `requirement`, `invariant`, `acceptance-criterion`, `non-functional`, `threat`, `hazard`, `component`, `architecture-decision`, `decision`, `feature`, `task`, `check`, `evidence-record`, `runbook`, `slo`, `open-question`, `amendment`, `decision-item`, plus `deferred` and `assumption`. A profile adds attributes under `attributes`. `trace.schema.json` takes its id, link-target and source definitions from `$defs` here.",
   "type": "object",
   "required": ["id", "type", "statement", "status", "source"],
   "properties": {
@@ -41,19 +41,7 @@
   "$defs": {
     "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" },
     "ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
-    "type": {
-      "enum": [
-        "requirement",
-        "invariant",
-        "non-functional",
-        "open-question",
-        "deferred",
-        "assumption",
-        "decision",
-        "task",
-        "feature"
-      ]
-    },
+    "type": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
     "level": { "enum": ["newcomer", "maker", "practitioner", "professional"] },
     "source": {
       "type": "object",

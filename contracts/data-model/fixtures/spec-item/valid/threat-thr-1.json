@@ -1,0 +1,12 @@
+{
+  "id": "THR-1",
+  "type": "threat",
+  "statement": "A stolen answer link lets someone else answer a form.",
+  "status": "draft",
+  "source": {
+    "file": "SPEC.md"
+  },
+  "links": {
+    "decided-by": ["adr-0007"]
+  }
+}

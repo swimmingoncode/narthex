@@ -31,6 +31,11 @@ state them. The conformance suite or the builder checks those:
 - `product-spec`: that every one of the six elements is answered or listed as a gap, and that each gap agrees with its
   element (`missing`: absent from `elements`; `unknown`: status `unknown`; `unclear`: answered).
   `tests/product-spec.test.ts` holds the checker, `gapProblems`; the intake check reads the same rule. An element left out is a schema-valid gap.
+- `spec-item`: the `type` is open (`^[a-z][a-z0-9_-]*$`, the pattern of `trace`), because a profile may add types
+  (`REQ-DAT-9`). The known set is that of `SPEC.md` 6.3: `product-spec`, `requirement`, `invariant`,
+  `acceptance-criterion`, `non-functional`, `threat`, `hazard`, `component`, `architecture-decision`, `decision`,
+  `feature`, `task`, `check`, `evidence-record`, `runbook`, `slo`, `open-question`, `amendment`, `decision-item`, and
+  `deferred` and `assumption`. The suite holds a valid fixture for each.
 - `trace`: each need sits under its own id, `needs_amount` counts the needs, `links` holds every typed target.
 
 ## Fixtures
@@ -38,7 +43,7 @@ state them. The conformance suite or the builder checks those:
 `fixtures/<schema>/valid/` files must pass. `fixtures/<schema>/invalid/` files must fail, each with the error that
 `expected-errors.json` names: the schema keyword and the instance path, and for `questions` also the text of the
 builder's error. The `spec-item` valid fixtures quote rows of this repository's `SPEC.md` and `PLAN.md`, one for each
-item type; the suite checks that each sits on the line it names. The `product-spec` fixtures are a filled example
+known item type; the suite checks that each sits on the line it names. The `product-spec` fixtures are a filled example
 (`valid/complete.json`) and a gap example (`valid/with-gaps.json`). Two real files of this repository are fixtures too:
 `decisions/questions.json` and `decisions/responses/*.json`, plus `.narthex/project.json`.
 

@@ -1,0 +1,63 @@
+{
+  "created": "2026-10-17T20:00:00Z",
+  "project": "acme-invoices",
+  "owner": "maria",
+  "level": "maker",
+  "elements": {
+    "problem-descriptors": {
+      "status": "answered",
+      "answer": "Target users: freelance designers who invoice by hand. Needs and values: get paid on time, spend little time on paperwork. Channels: word of mouth and design communities. Costs: hosting and payment fees. Revenue: a monthly subscription.",
+      "source": {
+        "kind": "form-item",
+        "ref": "ps-problem",
+        "at": "2026-10-17T20:00:00Z"
+      }
+    },
+    "goals-and-non-goals": {
+      "status": "answered",
+      "answer": "Goal: send an invoice in under two minutes. Non-goals: accounting, payroll, tax filing.",
+      "source": {
+        "kind": "form-item",
+        "ref": "ps-goals",
+        "at": "2026-10-17T20:00:00Z"
+      }
+    },
+    "product-map": {
+      "status": "answered",
+      "answer": "Spreadsheets meet the need poorly (no reminders). Large accounting suites meet it but cost too much and need training.",
+      "source": {
+        "kind": "document",
+        "ref": "PRODUCT.md",
+        "at": "2026-10-17T20:00:00Z"
+      }
+    },
+    "success-measures": {
+      "status": "answered",
+      "answer": "Half of new users send a first invoice in their first week; median time to send under two minutes.",
+      "source": {
+        "kind": "person",
+        "ref": "",
+        "at": "2026-10-17T20:00:00Z"
+      }
+    },
+    "constraints": {
+      "status": "answered",
+      "answer": "Sector: small business services. Deadline: a first release in three months. Budget: a single maker. Platforms: phone browser first.",
+      "source": {
+        "kind": "form-item",
+        "ref": "ps-constraints",
+        "at": "2026-10-17T20:00:00Z"
+      }
+    },
+    "open-questions": {
+      "status": "answered",
+      "answer": "Which payment providers to support first is undecided.",
+      "source": {
+        "kind": "form-item",
+        "ref": "ps-open",
+        "at": "2026-10-17T20:00:00Z"
+      }
+    }
+  },
+  "gaps": []
+}

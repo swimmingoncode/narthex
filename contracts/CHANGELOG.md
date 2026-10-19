@@ -20,6 +20,9 @@ Example:
 - Adds `spec-item.schema.json`: one item of a spec as data (SPEC 6.3): id, type, statement, strength, status, source
   (file, line, commit), owner, `level`, `verification_method`, the assumption flag with `assumes`, profile attributes
   under `attributes`, and links of the SPEC 6.4 types. Which attributes a type MUST carry stays with the profile.
+- Adds `product-spec.schema.json`: the product specification input contract of SPEC 4.3 as data: the six elements, each
+  answered or `unknown` with its source, and the gaps (`missing`, `unknown`, `unclear`), so the intake check and the
+  form's gap items read one shape.
 - `trace.schema.json` takes `id`, link targets and `source` from `spec-item.schema.json`. Everything valid in 0.1.0 is
   still valid; `source` of a need may now also carry a `commit`. Decision: DEC-14.
 

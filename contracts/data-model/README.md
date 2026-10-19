@@ -1,6 +1,6 @@
 # data-model contract
 
-Version 0.2.0 (see `contract.json`). Seven JSON Schemas, draft 2020-12, for the files Narthex reads and writes
+Version 0.2.0 (see `contract.json`). Eight JSON Schemas, draft 2020-12, for the files Narthex reads and writes
 (SAD 11.1). The Python form builder, `packages/core`, the server and the verify checks all read this directory;
 none of them keeps its own copy of a shape.
 
@@ -13,6 +13,7 @@ none of them keeps its own copy of a shape.
 | `ownership.schema.json` | The ownership file: identifier patterns to one owning team each | `REQ-TEM-2` |
 | `trace.schema.json` | Items and trace links as a `needs.json`-compatible export. Its `id`, link targets and `source` are the definitions of `spec-item.schema.json` | `REQ-DAT-20` |
 | `spec-item.schema.json` | One item of a spec: id, type, statement, strength, status, source, owner, the attributes its type needs, the assumption flag with what it assumes, and links of the `SPEC.md` 6.4 types | `REQ-DAT-6`, `REQ-DAT-17` |
+| `product-spec.schema.json` | The product specification of `SPEC.md` 4.3: its six elements, each answered or "unknown" with its source, and the gaps | `REQ-CHN-1`, `REQ-CHN-5`, `REQ-ITK-6` |
 
 ## What a schema checks, and what it leaves out
 
@@ -24,18 +25,22 @@ state them. The conformance suite or the builder checks those:
 - `event`: cursors of one form increase strictly. `tests/helpers.ts` holds the checker, `firstCursorViolation`.
 - `spec-item`: which attributes a type MUST carry, such as a `verification_method` on a MUST, is the profile's to say
   (`REQ-DAT-18`), so a MUST without one is schema-valid. `tests/spec-item.test.ts` checks it against the `product`
-  profile's requirements, held in a marked stand-in there until `contracts/profile/` exists. The `fixtures/spec-item/profile-gaps/`
-  files pass the schema and fail that check. The schema does say that a statement is present and that an item of type
+  profile's requirements, held in a marked stand-in there until `contracts/profile/` exists. The
+  `fixtures/spec-item/profile-gaps/` files pass the schema and fail that check. The schema does say that a statement is present and that an item of type
   `assumption`, or one with the assumption flag, names what it assumes.
+- `product-spec`: that every one of the six elements is answered or listed as a gap, and that each gap agrees with its
+  element (`missing`: absent from `elements`; `unknown`: status `unknown`; `unclear`: answered).
+  `tests/product-spec.test.ts` holds the checker, `gapProblems`; the intake check reads the same rule. An element left out is a schema-valid gap.
 - `trace`: each need sits under its own id, `needs_amount` counts the needs, `links` holds every typed target.
 
 ## Fixtures
 
 `fixtures/<schema>/valid/` files must pass. `fixtures/<schema>/invalid/` files must fail, each with the error that
 `expected-errors.json` names: the schema keyword and the instance path, and for `questions` also the text of the
-builder's error. The `spec-item` valid fixtures quote rows of this repository's `SPEC.md` and `PLAN.md`, one for each item type; the
-suite checks that each sits on the line it names. Two real files of this repository are fixtures too: `decisions/questions.json` and
-`decisions/responses/*.json`, plus `.narthex/project.json`.
+builder's error. The `spec-item` valid fixtures quote rows of this repository's `SPEC.md` and `PLAN.md`, one for each
+item type; the suite checks that each sits on the line it names. The `product-spec` fixtures are a filled example
+(`valid/complete.json`) and a gap example (`valid/with-gaps.json`). Two real files of this repository are fixtures too:
+`decisions/questions.json` and `decisions/responses/*.json`, plus `.narthex/project.json`.
 
 ## Conformance
 

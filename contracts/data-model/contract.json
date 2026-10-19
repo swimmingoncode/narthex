@@ -8,6 +8,7 @@
     "project.schema.json",
     "ownership.schema.json",
     "trace.schema.json",
-    "spec-item.schema.json"
+    "spec-item.schema.json",
+    "product-spec.schema.json"
   ]
 }

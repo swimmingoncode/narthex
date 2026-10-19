@@ -1,0 +1,82 @@
+{
+  "invalid/element-without-source.json": {
+    "keyword": "required",
+    "instancePath": "/elements/success-measures"
+  },
+  "invalid/unknown-element-without-source.json": {
+    "keyword": "required",
+    "instancePath": "/elements/constraints"
+  },
+  "invalid/source-without-ref.json": {
+    "keyword": "required",
+    "instancePath": "/elements/success-measures/source"
+  },
+  "invalid/source-ref-empty.json": {
+    "keyword": "minLength",
+    "instancePath": "/elements/success-measures/source/ref"
+  },
+  "invalid/source-of-unknown-kind.json": {
+    "keyword": "enum",
+    "instancePath": "/elements/success-measures/source/kind"
+  },
+  "invalid/element-without-status.json": {
+    "keyword": "required",
+    "instancePath": "/elements/success-measures"
+  },
+  "invalid/status-neither-answered-nor-unknown.json": {
+    "keyword": "enum",
+    "instancePath": "/elements/success-measures/status"
+  },
+  "invalid/answered-without-answer.json": {
+    "keyword": "required",
+    "instancePath": "/elements/success-measures"
+  },
+  "invalid/answer-empty.json": {
+    "keyword": "minLength",
+    "instancePath": "/elements/success-measures/answer"
+  },
+  "invalid/unknown-with-an-answer.json": {
+    "keyword": "false schema",
+    "instancePath": "/elements/constraints/answer"
+  },
+  "invalid/element-not-in-the-contract.json": {
+    "keyword": "additionalProperties",
+    "instancePath": "/elements"
+  },
+  "invalid/without-gaps.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/without-elements.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/without-owner.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/level-unknown.json": {
+    "keyword": "enum",
+    "instancePath": "/level"
+  },
+  "invalid/gap-without-element.json": {
+    "keyword": "required",
+    "instancePath": "/gaps/0"
+  },
+  "invalid/gap-of-element-not-in-the-contract.json": {
+    "keyword": "enum",
+    "instancePath": "/gaps/0/element"
+  },
+  "invalid/gap-without-reason.json": {
+    "keyword": "required",
+    "instancePath": "/gaps/0"
+  },
+  "invalid/gap-of-unknown-reason.json": {
+    "keyword": "enum",
+    "instancePath": "/gaps/0/reason"
+  },
+  "invalid/gap-item-id-not-usable.json": {
+    "keyword": "pattern",
+    "instancePath": "/gaps/0/item"
+  }
+}

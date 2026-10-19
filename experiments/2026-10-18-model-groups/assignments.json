@@ -432,6 +432,16 @@
       "feature": "F-019",
       "arm": "fixed",
       "reason": "Opus: independent security review."
+    },
+    "T-002-05": {
+      "feature": "F-002",
+      "arm": "fixed",
+      "reason": "contract (data-model 0.2.0): contracts stay with Sonnet"
+    },
+    "T-002-06": {
+      "feature": "F-002",
+      "arm": "fixed",
+      "reason": "contract (data-model 0.2.0): contracts stay with Sonnet"
     }
   }
 }

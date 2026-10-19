@@ -1,0 +1,20 @@
+{
+  "id": "REQ-X-1",
+  "type": "requirement",
+  "statement": "The export MUST list every item.",
+  "strength": "MUST",
+  "status": "draft",
+  "source": {
+    "file": "SPEC.md",
+    "line": 1,
+    "commit": "57f7975"
+  },
+  "verification_method": "inspection",
+  "assumption": true,
+  "assumes": "The product owner confirms the list of item types",
+  "links": {
+    "implemented-by": ["57f7975", "packages/core/src/export.ts"],
+    "verified-by": ["CHK-1"],
+    "evidenced-by": ["EV-1"]
+  }
+}

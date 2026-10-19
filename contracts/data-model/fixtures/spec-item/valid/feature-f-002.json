@@ -1,0 +1,11 @@
+{
+  "id": "F-002",
+  "type": "feature",
+  "statement": "Contract: data-model schemas",
+  "status": "in-progress",
+  "source": {
+    "file": "PLAN.md",
+    "line": 164
+  },
+  "owner": "data-model"
+}

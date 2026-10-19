@@ -1,0 +1,17 @@
+{
+  "id": "REQ-DAT-17",
+  "type": "requirement",
+  "statement": "A spec MUST declare its `profile`, and its `level` where one applies, in its front matter (ASM-27).",
+  "strength": "MUST",
+  "status": "accepted",
+  "source": {
+    "file": "SPEC.md",
+    "line": 562
+  },
+  "owner": "data-model",
+  "verification_method": "test",
+  "links": {
+    "derives-from": ["ASM-27"],
+    "verified-by": ["CHK-spec-item-fixtures-pass"]
+  }
+}

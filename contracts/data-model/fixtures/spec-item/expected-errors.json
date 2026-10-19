@@ -1,0 +1,102 @@
+{
+  "invalid/requirement-without-statement.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/statement-empty.json": {
+    "keyword": "minLength",
+    "instancePath": "/statement"
+  },
+  "invalid/item-without-id.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/item-without-type.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/item-without-status.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/item-without-source.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/type-unknown.json": {
+    "keyword": "enum",
+    "instancePath": "/type"
+  },
+  "invalid/type-with-space.json": {
+    "keyword": "enum",
+    "instancePath": "/type"
+  },
+  "invalid/strength-lower-case.json": {
+    "keyword": "enum",
+    "instancePath": "/strength"
+  },
+  "invalid/strength-not-a-keyword.json": {
+    "keyword": "enum",
+    "instancePath": "/strength"
+  },
+  "invalid/id-with-spaces.json": {
+    "keyword": "pattern",
+    "instancePath": "/id"
+  },
+  "invalid/level-unknown.json": {
+    "keyword": "enum",
+    "instancePath": "/level"
+  },
+  "invalid/source-without-file.json": {
+    "keyword": "required",
+    "instancePath": "/source"
+  },
+  "invalid/source-line-zero.json": {
+    "keyword": "minimum",
+    "instancePath": "/source/line"
+  },
+  "invalid/source-commit-not-a-hash.json": {
+    "keyword": "pattern",
+    "instancePath": "/source/commit"
+  },
+  "invalid/verification-method-empty.json": {
+    "keyword": "minLength",
+    "instancePath": "/verification_method"
+  },
+  "invalid/link-of-unknown-type.json": {
+    "keyword": "additionalProperties",
+    "instancePath": "/links"
+  },
+  "invalid/link-targets-not-a-list.json": {
+    "keyword": "type",
+    "instancePath": "/links/verified-by"
+  },
+  "invalid/link-target-empty.json": {
+    "keyword": "minLength",
+    "instancePath": "/links/verified-by/0"
+  },
+  "invalid/attributes-not-an-object.json": {
+    "keyword": "type",
+    "instancePath": "/attributes"
+  },
+  "invalid/property-not-in-the-schema.json": {
+    "keyword": "additionalProperties",
+    "instancePath": ""
+  },
+  "invalid/assumption-without-what-it-assumes.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/assumption-type-without-what-it-assumes.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/assumption-flag-without-what-it-assumes.json": {
+    "keyword": "required",
+    "instancePath": ""
+  },
+  "invalid/assumes-empty.json": {
+    "keyword": "minLength",
+    "instancePath": "/assumes"
+  }
+}

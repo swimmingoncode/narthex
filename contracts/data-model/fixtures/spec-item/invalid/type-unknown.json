@@ -1,0 +1,18 @@
+{
+  "id": "REQ-X-1",
+  "type": "epic",
+  "statement": "The export MUST list every item.",
+  "strength": "MUST",
+  "status": "draft",
+  "source": {
+    "file": "SPEC.md",
+    "line": 1,
+    "commit": "57f7975"
+  },
+  "verification_method": "inspection",
+  "links": {
+    "implemented-by": ["57f7975", "packages/core/src/export.ts"],
+    "verified-by": ["CHK-1"],
+    "evidenced-by": ["EV-1"]
+  }
+}

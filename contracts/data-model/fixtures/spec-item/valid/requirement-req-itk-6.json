@@ -1,0 +1,17 @@
+{
+  "id": "REQ-ITK-6",
+  "type": "requirement",
+  "statement": "The level MUST change only the guidance: the depth of questions, the explanations, and the defaults offered. It MUST NOT change any gate or check (`INV-12`).",
+  "strength": "MUST",
+  "status": "accepted",
+  "source": {
+    "file": "SPEC.md",
+    "line": 448
+  },
+  "owner": "intake",
+  "level": "practitioner",
+  "verification_method": "test",
+  "links": {
+    "derives-from": ["INV-12"]
+  }
+}

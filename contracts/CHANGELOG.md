@@ -15,6 +15,14 @@ Example:
 - Adds the `closed_by` field to the item schema. Decision: DEC-99.
 ```
 
+## data-model 0.2.0
+
+- Adds `spec-item.schema.json`: one item of a spec as data (SPEC 6.3): id, type, statement, strength, status, source
+  (file, line, commit), owner, `level`, `verification_method`, the assumption flag with `assumes`, profile attributes
+  under `attributes`, and links of the SPEC 6.4 types. Which attributes a type MUST carry stays with the profile.
+- `trace.schema.json` takes `id`, link targets and `source` from `spec-item.schema.json`. Everything valid in 0.1.0 is
+  still valid; `source` of a need may now also carry a `commit`. Decision: DEC-14.
+
 ## mcp 0.1.0
 
 - First release: the 14 tools of SAD 11.2 (`tools.json`, `tools.schema.json`), the resources and prompts

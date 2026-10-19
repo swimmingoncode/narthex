@@ -1,0 +1,9 @@
+{
+  "id": "X1",
+  "type": "task",
+  "statement": "One thing",
+  "status": "open",
+  "source": {
+    "file": "PLAN.md"
+  }
+}

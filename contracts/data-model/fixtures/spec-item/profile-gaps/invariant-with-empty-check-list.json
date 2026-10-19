@@ -1,0 +1,14 @@
+{
+  "id": "INV-X-2",
+  "type": "invariant",
+  "statement": "The log is append-only.",
+  "strength": "MUST",
+  "status": "accepted",
+  "source": {
+    "file": "SPEC.md",
+    "line": 894
+  },
+  "links": {
+    "verified-by": []
+  }
+}

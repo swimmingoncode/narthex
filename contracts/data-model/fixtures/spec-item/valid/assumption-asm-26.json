@@ -1,0 +1,15 @@
+{
+  "id": "ASM-26",
+  "type": "assumption",
+  "statement": "A `needs.json`-compatible export",
+  "status": "accepted",
+  "source": {
+    "file": "SPEC.md",
+    "line": 1034
+  },
+  "assumption": true,
+  "assumes": "Sphinx-needs consumers read a needs.json file without changes of their own",
+  "links": {
+    "decided-by": ["0004-needs"]
+  }
+}

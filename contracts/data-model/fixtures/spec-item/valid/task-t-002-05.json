@@ -1,0 +1,13 @@
+{
+  "id": "T-002-05",
+  "type": "task",
+  "statement": "`spec-item.schema.json`: one item of a spec as data, per SPEC §6.3: id, type (requirement, invariant, non-functional, open question, deferred, assumption, decision, task, feature), statement, strength (MUST, SHOULD, MAY, or none for informative), status, source (file, line, commit), owner, the profile attributes the item's type requires (for example `level`, `verification_method`), assumption flag with what it assumes, and links (SPEC §6.4 types). `trace.schema.json` items reference it. Fixtures from this repo's SPEC.md",
+  "status": "in-progress",
+  "source": {
+    "file": "PLAN.md",
+    "line": 216
+  },
+  "links": {
+    "derives-from": ["REQ-DAT-6", "REQ-DAT-17"]
+  }
+}

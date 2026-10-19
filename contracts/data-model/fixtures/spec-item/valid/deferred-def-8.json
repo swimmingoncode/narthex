@@ -1,0 +1,14 @@
+{
+  "id": "DEF-8",
+  "type": "deferred",
+  "statement": "ReqIF export",
+  "strength": null,
+  "status": "deferred",
+  "source": {
+    "file": "SPEC.md",
+    "line": 942
+  },
+  "links": {
+    "derives-from": ["REQ-DAT-20"]
+  }
+}

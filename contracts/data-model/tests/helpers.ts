@@ -15,8 +15,14 @@ export function readJson(path: string): unknown {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+// The other schemas of the contract are loaded too: `trace` takes definitions from `spec-item` by `$ref`.
 export function validatorFor(schemaFile: string) {
   const ajv = new AjvClass({ allErrors: true, strict: true, strictTuples: false });
+  for (const name of readdirSync(CONTRACT)) {
+    if (name.endsWith(".schema.json") && name !== schemaFile) {
+      ajv.addSchema(readJson(join(CONTRACT, name)) as object);
+    }
+  }
   return ajv.compile(readJson(join(CONTRACT, schemaFile)) as object);
 }
 

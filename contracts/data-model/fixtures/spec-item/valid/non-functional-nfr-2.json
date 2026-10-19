@@ -1,0 +1,15 @@
+{
+  "id": "NFR-2",
+  "type": "non-functional",
+  "statement": "**Phone first.** The web GUI and the form MUST be usable at 375 px wide, with no horizontal page scroll and touch targets of at least 40 px.",
+  "strength": "MUST",
+  "status": "accepted",
+  "source": {
+    "file": "SPEC.md",
+    "line": 918
+  },
+  "attributes": {
+    "measure": "page width in px; horizontal scroll",
+    "bound": "375 px; none"
+  }
+}

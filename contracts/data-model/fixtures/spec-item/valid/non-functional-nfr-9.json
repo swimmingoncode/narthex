@@ -1,0 +1,11 @@
+{
+  "id": "NFR-9",
+  "type": "non-functional",
+  "statement": "**Waiting and reading** (Pablo, 2026-10-05). Skills SHOULD let a script do any waiting, with one blocking command or a background command that notifies on exit, and SHOULD filter before reading: never raw CI logs, plans or large files in context.",
+  "strength": "SHOULD",
+  "status": "accepted",
+  "source": {
+    "file": "SPEC.md",
+    "line": 925
+  }
+}

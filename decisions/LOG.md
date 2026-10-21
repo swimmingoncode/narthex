@@ -1,6 +1,6 @@
 # Narthex Decisions — log
 
-Generated Sat 2026-10-17 18:57 -05 · commit 4784a91 by the decision-form skill from `responses/`. Do not edit by hand:
+Generated Wed 2026-10-21 18:58 -05 · commit 3e686ad by the decision-form skill from `responses/`. Do not edit by hand:
 every answer ever archived is listed, oldest first. A later answer to the same item supersedes the earlier one.
 
 | When | Item | Question | Answer | Notes | By | Status | Applied by |
@@ -46,3 +46,4 @@ every answer ever archived is listed, oldest first. A later answer to the same i
 | 2026-10-17 23:38 | `plan-web-address` | Which web address should the first hosted version use? | Subdomains of a domain we already hold (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | PLAN v0.2.0 DEC-4 |
 | 2026-10-17 23:39 | `plan-merge-rule` | May agents merge their own changes once every check passes? | Yes, except sign-in, keys and contracts (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | PLAN v0.2.0 DEC-17 |
 | 2026-10-17 23:43 | `plan-watch-key` | May the wake-up helper keep listening while you take days? | Long-lived listening key, no content (recommended) |  | u_I_crGe4UnsTeI8vf31ga_A | current | PLAN v0.2.0 DEC-7 |
+| 2026-10-21 12:00 | `ru-reader-stays` | The form never moves the reader after a state change | Adopt as relayed | Pablo, relayed by the aledgent session on 2026-10-21: "the form shouldn't alter its navigation state (take a user out to where it's reading or responding) after a state change." | relayed:aledgent-session | current | decision-form template (in progress); ruling R35 |

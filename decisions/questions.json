@@ -3363,6 +3363,120 @@
    ],
    "reserved": true,
    "origin": "F-001, task T-001-06, 2026-10-17"
+  },
+  {
+   "id": "ru-reader-stays",
+   "section": "decide",
+   "group": "inbox",
+   "applied": "decision-form template (in progress); ruling R35",
+   "title": "The form never moves the reader after a state change",
+   "lead": "Your ruling, relayed by the aledgent session on 2026-10-21.",
+   "options": [
+    "Adopt as relayed",
+    "Change it (notes)"
+   ],
+   "origin": "aledgent session, relaying Pablo"
+  },
+  {
+   "id": "d-reader-guarantees",
+   "section": "decide",
+   "group": "inbox",
+   "follows": "ru-reader-stays",
+   "title": "Make the reader guarantees requirements?",
+   "lead": "Your rule covers the first one; the aledgent session proposed three more, and the template is being fixed to meet them.",
+   "bullets": [
+    "Fast-changing content (Claude's queue, progress) updates in place from a live document; no republish.",
+    "If a reload is unavoidable, the view and unsent text are restored.",
+    "A newer version is announced; you choose when to take it."
+   ],
+   "options": [
+    "Yes, all three (recommended)",
+    "Only the first two",
+    "Discuss first"
+   ],
+   "refs": [
+    {
+     "label": "The note",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-21-form-must-not-move-the-reader.md"
+    }
+   ]
+  },
+  {
+   "id": "d-spec-ahead-model",
+   "section": "decide",
+   "group": "profiles",
+   "title": "Allow the spec to be ahead of the program, with a deadline?",
+   "lead": "A spec change may name something the program lacks yet. Make that allowance data on the spec item, not an exception in a test.",
+   "bullets": [
+    "Each item: planned (with release and amendment), implemented, or withdrawn.",
+    "The check passes a planned item until its release, then fails.",
+    "Code with no spec item stays a hard failure.",
+    "Adds one task to the data-model contract before it freezes."
+   ],
+   "options": [
+    "Yes, as data before the freeze (recommended)",
+    "Keep hand-written exceptions",
+    "Discuss first"
+   ],
+   "refs": [
+    {
+     "label": "Advice note",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-21-spec-ahead-of-program.md"
+    }
+   ]
+  },
+  {
+   "id": "d-spec-ahead-norelease",
+   "section": "decide",
+   "group": "profiles",
+   "default": 0,
+   "follows": "d-spec-ahead-model",
+   "title": "A planned item names no release: what happens?",
+   "lead": "Without a deadline, an allowance could stay open forever.",
+   "options": [
+    "It fails like any mismatch (recommended)",
+    "Allowed until the next release"
+   ],
+   "refs": [
+    {
+     "label": "Advice note",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-21-spec-ahead-of-program.md"
+    }
+   ]
+  },
+  {
+   "id": "r-spec-ahead",
+   "kind": "read",
+   "section": "read",
+   "title": "Two notes from aledgent: the reader, and spec ahead of program",
+   "lead": "Feedback on the form, and advice on a spec that names what the program lacks yet.",
+   "options": [
+    "Read, no comments",
+    "Read, comments in notes",
+    "Not yet"
+   ],
+   "chain": [
+    {
+     "label": "The form must not move the reader",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-21-form-must-not-move-the-reader.md",
+     "why": "What went wrong, your ruling, and the three proposed guarantees.",
+     "for": [
+      "d-reader-guarantees"
+     ]
+    },
+    {
+     "label": "Spec ahead of the program",
+     "url": "https://github.com/swimmingoncode/narthex/blob/main/notes/2026-10-21-spec-ahead-of-program.md",
+     "why": "Why the two directions differ, and the planned-item model.",
+     "before": [
+      "The form must not move the reader"
+     ],
+     "for": [
+      "d-spec-ahead-model",
+      "d-spec-ahead-norelease"
+     ]
+    }
+   ]
   }
  ]
 }

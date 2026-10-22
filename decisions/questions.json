@@ -3477,6 +3477,23 @@
      ]
     }
    ]
+  },
+  {
+   "id": "q-reader-nits",
+   "kind": "queue",
+   "section": "queue",
+   "follows": "ru-reader-stays",
+   "title": "Small follow-ups on keeping the reader in place",
+   "lead": "From the review: two edge cases where a change made elsewhere isn't shown until you reload.",
+   "bullets": [
+    "Typing while the same answer changes elsewhere: show a 'changed elsewhere' hint.",
+    "A change arriving mid-save: apply it once the save finishes."
+   ],
+   "options": [
+    "OK",
+    "Do this first",
+    "Stop it"
+   ]
   }
  ]
 }

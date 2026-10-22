@@ -103,5 +103,11 @@
  "a-domain": "ab505fc143c79943",
  "act-test-github-org": "58ee8896481956ff",
  "act-github-oauth-app": "43a5801b275b6e78",
- "act-github-app-test": "fc7a058e1279bc63"
+ "act-github-app-test": "fc7a058e1279bc63",
+ "ru-reader-stays": "29f0d128955417df",
+ "d-reader-guarantees": "663056b3c215426e",
+ "d-spec-ahead-model": "ff48635e548a5784",
+ "d-spec-ahead-norelease": "9614c88ee93a2b6d",
+ "r-spec-ahead": "42ffdf0f3b774513",
+ "q-reader-nits": "e66ee82e2dd7a08a"
 }

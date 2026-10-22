@@ -96,6 +96,13 @@ td a{color:var(--accent)}
 .optlist li.chosen::before{content:"✓ ";color:var(--ok)}
 .ans{font-size:15px;margin:6px 0 0;overflow-wrap:anywhere}
 .out .redo{font:inherit;font-size:13.5px;margin-top:8px;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.livenotice{font-size:13.5px;margin:8px 0 0;padding:6px 10px;border-radius:8px;background:var(--chip);color:var(--ink);overflow-wrap:anywhere}
+.livenotice[hidden]{display:none}
+.lq{list-style:none;margin:6px 0 0;padding:0;font-size:14.5px}
+.lq li{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line)}
+.lq li:first-child{border-top:0}
+.lq .lt{min-width:0;overflow-wrap:anywhere}
+.lq .why{flex-basis:100%;color:var(--muted);font-size:13.5px}
 .empty{color:var(--muted);font-size:15px;padding:24px 0}
 dialog{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:0;width:min(720px,calc(100vw - 24px));max-height:calc(100vh - 48px)}
 dialog::backdrop{background:rgb(0 0 0 / .45)}
@@ -115,6 +122,7 @@ dialog::backdrop{background:rgb(0 0 0 / .45)}
     <span id="where"><span class="dot"></span>Connecting…</span>
     <span id="total"></span>
   </div>
+  <p class="livenotice" id="live-notice" role="status" hidden></p>
   <nav class="tabs" id="tabs" aria-label="Sections"></nav>
   <div id="view"><p class="sub">Loading the questions… If this stays, the page could not run its script. Open it in a web browser, or ask for it to be published as an artifact.</p></div>
   <noscript><p class="sub">This form needs JavaScript. Open the file in a web browser (a file preview won't run it), or ask for it to be published as an artifact.</p></noscript>
@@ -128,8 +136,11 @@ dialog::backdrop{background:rgb(0 0 0 / .45)}
 /*__DATA__*/
 // FORM, SECTIONS, ITEMS, RESOLVED, NEW and STAMP are injected by scripts/build.py.
 const LS = FORM.storageKey;
-let S = {}, col = null, dl = null, who = null, cur = null;
-const timers = {};
+let S = {}, col = null, dl = null, who = null, cur = null, curHash = '', lastReq = null;
+// timers: edits not yet sent (per item). writing: writes in flight. Both mean "this view owns the item" until the write lands,
+// so a snapshot never overwrites them (and the echo of our own write is a no-op, because the state already matches).
+const timers = {}, writing = {};
+const LIVE = { queue: null, notice: null };
 const NEWSET = new Set(NEW);
 const ALL = [['overview', 'Overview', FORM.overviewBlurb || 'What is new, what blocks, and how much is left.'],
   ...SECTIONS.map(s => [s.id, s.title, s.blurb || '']),
@@ -138,6 +149,10 @@ const DISCUSS = /\bdiscuss\b/i;
 
 function lsLoad(){ try { return JSON.parse(localStorage.getItem(LS) || '{}') } catch(e){ return {} } }
 function lsSave(){ try { localStorage.setItem(LS, JSON.stringify(S)) } catch(e){} }
+// Unsent notes, per item, in sessionStorage: a fallback for a reload that the platform's hot state does not cover.
+function draftGet(id){ try { return sessionStorage.getItem(LS + ':draft:' + id) } catch(e){ return null } }
+function draftSet(id, v){ try { if (v == null) sessionStorage.removeItem(LS + ':draft:' + id); else sessionStorage.setItem(LS + ':draft:' + id, v) } catch(e){} }
+function byId(id){ return ITEMS.find(i => i.id === id) || RESOLVED.find(i => i.id === id) }
 function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) }
 function answered(id){ const r = S[id]; return !!(r && (r.choice || r.notes)) }
 function decided(id){ return answered(id) && !DISCUSS.test(S[id].choice || '') }
@@ -150,20 +165,46 @@ function count(sec, grp){
     open: its.filter(i => needsYou(i) && !i.defaulted && !decided(i.id)).length, nw: its.filter(i => NEWSET.has(i.id)).length };
 }
 
+// Updated in place: the buttons stay (so focus and the strip's scroll stay), only their labels change.
 function tabs(){
-  const nav = document.getElementById('tabs'); nav.innerHTML = '';
+  const nav = document.getElementById('tabs'), have = new Map([...nav.children].map(b => [b.id, b]));
+  let at = 0;
   for (const [p, t] of ALL){
     let h = esc(t);
     if (p !== 'overview' && p !== 'outbox'){
       const c = count(p); if (!c.n) continue;
       h += `<span class="n">${c.open || '✓'}</span>` + (c.nw ? `<span class="nw">•${c.nw}</span>` : '');
     } else if (p === 'outbox'){ if (!RESOLVED.length) continue; h += `<span class="n">${RESOLVED.length}</span>`; }
-    const b = document.createElement('button'); b.type = 'button'; b.id = 'tab-' + p; b.innerHTML = h;
-    if (p === cur) b.setAttribute('aria-current', 'page');
-    b.onclick = () => nav_(p); nav.appendChild(b);
+    let b = have.get('tab-' + p); have.delete('tab-' + p);
+    if (!b){ b = document.createElement('button'); b.type = 'button'; b.id = 'tab-' + p; b.onclick = () => nav_(p) }
+    if (b._h !== h){ b.innerHTML = h; b._h = h }
+    if (p === cur) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    if (nav.children[at] !== b) nav.insertBefore(b, nav.children[at] || null);
+    at++;
   }
+  have.forEach(b => b.remove());
   const tot = ITEMS.filter(i => answered(i.id)).length;
   document.getElementById('total').innerHTML = `<b>${tot}</b> of <b>${ITEMS.length}</b> answered · <b>${NEW.length}</b> new since the last update`;
+}
+function grpLabel(pg, g){
+  const c = count(pg, g.id);
+  return esc(g.title) + (c.open ? `<span class="op">${c.open} open</span>` : '<span class="n">✓</span>') + (c.nw ? `<span class="nw">•${c.nw}</span>` : '');
+}
+function updateSubnav(){
+  if (cur === 'overview' || cur === 'outbox') return;
+  for (const g of sectionOf(cur).groups || []){
+    const b = document.getElementById('grp-' + cur + '-' + g.id), h = b && grpLabel(cur, g);
+    if (b && b._h !== h){ b.innerHTML = h; b._h = h }
+  }
+}
+// Runs a change to the page and keeps whatever the reader is looking at where it was, even when the change adds or resizes content above it.
+function anchored(fn){
+  const y = window.scrollY;
+  const a = [...document.querySelectorAll('#view .item, #view .panel, #view .subnav')].find(e => e.getBoundingClientRect().bottom > 0);
+  const top = a ? a.getBoundingClientRect().top : 0;
+  fn();
+  if (a && a.isConnected){ const d = a.getBoundingClientRect().top - top; if (d) window.scrollBy(0, d) }
+  else if (window.scrollY !== y) window.scrollTo(window.scrollX, y);
 }
 function nav_(hash, itemId){ location.hash = hash; go(hash); if (itemId){ const el = document.getElementById(itemId); if (el) el.scrollIntoView({block:'start'}) } }
 
@@ -191,22 +232,26 @@ function readFirstHtml(rf){ return rf && rf.length ? `<div class="readfirst">Rea
 function readingHtml(it){ return chainHtml(it.chain) + readFirstHtml(it.readFirst) }
 function wireGo(el){ el.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); nav_(a.dataset.go, a.dataset.id) })) }
 
-function card(it){
-  const r = S[it.id] || {}, el = document.createElement('div');
-  el.className = 'item' + (answered(it.id) ? ' answered' : ''); el.id = it.id;
+function tagsHtml(it){
   let tags = '';
   if (NEWSET.has(it.id)) tags += '<span class="tag new">New</span>';
   if (answered(it.id)) tags += '<span class="tag done">Answered</span>';
   if (it.blocks) tags += '<span class="tag blk">Blocks</span>';
   if (it.defaulted && !answered(it.id)) tags += '<span class="tag dflt">Default applied</span>';
-  let h = `<div class="head"><div class="t">${esc(it.title)}</div><div class="tags">${tags}</div></div><div class="id">${esc(it.id)}</div>`;
+  return tags;
+}
+function card(it){
+  const r = S[it.id] || {}, el = document.createElement('div');
+  el.className = 'item' + (answered(it.id) ? ' answered' : ''); el.id = it.id;
+  const draft = draftGet(it.id), notes = draft != null ? draft : (r.notes || '');
+  let h = `<div class="head"><div class="t">${esc(it.title)}</div><div class="tags">${tagsHtml(it)}</div></div><div class="id">${esc(it.id)}</div>`;
   if (it.ctx) h += `<div class="ctx">${it.ctx}</div>`;
   h += refsHtml(it.refs) + readingHtml(it);
   if (it.options && it.options.length){
     h += '<div class="opts" role="radiogroup" aria-label="Options">' + it.options.map((o, i) =>
       `<label><input type="radio" id="${esc(it.id)}-o${i}" name="${esc(it.id)}" value="${esc(o)}"${r.choice === o ? ' checked' : ''}><span>${esc(o)}${it.default === i ? '<span class="d">default</span>' : ''}</span></label>`).join('') + '</div>';
   }
-  h += `<textarea id="${esc(it.id)}-notes" aria-label="Notes for ${esc(it.id)}" placeholder="${it.options && it.options.length ? 'Notes, or your own answer' : 'Your answer'}">${esc(r.notes || '')}</textarea><div class="saved" id="${esc(it.id)}-st"></div>`;
+  h += `<textarea id="${esc(it.id)}-notes" aria-label="Notes for ${esc(it.id)}" placeholder="${it.options && it.options.length ? 'Notes, or your own answer' : 'Your answer'}">${esc(notes)}</textarea><div class="saved" id="${esc(it.id)}-st"></div>`;
   el.innerHTML = h;
   wirePeek(el); wireGo(el);
   const st = el.querySelector('.saved');
@@ -214,38 +259,59 @@ function card(it){
     const c = el.querySelector('input[type=radio]:checked'), n = el.querySelector('textarea').value;
     if (c || n){ S[it.id] = { choice: c ? c.value : '', notes: n, at: new Date().toISOString() }; if (who) S[it.id].by = who; }
     else delete S[it.id];
-    lsSave(); el.classList.toggle('answered', answered(it.id)); st.textContent = 'Saving…'; tabs();
-    clearTimeout(timers[it.id]); timers[it.id] = setTimeout(() => { delete timers[it.id]; persist(it.id, st) }, 700);
+    lsSave(); draftSet(it.id, n); el.classList.toggle('answered', answered(it.id));
+    const tg = el.querySelector('.tags'); if (tg) tg.innerHTML = tagsHtml(it);
+    st.textContent = 'Saving…'; tabs(); updateSubnav();
+    clearTimeout(timers[it.id]); timers[it.id] = setTimeout(() => { delete timers[it.id]; draftSet(it.id, null); persist(it.id, st) }, 700);
   };
   el.querySelectorAll('input[type=radio]').forEach(x => x.addEventListener('change', upd));
   el.querySelector('textarea').addEventListener('input', upd);
+  if (draft != null && draft !== (r.notes || '')) upd(); // unsent text from before a reload: send it
+  else if (draft != null) draftSet(it.id, null);
   return el;
 }
 
 async function persist(id, st){
   if (!col){ st.textContent = 'Saved in this browser only. Export your answers from the Overview to hand them over.'; return }
+  writing[id] = (writing[id] || 0) + 1;
   try { const r = S[id]; if (r) await col.doc(id).set(r); else await col.doc(id).delete(); st.textContent = 'Saved to your account. Claude can read it.' }
   catch(e){ st.textContent = 'Not saved to your account (' + (e && e.code || 'error') + '). Kept in this browser.' }
+  finally { if (!--writing[id]) delete writing[id] }
+}
+
+// A remote change to one item, applied to its card where it stands: no re-render, so focus, scroll and open sections stay.
+function updateCard(id){
+  const it = byId(id), el = document.getElementById(id);
+  if (!it || !el || !el.classList.contains('item') || el.classList.contains('out')) return;
+  const r = S[id] || {};
+  el.querySelectorAll('input[type=radio]').forEach(x => { x.checked = !!r.choice && x.value === r.choice });
+  const ta = el.querySelector('textarea');
+  if (ta && ta !== document.activeElement && !timers[id] && !writing[id] && ta.value !== (r.notes || '')) ta.value = r.notes || '';
+  el.classList.toggle('answered', answered(id));
+  const tg = el.querySelector('.tags'); if (tg) tg.innerHTML = tagsHtml(it);
+  const st = el.querySelector('.saved'); if (st && !timers[id] && !writing[id]) st.textContent = 'Updated from your account.';
 }
 
 function go(hash){
+  lastReq = hash || '';
   let [pg, grp] = (hash || '').split('.');
   if (!ALL.some(x => x[0] === pg)) pg = 'overview';
-  cur = pg; tabs();
+  cur = pg; curHash = pg; tabs();
   const v = document.getElementById('view'); v.innerHTML = '';
   const meta = ALL.find(x => x[0] === pg);
   if (meta[2]){ const sub = document.createElement('p'); sub.className = 'sub'; sub.textContent = meta[2]; v.appendChild(sub) }
   if (pg === 'overview'){ overview(v); return }
+  if (pg === 'queue') renderQueue();
   if (pg === 'outbox'){ outbox(v, grp); return }
   let its = ITEMS.filter(i => i.section === pg);
   const groups = (sectionOf(pg).groups || []).filter(g => its.some(i => i.group === g.id));
   if (groups.length){
     if (!groups.some(g => g.id === grp)) grp = (groups.find(g => count(pg, g.id).open) || groups[0]).id;
+    curHash = pg + '.' + grp;
     const sn = document.createElement('div'); sn.className = 'subnav';
     for (const g of groups){
-      const c = count(pg, g.id);
       const b = document.createElement('button'); b.type = 'button'; b.id = 'grp-' + pg + '-' + g.id;
-      b.innerHTML = esc(g.title) + (c.open ? `<span class="op">${c.open} open</span>` : '<span class="n">✓</span>') + (c.nw ? `<span class="nw">•${c.nw}</span>` : '');
+      b._h = grpLabel(pg, g); b.innerHTML = b._h;
       if (g.id === grp) b.setAttribute('aria-current', 'page');
       b.onclick = () => nav_(pg + '.' + g.id); sn.appendChild(b);
     }
@@ -269,7 +335,7 @@ function go(hash){
 
 function linkTo(i){ return `<a href="#${esc(i.section + (i.group ? '.' + i.group : ''))}" data-go="${esc(i.section + (i.group ? '.' + i.group : ''))}" data-id="${esc(i.id)}">${esc(i.title)}</a>` }
 
-function overview(v){
+function ovDyn(){
   let h = '';
   const blockers = ITEMS.filter(i => i.blocks && needsYou(i) && !decided(i.id));
   if (blockers.length) h += '<div class="panel"><h2>Blocking other work</h2><ul>' + blockers.map(i => `<li>${linkTo(i)}</li>`).join('') + '</ul></div>';
@@ -281,9 +347,14 @@ function overview(v){
   h += '<div class="scroll"><table><tr><th>Section</th><th>What it holds</th><th>Open</th><th>Answered</th></tr>' + SECTIONS.map(s => {
     const c = count(s.id); return c.n ? `<tr><td><a href="#${esc(s.id)}" data-go="${esc(s.id)}">${esc(s.title)}</a></td><td>${esc(s.blurb || '')}</td><td class="num">${c.open}</td><td class="num">${c.a} / ${c.n}</td></tr>` : '';
   }).join('') + '</table></div>';
+  return h;
+}
+function refreshOverview(){ const d = document.getElementById('ov-dyn'); if (d){ d.innerHTML = ovDyn(); wireGo(d) } }
+function overview(v){
+  let h = '<div id="ov-dyn">' + ovDyn() + '</div>';
   h += '<div class="tools"><button type="button" id="exp" hidden>Save my answers (.json)</button><label class="btn" for="imp">Load answers from a .json</label><input type="file" id="imp" accept=".json,application/json" hidden></div><p class="saved" id="tool-st"></p>';
   v.insertAdjacentHTML('beforeend', h);
-  v.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); nav_(a.dataset.go, a.dataset.id) }));
+  wireGo(v);
   const exp = document.getElementById('exp'); if (canExport()){ exp.hidden = false; exp.onclick = exportJson }
   document.getElementById('imp').addEventListener('change', importJson);
 }
@@ -292,6 +363,7 @@ function outbox(v, sec){
   if (!RESOLVED.length){ v.insertAdjacentHTML('beforeend', '<p class="empty">No answers recorded yet.</p>'); return }
   const secs = SECTIONS.filter(s => RESOLVED.some(r => r.section === s.id));
   if (!secs.some(s => s.id === sec)) sec = secs[0].id;
+  curHash = 'outbox.' + sec;
   const sn = document.createElement('div'); sn.className = 'subnav';
   for (const s of secs){
     const b = document.createElement('button'); b.type = 'button';
@@ -312,7 +384,7 @@ function outbox(v, sec){
         el.className = 'item out';
         el.innerHTML = `<div class="head"><div class="t">${esc(r.title)}</div><div class="tags"><span class="tag dflt">Superseded</span></div></div><div class="id">${esc(r.id)}</div>
           <p class="ans">Superseded by ${esc(r.superseded.title)} (${esc(r.superseded.id)})</p>
-          ${r.ctx ? `<details><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}${readingHtml(r)}</details>` : ''}`;
+          ${r.ctx ? `<details id="orig-${esc(r.id)}"><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}${readingHtml(r)}</details>` : ''}`;
         wirePeek(el); wireGo(el); v.appendChild(el); continue;
       }
       el.className = 'item answered out';
@@ -322,7 +394,7 @@ function outbox(v, sec){
       const by = a.by || '', via = by === 'relayed:chat' ? 'Ruled in chat' : by.startsWith('relayed:') ? 'Relayed from ' + by.slice(8) : '';
       el.innerHTML = `<div class="head"><div class="t">${esc(r.title)}</div><div class="tags">${via ? `<span class="tag via">${esc(via)}</span>` : ''}<span class="tag done">${esc((a.at || '').slice(0, 10))}</span></div></div>
         ${r.applied ? `<div class="applied"><span class="lbl">Applied in</span><span class="tag">${esc(r.applied)}</span></div>` : ''}${(r.led || []).length ? `<div class="applied"><span class="lbl">Led to</span>${r.led.map(f => `<a class="tag" href="#${esc(f.resolved ? 'outbox.' + f.section : f.section + (f.group ? '.' + f.group : ''))}" data-go="${esc(f.resolved ? 'outbox.' + f.section : f.section + (f.group ? '.' + f.group : ''))}" data-id="${esc(f.id)}">${esc(f.title)} (${esc(f.sectionTitle)})</a>`).join('')}</div>` : ''}<div class="id">${esc(r.id)}</div>
-        ${r.ctx ? `<details><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}${readingHtml(r)}</details>` : ''}
+        ${r.ctx ? `<details id="orig-${esc(r.id)}"><summary>Original question</summary><div class="ctx">${r.ctx}</div>${refsHtml(r.refs)}${readingHtml(r)}</details>` : ''}
         ${opts ? `<ul class="optlist">${opts}</ul>` : ''}${own}${a.notes ? `<p class="ans"><b>Your notes:</b> ${esc(a.notes)}</p>` : ''}
         <button type="button" class="redo">Change this answer</button>`;
       wirePeek(el);
@@ -379,16 +451,63 @@ async function importJson(ev){
   let d; try { d = JSON.parse(await f.text()) } catch(e){ st.textContent = 'That file is not an answers .json.'; return }
   const rs = (d.responses || []).filter(r => (r.choice || r.notes) && ITEMS.some(i => i.id === r.id));
   for (const r of rs){ S[r.id] = { choice: r.choice || '', notes: r.notes || '', at: r.at || new Date().toISOString() }; if (col){ try { await col.doc(r.id).set(S[r.id]) } catch(e){} } }
-  lsSave(); st.textContent = `Loaded ${rs.length} answers` + (col ? ' and saved them to your account.' : ' into this browser.'); tabs();
+  lsSave(); st.textContent = `Loaded ${rs.length} answers` + (col ? ' and saved them to your account.' : ' into this browser.'); tabs(); refreshOverview();
 }
 
-function boot(){
+// Live content: the agent writes these documents with the ArtifactData tool and does not republish.
+//   live/queue  {items: [{id?, title, status, note?}], at}  -> the "Live queue" card on the queue tab
+//   live/notice {text, at}                                  -> a notice line under the status bar
+function liveWhen(at){ const d = at ? new Date(at) : null; return d && !isNaN(d) ? d.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '' }
+function renderNotice(){
+  const n = document.getElementById('live-notice'), d = LIVE.notice, text = d && typeof d.text === 'string' ? d.text.trim() : '';
+  n.textContent = text ? text + (liveWhen(d.at) ? ' · ' + liveWhen(d.at) : '') : ''; n.hidden = !text;
+}
+const statusClass = s => /^(done|complete|finished|shipped)/i.test(s) ? 'done' : /^(block|fail|stop|cancel)/i.test(s) ? 'blk' : /^(doing|running|active|now|in.?progress|working)/i.test(s) ? 'new' : 'dflt';
+function renderQueue(){
+  const box = document.getElementById('live-queue'), d = LIVE.queue;
+  const its = d && Array.isArray(d.items) ? d.items.filter(x => x && typeof x.title === 'string' && x.title.trim()) : [];
+  if (!its.length || cur !== 'queue'){ if (box) box.remove(); return }
+  const h = '<h2>Live queue</h2><ol class="lq">' + its.map(x => {
+    const st = x.status == null ? '' : String(x.status);
+    return `<li>${st ? `<span class="tag ${statusClass(st)}">${esc(st)}</span>` : ''}<span class="lt">${esc(x.title)}</span>${x.note ? `<span class="why">${esc(x.note)}</span>` : ''}</li>`;
+  }).join('') + `</ol><div class="saved">${liveWhen(d.at) ? 'Updated ' + esc(liveWhen(d.at)) + '. ' : ''}This card updates by itself.</div>`;
+  if (box){ box.innerHTML = h; return }
+  const el = document.createElement('div'); el.className = 'panel'; el.id = 'live-queue'; el.innerHTML = h;
+  const v = document.getElementById('view'), sub = v.querySelector(':scope > .sub');
+  if (sub) sub.after(el); else v.prepend(el);
+}
+
+// What a republish must not lose: where the reader is and what they were typing.
+function hotState(){
+  const ae = document.activeElement, drafts = {};
+  document.querySelectorAll('textarea').forEach(t => { const id = t.id.replace(/-notes$/, ''); if (timers[id]) drafts[id] = t.value });
+  return { hash: curHash, scroll: [window.scrollX, window.scrollY],
+    open: [...document.querySelectorAll('details[open][id]')].map(d => d.id), drafts,
+    focus: ae && ae.id || null, sel: ae && ae.tagName === 'TEXTAREA' ? [ae.selectionStart, ae.selectionEnd] : null };
+}
+function restore(d){
+  for (const id of d.open || []){ const e = document.getElementById(id); if (e && e.tagName === 'DETAILS') e.open = true }
+  for (const [id, text] of Object.entries(d.drafts || {})){
+    const ta = document.getElementById(id + '-notes');
+    if (ta){ if (ta.value !== text){ ta.value = text; ta.dispatchEvent(new Event('input')) } } else draftSet(id, text);
+  }
+  const sc = () => { if (Array.isArray(d.scroll)) window.scrollTo(d.scroll[0] || 0, d.scroll[1] || 0) };
+  sc(); requestAnimationFrame(sc);
+  const e = d.focus && document.getElementById(d.focus);
+  if (e && e.focus){ e.focus({ preventScroll: true }); if (Array.isArray(d.sel) && e.setSelectionRange) try { e.setSelectionRange(d.sel[0], d.sel[1]) } catch(x){} }
+}
+
+function boot(data){
   document.getElementById('h1').textContent = FORM.title;
   document.getElementById('meta').textContent = 'Updated ' + STAMP + ' · ' + ITEMS.length + ' items waiting';
   S = lsLoad();
   for (const it of ITEMS) if (it.answer && (!S[it.id] || (S[it.id].at || '') < (it.answer.at || ''))) S[it.id] = it.answer; // archived answers to items still open
-  go((location.hash || '').slice(1));
-  window.addEventListener('hashchange', () => go((location.hash || '').slice(1)));
+  const h0 = typeof data.hash === 'string' ? data.hash : (location.hash || '').slice(1);
+  go(h0);
+  if (h0 !== (location.hash || '').slice(1)) try { history.replaceState(null, '', h0 ? '#' + h0 : location.pathname + location.search) } catch(e){}
+  restore(data);
+  // Our own nav_ already rendered the page it asked for; only a change made from outside (back, forward, a pasted link) re-renders.
+  window.addEventListener('hashchange', () => { const h = (location.hash || '').slice(1); if (h !== lastReq) go(h) });
   (async () => {
     const where = document.getElementById('where');
     const use = n => (window.claude && window.claude.use) ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
@@ -400,17 +519,39 @@ function boot(){
     col = db.collection(FORM.collection);
     where.innerHTML = '<span class="dot on"></span>Saving to your account';
     let first = true;
+    // A snapshot never re-renders the view. It finds the items whose state really changed and updates those cards in place.
     col.onSnapshot(snap => {
       const remote = {};
       for (const d of snap.docs){ const x = d.data(); if (x) remote[d.id] = { choice: x.choice || '', notes: x.notes || '', at: x.at || '', ...(x.by ? { by: x.by } : {}) } }
       if (first){ first = false; // send answers made offline that the account does not have yet
         for (const [k, r] of Object.entries(S)) if (!remote[k] && ITEMS.some(i => i.id === k)) col.doc(k).set(r).catch(() => {});
       }
-      for (const [k, r] of Object.entries(remote)) if (!timers[k] && (!S[k] || (r.at || '') >= (S[k].at || ''))) S[k] = r;
+      const changed = [];
+      for (const [k, r] of Object.entries(remote)){
+        if (timers[k] || writing[k]) continue; // this view's own pending write, or its echo
+        const mine = S[k];
+        if (mine && (r.at || '') < (mine.at || '')) continue;
+        if (mine && mine.choice === r.choice && mine.notes === r.notes && (mine.at || '') === (r.at || '')) continue; // already what we show
+        S[k] = r; changed.push(k);
+      }
+      if (!changed.length) return;
       lsSave();
-      const ae = document.activeElement; if (!(ae && ae.tagName === 'TEXTAREA')) go((location.hash || '').slice(1)); else tabs();
+      anchored(() => { changed.forEach(updateCard); tabs(); updateSubnav(); if (cur === 'overview') refreshOverview() });
     }, () => { where.innerHTML = '<span class="dot"></span>Saving in this browser only (account unavailable)'; col = null });
+    // The live documents: a failure here never touches the answers.
+    let lq, ln;
+    db.collection(FORM.live || 'live').onSnapshot(snap => {
+      const m = {}; for (const d of snap.docs) m[d.id] = d.data();
+      const q = JSON.stringify(m.queue || null), n = JSON.stringify(m.notice || null);
+      anchored(() => {
+        if (q !== lq){ lq = q; LIVE.queue = m.queue || null; renderQueue() }
+        if (n !== ln){ ln = n; LIVE.notice = m.notice || null; renderNotice() }
+      });
+    }, () => {});
   })();
 }
-boot();
+// Survive a republish (the platform's hot API): hand over the reader's place, and start from it. Without that API nothing changes.
+window.claude?.hot?.snapshot?.(hotState);
+const start = data => boot(data || {});
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
 </script>

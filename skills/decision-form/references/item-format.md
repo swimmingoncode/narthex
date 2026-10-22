@@ -40,6 +40,7 @@ edits the built form by hand.
 |---|---|---|
 | `form.title` | yes | The form's name, shown as its title. Two to four words: "Acme Decisions" |
 | `form.collection` | no | Database collection the answers go to (default `responses`) |
+| `form.live` | no | Database collection for the live documents (default `live`; must differ from `collection`). See [Live content](#live-content) |
 | `form.specBase` | no | A rendered spec published next to the form. Each `spec` id becomes a ref that opens there, at its anchor |
 | `form.specName` | no | How to name the spec when it is not published (default `SPEC.md`) |
 | `form.brand` | no | The page's brand; every key optional, missing ones keep the template's look. See [Brand](#brand) |
@@ -182,6 +183,20 @@ Answered items (not kept open, not "Discuss first") and superseded items. Each s
 relayed ruling came from, what applied it ("Applied in") and the follow-ups that name it in `follows`
 ("Led to: *title* (*section*)", linking to each), the original question, the options with the chosen one
 marked, and the notes.
+
+## Live content
+
+Progress that changes often goes in two documents of the `form.live` collection, written with the ArtifactData tool
+(action `set`) and never by republishing. The page subscribes and updates in place, without moving the reader:
+
+| Document | Shape | Shown as |
+|---|---|---|
+| `live/queue` | `{"items": [{"id"?, "title", "status", "note"?}], "at"}` | The "Live queue" card at the top of the queue section, updated in place. `status` is free text; `done`, `blocked`/`failed`, and `doing`/`in progress` get their own colour |
+| `live/notice` | `{"text", "at"}` | One notice line under the status bar. Empty `text` clears it |
+
+`at` is an ISO time. Republish only when an item's own text changes (batched); a republish reloads every open view,
+though the page restores the reader's tab, scroll, open sections, focus and unsent notes where the platform allows.
+Without the platform's hot API a republish simply reloads the page; the page never polls.
 
 ## Answers
 

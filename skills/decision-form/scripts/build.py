@@ -158,6 +158,10 @@ def check(doc, base=".", current=None):
     errs, warns = [], []
     all_ids = {x.get("id") for x in doc.get("items", [])}
     if "brand" in doc.get("form", {}): errs += check_brand(doc["form"]["brand"], base)
+    form = doc.get("form", {})
+    live = form.get("live", "live")
+    if not (isinstance(live, str) and re.fullmatch(r"[A-Za-z0-9_-]{1,64}", live)): errs.append("form.live must be a collection name: letters, digits, '_' and '-'")
+    elif live == form.get("collection", "responses"): errs.append("form.live must differ from form.collection (the live documents are not answers)")
     secs = {s["id"]: s for s in doc.get("sections", [])}
     if not secs: errs.append("no sections")
     for sid, s in secs.items():
@@ -350,6 +354,7 @@ def main():
     form.setdefault("title", "Decisions")
     form.setdefault("slug", re.sub(r"[^a-z0-9]+", "-", form["title"].lower()).strip("-"))
     form.setdefault("collection", "responses")
+    form.setdefault("live", "live")  # collection of the live documents (queue, notice); the agent writes them without republishing
     form.setdefault("storageKey", form["slug"] + "-answers-v1")
 
     hist = load_answers(rdir) if os.path.isdir(rdir) else []

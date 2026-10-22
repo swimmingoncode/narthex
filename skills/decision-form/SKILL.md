@@ -69,7 +69,18 @@ repo. Format and style rules: `references/item-format.md`.
      decisions to Decide.
    - Record rulings given in chat as items answered with `by: "relayed:chat"`.
    - Close what is final. Mark stale updates `superseded_by` their replacement.
-   - Rebuild with `--strict` (0 warnings) and republish.
+   - Rebuild with `--strict` (0 warnings) and republish only when an item's text or structure changed, and batch
+     those changes into one publish. A republish reloads every open view, so keep it rare.
+
+   **Progress goes in the live documents, not in a republish.** The page subscribes to `form.live` (default
+   `live`). With the ArtifactData tool at `form.url`, action `set`, write:
+   - `live/queue` = `{"items": [{"id": "...", "title": "...", "status": "doing", "note": "..."}], "at": "<ISO time>"}`
+     for the queue's progress. It shows as the "Live queue" card at the top of the queue tab.
+   - `live/notice` = `{"text": "...", "at": "<ISO time>"}` for one line under the status bar ("Republishing at
+     18:00", "Waiting on your review of oq-3"). Set `text` to `""` to clear it.
+
+   Open views update in place and the reader stays where they were. Answers are the same: an answer that
+   arrives never moves a reader, so reading them back needs no republish either.
 
    An answer with no visible follow-up means the form has fallen behind the chat. The builder warns on it,
    once per item. "Discuss first" answers go to the overview's "To discuss" list and stay in the inbox.
@@ -85,6 +96,8 @@ that file, copy it unchanged into `decisions/responses/` and rebuild.
 ## Files
 
 - `scripts/build.py` — checks items, builds the page and the log. Stock Python 3.
-- `assets/template.html` — the page. Data is injected at `/*__DATA__*/`; the title at `/*__TITLE__*/`;
+- `assets/template.html` — the page. A state change (an answer, a live document) updates it in place and never
+  re-renders the view; when the platform offers the hot API, a republish restores the reader's tab, scroll,
+  open sections, focus and unsent notes. Data is injected at `/*__DATA__*/`; the title at `/*__TITLE__*/`;
   `form.brand` at the `__FONTS__` and `__BRAND_*__` placeholders, which are removed when there is no brand.
 - `references/item-format.md` — the questions file, field by field, and the style rules.

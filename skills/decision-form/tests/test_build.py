@@ -5,7 +5,7 @@ and looks at the exit code, the messages and the generated page and log.
 
     python3 -m unittest discover -s skills/decision-form/tests
 """
-import copy, json, os, subprocess, sys, tempfile, unittest
+import copy, json, os, re, shutil, subprocess, sys, tempfile, unittest
 
 BUILD = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "scripts", "build.py")
 FLOW = ["read", "decide", "act", "queue", "updates", "later"]
@@ -482,3 +482,68 @@ class TestReadingChain(BuildCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def main_script(html):
+    """The page's main <script> body (the last one: the data and the code)."""
+    blocks = re.findall(r"<script>(.*?)</script>", html, re.S)
+    assert blocks, "no <script> in the page"
+    return blocks[-1]
+
+
+class TestPage(BuildCase):
+    """The built page keeps its promises: it parses, never re-renders on a snapshot, survives a republish, shows live content."""
+
+    def page(self, doc=None):
+        res = self.run_build(doc or base_doc())
+        self.assertBuilds(res)
+        return res, read(os.path.join(self.dir, "form", "index.html"))
+
+    def test_main_script_is_valid_javascript(self):
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node is not installed")
+        _, html = self.page()
+        js = os.path.join(self.dir, "main.js")
+        with open(js, "w", encoding="utf-8") as f:
+            f.write(main_script(html))
+        proc = subprocess.run([node, "--check", js], capture_output=True, text=True, timeout=60)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+
+    def test_page_registers_hot_state_and_boots_through_ready(self):
+        _, html = self.page()
+        js = main_script(html)
+        self.assertIn("window.claude?.hot?.snapshot?.(hotState)", js)
+        self.assertIn("window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {})", js)
+        self.assertNotIn("setInterval", js)  # no polling
+
+    def test_page_subscribes_to_the_live_collection(self):
+        _, html = self.page()
+        js = main_script(html)
+        self.assertIn("db.collection(FORM.live || 'live').onSnapshot", js)
+        self.assertIn("live-queue", js)
+        self.assertIn("live-notice", html)
+        self.assertIn("Live queue", js)
+
+    def test_snapshot_handler_never_re_renders(self):
+        _, html = self.page()
+        js = main_script(html)
+        handler = js[js.index("col.onSnapshot("):js.index("// The live documents")]
+        self.assertNotIn("go(", handler)
+        self.assertIn("updateCard", handler)
+
+    def test_live_collection_defaults_and_overrides(self):
+        res, _ = self.page()
+        self.assertEqual(res.page_data("FORM")["live"], "live")
+        doc = base_doc()
+        doc["form"]["live"] = "progress"
+        res, _ = self.page(doc)
+        self.assertEqual(res.page_data("FORM")["live"], "progress")
+
+    def test_live_collection_must_differ_from_the_answers(self):
+        doc = base_doc()
+        doc["form"]["live"] = doc["form"]["collection"] = "same"
+        self.assertFails(self.run_build(doc, "--check"), "form.live must differ")
+        doc = base_doc()
+        doc["form"]["live"] = "bad name!"
+        self.assertFails(self.run_build(doc, "--check"), "form.live must be a collection name")

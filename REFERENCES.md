@@ -35,6 +35,7 @@
 - **Ruflo: ruflo-sparc plugin README**. ruvnet. <https://github.com/ruvnet/ruflo/blob/main/plugins/ruflo-sparc/README.md>. Cited in: notes/2026-10-04-research-design-and-guardrails.md. [unverified]
 - **rUv-dev, create-sparc (repository)**. Reuven Cohen (ruvnet). <https://github.com/ruvnet/rUv-dev>. Cited in: notes/2026-10-04-research-design-and-guardrails.md.
 - **skills.sh: sparc-methodology skill (ruvnet/ruview)**. skills.sh. <https://skills.sh/ruvnet/ruview/sparc-methodology>. Cited in: notes/2026-10-04-research-design-and-guardrails.md.
+- **Superpowers (repository)**. Jesse Vincent (obra). <https://github.com/obra/superpowers>. Cited in: notes/2026-10-26-reference-superpowers.md.
 - **SPARC (ruvnet/sparc, repository)**. Reuven Cohen (ruvnet). <https://github.com/ruvnet/sparc>. Cited in: notes/2026-10-04-research-design-and-guardrails.md.
 - **Spec Kit: clarify command template**. GitHub. <https://raw.githubusercontent.com/github/spec-kit/main/templates/commands/clarify.md>. Cited in: notes/2026-10-03-research.md.
 - **Spec Kit: constitution command template**. GitHub. <https://raw.githubusercontent.com/github/spec-kit/main/templates/commands/constitution.md>. Cited in: notes/2026-10-03-research.md.
@@ -48,7 +49,7 @@
 - **Easy Approach to Requirements Syntax (EARS)**. Wikipedia. <https://en.wikipedia.org/wiki/Easy_Approach_to_Requirements_Syntax>. Cited in: history/amendments-v0/0005-spec-profiles.md, notes/2026-10-03-research.md, notes/2026-10-04-research-design-and-guardrails.md, notes/2026-10-17-research-spec-formats.md.
 - **IEEE 830-1998, software requirements specifications (SNV record)**. IEEE, 1998. <https://connect.snv.ch/en/ieee-830-1998>. Cited in: notes/2026-10-17-research-spec-formats.md.
 - **ISO 29148 summary**. Modern Requirements. <https://www.modernrequirements.com/?p=32595>. Cited in: notes/2026-10-17-research-spec-formats.md. [unverified]
-- **ISO/IEC/IEEE 29148:2018, requirements engineering (SNV listing)**. ISO/IEC/IEEE, 2018. <https://connect.snv.ch/en/ieee-29148-2018-2>. Cited in: notes/2026-10-17-research-spec-formats.md.
+- **ISO/IEC/IEEE 29148:2018, requirements engineering (SNV listing)**. ISO/IEC/IEEE, 2018. <https://connect.snv.ch/en/ieee-29148-2018-2>. Cited in: notes/2026-10-17-research-spec-formats.md, notes/2026-10-26-reading-path-senior.md.
 - **ReqIF specification, version 1.2**. OMG, 2016. <https://www.omg.org/spec/ReqIF>. Cited in: history/amendments-v0/0005-spec-profiles.md, notes/2026-10-17-research-spec-formats.md.
 - **Requirements Interchange Format**. Wikipedia. <https://en.wikipedia.org/wiki/Requirements_Interchange_Format>. Cited in: notes/2026-10-17-research-spec-formats.md.
 - **RFC 2119, key words for use in RFCs to indicate requirement levels**. IETF. No URL in the notes. Cited in: history/amendments-v0/0005-spec-profiles.md, notes/2026-10-17-intake-spec-profiles.md, notes/2026-10-17-research-spec-formats.md.
@@ -59,7 +60,7 @@
 
 - **adr-tools (repository)**. npryce. <https://github.com/npryce/adr-tools>. Cited in: notes/2026-10-03-research.md.
 - **Backstage ADR plugin: adr-backend README**. Backstage community plugins. <https://github.com/backstage/community-plugins/blob/master/workspaces/adr/plugins/adr-backend/README.md>. Cited in: notes/2026-10-03-research.md.
-- **Documenting Architecture Decisions**. Nygard (Cognitect), 2011. <https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions>. Cited in: notes/2026-10-03-research.md.
+- **Documenting Architecture Decisions**. Nygard (Cognitect), 2011. <https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions>. Cited in: notes/2026-10-03-research.md, notes/2026-10-26-reading-path-senior.md.
 - **log4brains (repository)**. thomvaill. <https://github.com/thomvaill/log4brains>. Cited in: notes/2026-10-03-research.md.
 - **MADR 4.0.0, Markdown Architectural Decision Records**. adr.github.io, 2024. <https://adr.github.io/madr/>. Cited in: notes/2026-10-03-research.md.
 - **Oxide RFD 1**. Oxide Computer Company. <https://rfd.shared.oxide.computer/rfd/0001>. Cited in: notes/2026-10-03-research.md.
@@ -174,7 +175,7 @@ The note `notes/2026-10-17-research-spec-formats.md` says the primary standards 
 
 - **IEC 61508, functional safety**. IEC. No URL in the notes. Cited in: notes/2026-10-17-research-spec-formats.md.
 - **ISO/IEC/IEEE 12207, software life cycle processes**. ISO/IEC/IEEE. No URL in the notes. Cited in: notes/2026-10-17-product-definition-review.md.
-- **SWEBOK, Guide to the Software Engineering Body of Knowledge**. IEEE Computer Society. No URL in the notes. Cited in: notes/2026-10-17-product-definition-review.md.
+- **SWEBOK, Guide to the Software Engineering Body of Knowledge**. IEEE Computer Society. No URL in the notes. Cited in: notes/2026-10-17-product-definition-review.md, notes/2026-10-26-reading-path-senior.md.
 
 ## Formal methods and verification
 
@@ -249,6 +250,39 @@ The note `notes/2026-10-17-research-spec-formats.md` says the primary standards 
 - **starlight-openapi**. No URL in the notes. Cited in: notes/2026-10-12-specsite.md.
 - **StrictDoc: DO-178 requirements example**. StrictDoc. <https://strictdoc.readthedocs.io/en/latest/DO178_requirements.html>. Cited in: notes/2026-10-12-specsite.md, notes/2026-10-17-research-spec-formats.md.
 - **StrictDoc: ReqIF export source code**. StrictDoc. <https://strictdoc.readthedocs.io/en/latest/_source_files/strictdoc/backend/reqif/reqif_export.py.html>. Cited in: notes/2026-10-17-research-spec-formats.md.
+
+## Software engineering foundations
+
+- **A Philosophy of Software Design**. Ousterhout. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Accelerate**. Forsgren, Humble, Kim, 2018. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **An Elegant Puzzle**. Larson. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **C4 model for software architecture**. Brown. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Continuous Delivery**. Humble, Farley. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Designing Data-Intensive Applications**. Kleppmann. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Documenting Software Architectures: Views and Beyond**. Clements et al.. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Domain-Driven Design**. Evans. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **EARS: Easy Approach to Requirements Syntax (paper)**. Mavin et al., 2009. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Extreme Programming Explained, 2nd ed.**. Beck. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Fundamentals of Software Architecture**. Richards, Ford. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Introduction to Software Testing**. Ammann, Offutt. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **ISO/IEC/IEEE 42010, architecture description**. ISO/IEC/IEEE. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Mastering the Requirements Process**. Robertson, Robertson. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Practical TLA+**. Wayne. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Release It!**. Nygard. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Requirements Engineering: From System Goals to UML Models to Software Specifications**. van Lamsweerde, 2009. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Software Abstractions**. Jackson. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Software Architecture in Practice, 4th ed.**. Bass, Clements, Kazman, 2021. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Software Engineering at Google**. Winters, Manshreck, Wright, 2020. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Software Engineering, 10th ed.**. Sommerville. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Software Requirements, 3rd ed.**. Wiegers, Beatty, 2013. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Specification by Example**. Adzic. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Specifying Systems**. Lamport. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Staff Engineer**. Larson, 2021. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **The Mythical Man-Month, anniversary edition**. Brooks, 1995. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **The Staff Engineer's Path**. Reilly, 2022. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **User Story Mapping**. Patton. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Working Effectively with Legacy Code**. Feathers. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
+- **Writing Effective Use Cases**. Cockburn. No URL in the notes. Cited in: notes/2026-10-26-reading-path-senior.md. [unverified]
 
 ## Other
 

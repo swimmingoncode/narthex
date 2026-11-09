@@ -48,12 +48,18 @@ repo. Format and style rules: `references/item-format.md`.
 3. **Look once, yourself.** Open `decisions/form/index.html` in a browser pane or a real browser, at phone
    width. This is a check for you, not a way to hand the form over: file previews in chat don't run scripts,
    and answers given locally stay in that browser until exported. Don't send the built file to the lead; the
-   lead answers on the published artifact.
+   lead answers on the published artifact. A local look can't catch a missing or plainly-linked file: a local
+   server resolves relative links that a published artifact does not. Every relative URL opens in place (a plain
+   relative link opens outside the artifact and breaks), so the build prints `publish beside the form:` with the
+   files to publish and warns about any that is not next to `index.html`. A shown document keeps its styles but
+   its scripts don't run: publish diagrams as inline SVG (or mermaid rendered to SVG), not drawn by script.
 4. **Ask, then publish.** After the lead's yes, publish `decisions/form/index.html` with the Artifact tool,
    declaring `capabilities: {db: {}, user: {}, downloads: true}`. Publish any documents the items open in
    place (`refs` with relative URLs, `form.specBase`) through `files`, at the same relative paths. Record
    the artifact URL in `form.url` in the questions file. Later publishes reuse that `url` and omit
-   `capabilities`.
+   `capabilities`. After publishing, list the artifact's files (Artifact tool, action `list`, scope `files`)
+   and confirm every path on the build's `publish beside the form` line is there. Then open one link on the
+   published page, or ask the lead to.
 5. **Mark it published.**
    ```bash
    python3 <skill-dir>/scripts/build.py decisions/questions.json --mark-published
@@ -84,6 +90,9 @@ repo. Format and style rules: `references/item-format.md`.
 
    An answer with no visible follow-up means the form has fallen behind the chat. The builder warns on it,
    once per item. "Discuss first" answers go to the overview's "To discuss" list and stay in the inbox.
+   "Discuss first" means two things (Pablo, 2026-11-08): keep the item open, **and** take up what the notes
+   say. Answer each note in chat in the same turn you read it, and keep the item open until the lead rules.
+   A different answer belongs in "Other (in notes)", which the builder appends to every set of options.
 8. **Apply the rulings.** A ruling reaches the spec only through an amendment that cites the item ids; set
    each item's `applied` to what applied it, and rebuild. Tell the lead, in at most five lines, what you
    applied and what is still open, linking the form.

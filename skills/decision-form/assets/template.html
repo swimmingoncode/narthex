@@ -98,20 +98,23 @@ td a{color:var(--accent)}
 .out .redo{font:inherit;font-size:13.5px;margin-top:8px;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .livenotice{font-size:13.5px;margin:8px 0 0;padding:6px 10px;border-radius:8px;background:var(--chip);color:var(--ink);overflow-wrap:anywhere}
 .livenotice[hidden]{display:none}
-.lq{list-style:none;margin:6px 0 0;padding:0;font-size:14.5px}
-.lq li{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line)}
-.lq li:first-child{border-top:0}
-.lq .lt{min-width:0;overflow-wrap:anywhere}
-.lq .why{flex-basis:100%;color:var(--muted);font-size:13.5px}
+.lq{margin:6px 0 0;font-size:14.5px}
+.lqg{border:1px solid var(--line);border-radius:10px;padding:8px 12px 10px;margin:10px 0 0;min-width:0}
+.lqg.bare{border:0;border-radius:0;padding:0;margin:0}
+.lqg h3{font-size:15px;margin:2px 0 0;display:flex;flex-wrap:wrap;gap:0 10px;align-items:baseline;overflow-wrap:anywhere}
+.lqg h3 span{font-size:12.5px;font-weight:400;color:var(--muted)}
+.lq h4{font:600 11.5px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+.lqi{--c:var(--line);background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:8px;padding:6px 10px;margin:4px 0;overflow-wrap:anywhere}
+.lqi.s-needs{--c:var(--open)}.lqi.s-running{--c:var(--accent)}.lqi.s-blocked{--c:var(--blk)}.lqi.s-done{--c:var(--ok)}
+.lq .why{color:var(--muted);font-size:13.5px}
 .empty{color:var(--muted);font-size:15px;padding:24px 0}
 dialog{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:0;width:min(720px,calc(100vw - 24px));max-height:calc(100vh - 48px)}
 dialog::backdrop{background:rgb(0 0 0 / .45)}
 .dlg-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card)}
-.dlg-head a{color:var(--accent);font-size:14px}
+#peek-title{font-size:14px;font-weight:600;min-width:0;overflow-wrap:anywhere}
+.dlg-btns{display:flex;gap:8px;flex:none}
 .dlg-head button{font:inherit;font-size:14px;min-height:36px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:4px 12px;cursor:pointer}
 .dlg-body{padding:6px 16px 16px;overflow-wrap:anywhere;font-size:15.5px}
-.dlg-body table{display:block;overflow-x:auto}
-.dlg-body .hit{background:color-mix(in srgb,var(--accent) 14%,transparent)}
 @media (prefers-reduced-motion:no-preference){.item{transition:border-color .2s}}
 /*__BRAND_TOKENS__*/</style>
 
@@ -128,7 +131,7 @@ dialog::backdrop{background:rgb(0 0 0 / .45)}
   <noscript><p class="sub">This form needs JavaScript. Open the file in a web browser (a file preview won't run it), or ask for it to be published as an artifact.</p></noscript>
 </div>
 <dialog id="peek" aria-labelledby="peek-title">
-  <div class="dlg-head"><a id="peek-title" href="#" target="_blank" rel="noopener">Open the full page</a><button type="button" id="peek-close">Close</button></div>
+  <div class="dlg-head"><span id="peek-title"></span><span class="dlg-btns"><button type="button" id="peek-whole" hidden>Whole document</button><button type="button" id="peek-close">Close</button></span></div>
   <div class="dlg-body" id="peek-body"></div>
 </dialog>
 
@@ -261,7 +264,7 @@ function card(it){
     else delete S[it.id];
     lsSave(); draftSet(it.id, n); el.classList.toggle('answered', answered(it.id));
     const tg = el.querySelector('.tags'); if (tg) tg.innerHTML = tagsHtml(it);
-    st.textContent = 'Saving…'; tabs(); updateSubnav();
+    st.textContent = 'Saving…'; tabs(); updateSubnav(); settleAnswered(el);
     clearTimeout(timers[it.id]); timers[it.id] = setTimeout(() => { delete timers[it.id]; draftSet(it.id, null); persist(it.id, st) }, 700);
   };
   el.querySelectorAll('input[type=radio]').forEach(x => x.addEventListener('change', upd));
@@ -269,6 +272,19 @@ function card(it){
   if (draft != null && draft !== (r.notes || '')) upd(); // unsent text from before a reload: send it
   else if (draft != null) draftSet(it.id, null);
   return el;
+}
+
+// The reader started on another card: answered cards above an open one go to the bottom, and `keep` stays where the reader sees it.
+function settleAnswered(keep){
+  const v = document.getElementById('view');
+  if (cur === 'queue' || !keep.isConnected || keep.parentElement !== v) return;
+  const cards = [...v.children].filter(e => e.classList.contains('item'));
+  const done = e => e !== keep && answered(e.id);
+  const lastOpen = cards.reduce((n, e, i) => answered(e.id) ? n : i, -1);
+  if (!cards.some((e, i) => done(e) && i < lastOpen)) return;
+  const top = keep.getBoundingClientRect().top, before = v.querySelector(':scope > details.dflts');
+  cards.filter(done).forEach(e => v.insertBefore(e, before));
+  const d = keep.getBoundingClientRect().top - top; if (d) window.scrollBy(0, d);
 }
 
 async function persist(id, st){
@@ -318,7 +334,7 @@ function go(hash){
     v.appendChild(sn);
     its = its.filter(i => i.group === grp);
   }
-  const rank = i => (i.defaulted ? 2 : (answered(i.id) ? 1 : 0)) - (NEWSET.has(i.id) ? 0.5 : 0);
+  const rank = i => i.defaulted ? 2 : (answered(i.id) ? 1 : 0); // a newer open item stacks below the older ones, in the file's order
   if (pg !== 'queue') its.sort((a, b) => rank(a) - rank(b)); // the queue keeps the file's order: it is a sequence
   if (!its.length){ v.insertAdjacentHTML('beforeend', '<p class="empty">Nothing waiting here.</p>'); return }
   const shown = its.filter(i => !i.defaulted), dflt = its.filter(i => i.defaulted);
@@ -343,7 +359,7 @@ function ovDyn(){
   h += nl.length ? '<div class="panel"><h2>New since the last update</h2><ul>' + nl.map(i => `<li>${linkTo(i)}</li>`).join('') + '</ul></div>'
                  : '<div class="panel"><h2>Nothing new since the last update.</h2></div>';
   const agenda = ITEMS.filter(i => S[i.id] && DISCUSS.test(S[i.id].choice || ''));
-  if (agenda.length) h += '<div class="panel"><h2>To discuss</h2><ul>' + agenda.map(i => `<li>${linkTo(i)}</li>`).join('') + '</ul></div>';
+  if (agenda.length) h += '<div class="panel"><h2>To discuss</h2><p class="meta">Kept open. The agent takes up your notes on each.</p><ul>' + agenda.map(i => `<li>${linkTo(i)}</li>`).join('') + '</ul></div>';
   h += '<div class="scroll"><table><tr><th>Section</th><th>What it holds</th><th>Open</th><th>Answered</th></tr>' + SECTIONS.map(s => {
     const c = count(s.id); return c.n ? `<tr><td><a href="#${esc(s.id)}" data-go="${esc(s.id)}">${esc(s.title)}</a></td><td>${esc(s.blurb || '')}</td><td class="num">${c.open}</td><td class="num">${c.a} / ${c.n}</td></tr>` : '';
   }).join('') + '</table></div>';
@@ -405,25 +421,112 @@ function outbox(v, sec){
   }
 }
 
-// Peek: open a section of a document published next to this page, at its anchor, without leaving the form.
+// Peek: open a document published next to this page, in place. A relative link never leaves the form: on a published
+// artifact a plain link opens outside it, while fetch() of a file published beside the page works.
+// --- peek: helpers (pure)
+const URL_SCHEME = /^[a-z][a-z0-9+.-]*:/i;
+// Same rule as build.py is_peek: a relative URL (no scheme, not "//x", "/x" or "#x") opens in place.
+function isRel(u){ u = (u || '').trim(); return !!u && !URL_SCHEME.test(u) && !/^[/#]/.test(u) }
+// A relative href found in the document at `from` (its path, no anchor), as path + anchor next to the form.
+function resolveRel(href, from){ const u = new URL(href.trim(), 'http://x/' + from); return u.pathname.slice(1) + u.search + u.hash }
+function safeDecode(s){ try { return decodeURIComponent(s) } catch(e){ return s } }
+// Fixed and sticky elements of a document must not cover the dialog: take them back into the flow.
+function unpin(css){ return css.replace(/(?<![\w-])position\s*:\s*(?:-webkit-)?(?:fixed|sticky)(?:\s*!important)?/gi, 'position:static!important') }
+// The dialog is at most this wide: media queries at or above it are settled, as on a phone.
+const SETTLED = 720;
+function settleMedia(q){
+  return q.replace(/\(\s*(max|min)-width\s*:\s*(\d+(?:\.\d+)?)px\s*\)/gi, (m, k, n) =>
+    k.toLowerCase() === 'max' ? (+n >= SETTLED ? '(min-width:0px)' : m) : (+n > SETTLED ? '(max-width:0px)' : m));
+}
+// :root, html and body do not match inside a shadow root: :root and html become the host, body the wrapper div.
+const HOSTISH = new RegExp(String.raw`(\[[^\]]*\]|"[^"]*"|'[^']*')|(^|[\s>+~,(])(:root|html|body)((?:\[[^\]]*\]|[:.#][\w-]+(?:\((?:[^()]|\([^()]*\))*\))?)*)(?![\w-])`, 'gi');
+function scopeCss(css){
+  const sel = (m, keep, pre, tag, rest) => keep ? keep : tag.toLowerCase() === 'body' ? pre + '.peek-doc' + rest : pre + (rest ? ':host(' + rest + ')' : ':host');
+  return unpin(css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/@import[^;]*;/gi, '')
+    .replace(/(?<=^|[{}])([^{}]*)\{/g, (m, p) => (/^\s*@/.test(p) ? settleMedia(p) : p.replace(HOSTISH, sel)) + '{'));
+}
+// --- peek: dialog
+// Base look inside the shadow root: zero specificity (:where), so the document's own styles win; the form's fonts and colours show when it has none.
+// Buttons go: the document's scripts never run, so they would be dead (theme switchers and the like).
+const PEEK_BASE = `:host{display:block}
+.peek-note{margin:6px 0 10px;padding:6px 10px;border-radius:8px;background:var(--chip);color:var(--muted);font:14px/1.45 var(--f-body)}
+:where(.peek-doc){color:var(--ink);font:15.5px/1.55 var(--f-body);overflow-wrap:anywhere}
+.peek-doc{contain:layout}
+.peek-doc button{display:none!important}
+:where(.peek-doc table){display:block;overflow-x:auto}
+:where(.peek-doc th,.peek-doc td){overflow-wrap:break-word;word-break:normal;min-width:9ch}
+:where(.peek-doc pre){overflow-x:auto}
+:where(.peek-doc img,.peek-doc svg){max-width:100%;height:auto}
+:where(.peek-doc a){color:var(--accent)}
+.hit{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+`;
+let peekDoc = null, peekSeq = 0;  // the document in the dialog ({path, title, css, doc}); a counter so a late fetch never overwrites a newer one
 function wirePeek(root){ root.querySelectorAll('button.peek').forEach(b => b.addEventListener('click', () => peek(b.dataset.url))) }
+function peekRoot(){
+  const host = document.getElementById('peek-body');
+  if (!host.shadowRoot){
+    const r = host.attachShadow({ mode: 'open' });
+    r.addEventListener('click', peekClick); r.addEventListener('submit', e => e.preventDefault());
+    new MutationObserver(peekRoot).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+  const t = document.documentElement.getAttribute('data-theme');  // theme rules of the document follow the viewer
+  if (t) host.setAttribute('data-theme', t); else host.removeAttribute('data-theme');
+  return host.shadowRoot;
+}
+function peekStyle(css){ const s = document.createElement('style'); s.textContent = PEEK_BASE + (css || ''); return s }
+function peekSay(text){ const p = document.createElement('p'); p.className = 'peek-note'; p.textContent = text; peekRoot().replaceChildren(peekStyle(), p) }
+function peekParse(text){
+  const doc = new DOMParser().parseFromString(text, 'text/html');
+  const css = [...doc.querySelectorAll('style')].map(s => scopeCss(s.textContent)).join('\n');
+  const scripted = !!doc.querySelector('script');
+  doc.querySelectorAll('script,style,link,iframe,object,embed').forEach(n => n.remove());
+  doc.querySelectorAll('*').forEach(n => {
+    for (const a of [...n.attributes]){
+      if (/^on/i.test(a.name)) n.removeAttribute(a.name);
+      else if (/^(href|src|xlink:href|action|formaction)$/i.test(a.name) && /^javascript:/i.test(a.value.replace(/[\u0000- ]/g, ''))) n.removeAttribute(a.name);
+      else if (a.name === 'style') n.setAttribute('style', unpin(a.value));
+    }
+    const h = n.getAttribute('href');
+    if (n.tagName === 'A' && h && !isRel(h) && !h.trim().startsWith('#')){ n.setAttribute('target', '_blank'); n.setAttribute('rel', 'noopener') }
+  });
+  return { title: doc.title.trim(), css, doc, scripted };
+}
 async function peek(url){
-  const dlg = document.getElementById('peek'), body = document.getElementById('peek-body'), link = document.getElementById('peek-title');
-  link.href = url; body.textContent = 'Loading…';
-  if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
-  const [path, anchor] = url.split('#');
+  const dlg = document.getElementById('peek'), seq = ++peekSeq, i = url.indexOf('#');
+  const path = i < 0 ? url : url.slice(0, i), anchor = i < 0 ? '' : url.slice(i + 1);
+  if (!dlg.open){ if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '') }
+  if (peekDoc && peekDoc.path === path) return peekShow(anchor);
+  document.getElementById('peek-title').textContent = safeDecode(path); document.getElementById('peek-whole').hidden = true; peekSay('Loading…');
+  let d;
   try {
     const res = await fetch(path); if (!res.ok) throw new Error(res.status);
-    const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
-    doc.querySelectorAll('script,style,link,iframe,object,embed').forEach(n => n.remove());
-    doc.querySelectorAll('*').forEach(n => [...n.attributes].forEach(a => { if (/^on/i.test(a.name)) n.removeAttribute(a.name) }));
-    const hit = anchor ? doc.getElementById(anchor) : null;
-    body.innerHTML = '';
-    if (!hit){ body.textContent = anchor ? 'That anchor is not in the published page. Open the full page instead.' : ''; if (!anchor) body.append(...doc.body.childNodes); return }
-    const sec = hit.closest('section') || sectionFrom(hit);
-    hit.classList.add('hit'); body.appendChild(document.importNode(sec, true));
-    const shown = body.querySelector('.hit'); if (shown) shown.scrollIntoView({ block: 'center' });
-  } catch(e){ body.textContent = 'Could not load ' + path + '. Open the full page instead.' }
+    d = peekParse(await res.text()); d.path = path;
+  } catch(e){ if (seq === peekSeq){ peekDoc = null; peekSay('Could not load ' + safeDecode(path) + '. Its file may not be published with this form.') } return }
+  if (seq === peekSeq){ peekDoc = d; peekShow(anchor) }
+}
+// Show the section at `anchor` of the current document, or the whole document (with a line above it when the anchor is missing).
+function peekShow(anchor){
+  const d = peekDoc, root = peekRoot(), id = safeDecode(anchor || '');
+  const hit = anchor ? (d.doc.getElementById(id) || d.doc.getElementById(anchor)) : null;
+  const wrap = document.createElement('div'); wrap.className = ('peek-doc ' + d.doc.body.className).trim();
+  if (hit){
+    const sec = hit.closest('section') || sectionFrom(hit), src = sec.parentElement ? sec : hit;  // a built box has no parent: its siblings are the hit's
+    wrap.appendChild(inShell(document.importNode(sec, true), src));
+  } else for (const n of d.doc.body.childNodes) wrap.appendChild(document.importNode(n, true));
+  const lead = [];
+  if (anchor && !hit){ const p = document.createElement('p'); p.className = 'peek-note'; p.textContent = 'The section "' + id + '" was not found in this document. Showing the whole document.'; lead.push(p) }
+  root.replaceChildren(peekStyle(d.css), ...lead, wrap);
+  document.getElementById('peek-title').textContent = d.title || safeDecode(d.path);
+  document.getElementById('peek-whole').hidden = !hit;
+  // A document that draws itself (a slide deck, say) comes out empty: say why instead of showing a blank box.
+  if (!hit && d.scripted && wrap.innerText.trim().length < 200){ const p = document.createElement('p'); p.className = 'peek-note'; p.textContent = 'This document needs its own scripts to show, and they can\'t run inside the form.'; root.insertBefore(p, wrap) }
+  const shown = hit && hit.id ? root.getElementById(hit.id) : null;
+  if (shown){ shown.classList.add('hit'); shown.scrollIntoView({ block: 'center' }) } else document.getElementById('peek').scrollTop = 0;
+}
+// Wrap a section in empty copies of its ancestors, so selectors like `main h2` keep matching.
+function inShell(node, src){
+  for (let p = src.parentElement; p && p !== src.ownerDocument.body; p = p.parentElement){ const c = document.importNode(p, false); c.appendChild(node); node = c }
+  return node;
 }
 function sectionFrom(el){
   // A heading anchor brings its section (siblings up to the next heading of the same or higher level); a row or item brings its table or list.
@@ -431,8 +534,23 @@ function sectionFrom(el){
   if (!h) return el.closest('table,ul,ol,dl,p') || el;
   const box = document.createElement('div'); box.appendChild(el.cloneNode(true));
   for (let n = el.nextElementSibling; n; n = n.nextElementSibling){ const m = /^H([1-6])$/.exec(n.tagName); if (m && +m[1] <= +h[1]) break; box.appendChild(n.cloneNode(true)) }
-  box.firstChild.id = el.id; box.firstChild.classList.add('hit'); return box;
+  return box;
 }
+// Links inside the shown document: relative ones peek in place, #id ones scroll or show their section, the rest already open in a new tab.
+function peekClick(e){
+  const a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
+  const href = a.getAttribute('href').trim();
+  if (href.startsWith('#')){ e.preventDefault(); peekGo(href.slice(1)) }
+  else if (isRel(href)){ e.preventDefault(); peek(resolveRel(href, peekDoc.path)) }
+  else if (a.getAttribute('target') !== '_blank') e.preventDefault();
+}
+function peekGo(anchor){
+  const root = peekRoot(), id = safeDecode(anchor), el = anchor ? (root.getElementById(id) || root.getElementById(anchor)) : null;
+  if (el){ root.querySelectorAll('.hit').forEach(n => n.classList.remove('hit')); el.classList.add('hit'); el.scrollIntoView({ block: 'center' }) }
+  else if (anchor) peekShow(anchor);
+  else document.getElementById('peek').scrollTop = 0;
+}
+document.getElementById('peek-whole').onclick = () => peekShow('');
 document.getElementById('peek-close').onclick = () => document.getElementById('peek').close();
 
 // Inside a published artifact only the downloads capability can save a file; opened locally in a browser, a plain download works.
@@ -455,22 +573,43 @@ async function importJson(ev){
 }
 
 // Live content: the agent writes these documents with the ArtifactData tool and does not republish.
-//   live/queue  {items: [{id?, title, status, note?}], at}  -> the "Live queue" card on the queue tab
+//   live/queue  {items: [{id?, title, status, note?, group?, at?}], at}  -> the "Live queue" card on the queue tab (by group, then by state)
 //   live/notice {text, at}                                  -> a notice line under the status bar
 function liveWhen(at){ const d = at ? new Date(at) : null; return d && !isNaN(d) ? d.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '' }
 function renderNotice(){
   const n = document.getElementById('live-notice'), d = LIVE.notice, text = d && typeof d.text === 'string' ? d.text.trim() : '';
   n.textContent = text ? text + (liveWhen(d.at) ? ' · ' + liveWhen(d.at) : '') : ''; n.hidden = !text;
 }
-const statusClass = s => /^(done|complete|finished|shipped)/i.test(s) ? 'done' : /^(block|fail|stop|cancel)/i.test(s) ? 'blk' : /^(doing|running|active|now|in.?progress|working)/i.test(s) ? 'new' : 'dflt';
+// Free-text status -> one of the fixed states, in display order: [key, heading, short name for the group summary].
+const QSTATES = [['needs','Needs you','needs you'],['running','Running now','running'],['review','Ready for review','review'],['waiting','Waiting on others','waiting'],['next','Next','next'],['blocked','Blocked','blocked'],['held','Held on purpose','held'],['done','Done recently','done']];
+const qState = s => { s = String(s ?? '').trim();
+  return /^(needs.?(you|input|decision)|your.?turn|awaiting.?you)/i.test(s) ? 'needs' : /^(review|in.?review|ready.?for.?review)/i.test(s) ? 'review' : /^wait/i.test(s) ? 'waiting'
+    : /^(held|hold|on.?hold|paused|parked|deferred)/i.test(s) ? 'held' : /^(done|complete|finished|shipped)/i.test(s) ? 'done' : /^(block|fail|stop|cancel)/i.test(s) ? 'blocked'
+    : /^(doing|running|active|now|in.?progress|working)/i.test(s) ? 'running' : 'next' };
+// Outer cards by group (order of first appearance; '' = no group), items bucketed by state; done items older than 48 h (before the document's `at`, else now) drop off.
+function queueGroups(its, ref){
+  const t = ref && !isNaN(new Date(ref)) ? +new Date(ref) : Date.now(), gs = new Map();
+  for (const x of its){
+    const k = x.group == null ? '' : String(x.group).trim(), s = qState(x.status);
+    if (s === 'done' && x.at && +new Date(x.at) < t - 48 * 36e5) continue;
+    if (!gs.has(k)) gs.set(k, { name: k, by: {} });
+    (gs.get(k).by[s] ||= []).push(x);
+  }
+  return [...gs.values()];
+}
+function queueHtml(d){
+  const its = d && Array.isArray(d.items) ? d.items.filter(x => x && typeof x.title === 'string' && x.title.trim()) : [], gs = queueGroups(its, d && d.at);
+  if (!gs.length) return '';
+  const bare = gs.length === 1 && !gs[0].name;
+  return '<h2>Live queue</h2><div class="lq">' + gs.map(g => {
+    const sum = QSTATES.filter(([k]) => g.by[k]).map(([k, , w]) => g.by[k].length + ' ' + w).join(' · ');
+    return `<section class="lqg${bare ? ' bare' : ''}">${g.name ? `<h3>${esc(g.name)}<span>${esc(sum)}</span></h3>` : ''}` + QSTATES.filter(([k]) => g.by[k]).map(([k, label]) =>
+      `<h4>${label} (${g.by[k].length})</h4>` + g.by[k].map(x => `<div class="lqi s-${k}"><b>${esc(x.title)}</b>${x.note ? `<div class="why">${esc(x.note)}</div>` : ''}</div>`).join('')).join('') + '</section>';
+  }).join('') + `</div><div class="saved">${liveWhen(d.at) ? 'Updated ' + esc(liveWhen(d.at)) + '. ' : ''}This card updates by itself.</div>`;
+}
 function renderQueue(){
-  const box = document.getElementById('live-queue'), d = LIVE.queue;
-  const its = d && Array.isArray(d.items) ? d.items.filter(x => x && typeof x.title === 'string' && x.title.trim()) : [];
-  if (!its.length || cur !== 'queue'){ if (box) box.remove(); return }
-  const h = '<h2>Live queue</h2><ol class="lq">' + its.map(x => {
-    const st = x.status == null ? '' : String(x.status);
-    return `<li>${st ? `<span class="tag ${statusClass(st)}">${esc(st)}</span>` : ''}<span class="lt">${esc(x.title)}</span>${x.note ? `<span class="why">${esc(x.note)}</span>` : ''}</li>`;
-  }).join('') + `</ol><div class="saved">${liveWhen(d.at) ? 'Updated ' + esc(liveWhen(d.at)) + '. ' : ''}This card updates by itself.</div>`;
+  const box = document.getElementById('live-queue'), h = cur === 'queue' ? queueHtml(LIVE.queue) : '';
+  if (!h){ if (box) box.remove(); return }
   if (box){ box.innerHTML = h; return }
   const el = document.createElement('div'); el.className = 'panel'; el.id = 'live-queue'; el.innerHTML = h;
   const v = document.getElementById('view'), sub = v.querySelector(':scope > .sub');

@@ -57,7 +57,7 @@ edits the built form by hand.
 | `default` | no | Index of the option that stands while unanswered. Such items sit collapsed below the open ones and are not counted on the tabs |
 | `reserved` | no | `true` for outward actions, security trade-offs and product rulings the lead keeps. Such an item cannot have a default |
 | `blocks` | no | `true` when its answer blocks other work. Listed on the overview |
-| `refs` | no | `[{label, url}]`. A relative URL with an anchor opens in place (peek) when that page is published next to the form; `url: null` shows a label only |
+| `refs` | no | `[{label, url, peek?}]`. Every relative URL opens in place (peek), with or without an anchor, when that file is published next to the form; a plain relative link would open outside the artifact and break. `peek` forces or forbids it. A URL that starts with `/` warns (it cannot work). `url: null` shows a label only. A shown document keeps its styles, but its scripts do not run: publish diagrams as inline SVG (or mermaid rendered to SVG), not drawn by script |
 | `chain` | no | On a `read` item: the full reading chain, an ordered list of steps (see [Reading chains](#reading-chains)). Without it, the builder warns when the item refers to more than one document or informs a decision |
 | `spec` | no | Identifiers the item concerns. Rendered as refs (`specBase`) or labels |
 | `keep_open` | no | `true` keeps an answered item in the inbox (for example "Changes needed") |
@@ -105,13 +105,14 @@ list; the page shows it as a numbered list.
 | Step field | Required | Meaning |
 |---|---|---|
 | `label` | yes | What to read. Unique within the chain: `before` names steps by it |
-| `url` | no | A link, or `null` for a label only. A relative URL with an anchor opens in place (peek), like `refs` |
+| `url` | no | A link, or `null` for a label only. Every relative URL opens in place (peek), like `refs` |
+| `peek` | no | `true` or `false`, to force or forbid the in-place view, like on a ref |
 | `why` | yes (warns) | Why it matters to the decision, at most 25 words |
 | `before` | yes after the first step (warns) | Earlier step labels, or ids of other items, to read first. `[]` when nothing is needed. Shown as "Read first" |
 | `for` | no | Ids of the decisions the step informs. Shown as "Informs", linking to them; each of those items shows "Read first: *this read item*" |
 
 Errors: `chain` on an item that is not `read`; an empty chain; a missing label or a repeated one; a `url` that
-is not a string or null; a `before` that is neither an earlier step nor an item; a `for` that is not an item.
+is not a string or null; a `peek` that is not true or false; a `before` that is neither an earlier step nor an item; a `for` that is not an item.
 Warnings: a chain of one step; a step without `why` or over 25 words; a step after the first without `before`;
 a `read` item with no `chain` that refers to more than one document or to one a `decide` item also cites
 (superseded items are skipped). The limits on `lead` and `bullets` do not apply to the chain.
@@ -139,7 +140,10 @@ URI. Paths are relative to the questions file. Anything invalid is a build error
 
 ## Style rules
 
-The builder checks these and warns; `--strict` refuses to build.
+The builder checks these and warns; `--strict` refuses to build. It also warns about a `refs`, chain or
+`specBase` URL that starts with `/` (root-relative URLs can't work on a published artifact) and, when building,
+about a relative file that is not next to the built `index.html`; it prints `publish beside the form:` with
+the files to publish.
 
 - A title is the question, in plain words. At most 70 characters.
 - One or two sentences of lead, then at most five bullets of at most 20 words each.
@@ -147,7 +151,8 @@ The builder checks these and warns; `--strict` refuses to build.
 - Options are at most 10 words. Put the reasoning in the bullets, not the options.
 - Spell out each question. Never "and its 6 questions": each is its own item.
 - "Discuss first" is a fine option. Answers that pick it go to the overview's "To discuss" list and stay in
-  the inbox.
+  the inbox. It means keep the item open **and** take up what the notes say: answer them in chat the turn you
+  read them. A different answer belongs in "Other (in notes)", which the builder appends to every set of options.
 - Write in English, whatever language the chat is in.
 
 ## Experiments
@@ -191,10 +196,28 @@ Progress that changes often goes in two documents of the `form.live` collection,
 
 | Document | Shape | Shown as |
 |---|---|---|
-| `live/queue` | `{"items": [{"id"?, "title", "status", "note"?}], "at"}` | The "Live queue" card at the top of the queue section, updated in place. `status` is free text; `done`, `blocked`/`failed`, and `doing`/`in progress` get their own colour |
+| `live/queue` | `{"items": [{"id"?, "title", "status", "note"?, "group"?, "at"?}], "at"}` | The "Live queue" card at the top of the queue section, updated in place: one outer card per `group`, then the items as small cards under a heading per state |
 | `live/notice` | `{"text", "at"}` | One notice line under the status bar. Empty `text` clears it |
 
-`at` is an ISO time. Republish only when an item's own text changes (batched); a republish reloads every open view,
+`at` is an ISO time. In `live/queue`, `group` is a milestone or sub-milestone label (for example `M-3`); outer cards
+follow the order in which groups first appear, and items without a group share one outer card with no heading (with no
+groups at all the card looks like a single list). An item's `at` is its last change. `status` is free text, normalised
+to one of these states, shown in this order (each section skipped when empty, with its count):
+
+| State | Heading | Free-text statuses that map to it |
+|---|---|---|
+| needs-you | Needs you | `needs you`, `needs input`, `your turn` |
+| running | Running now | `doing`, `running`, `active`, `now`, `in progress`, `working` |
+| review | Ready for review | `review`, `in review`, `ready for review` |
+| waiting | Waiting on others | `waiting …` |
+| next | Next | `queued`, `todo`, `planned`, `pending`; also any unknown or missing status |
+| blocked | Blocked | `block…`, `fail…`, `stop…`, `cancel…` |
+| held | Held on purpose | `held`, `on hold`, `paused`, `parked`, `deferred` |
+| done | Done recently | `done`, `complete`, `finished`, `shipped` |
+
+Matching is on the start of the status, ignoring case. Done items whose `at` is more than 48 hours before the
+document's `at` (or before now, if it has none) are hidden; done items without an `at` stay until you remove them.
+The card is removed when nothing is left to show. Republish only when an item's own text changes (batched); a republish reloads every open view,
 though the page restores the reader's tab, scroll, open sections, focus and unsent notes where the platform allows.
 Without the platform's hot API a republish simply reloads the page; the page never polls.
 

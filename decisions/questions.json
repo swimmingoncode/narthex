@@ -3445,6 +3445,25 @@
    ]
   },
   {
+   "id": "d-peek-look",
+   "section": "decide",
+   "group": "inbox",
+   "title": "Opened documents: their own look, or the form's?",
+   "lead": "On the aledgent form you noticed specsite's fonts and card background inside the dialog. Rutent wants its long spec to keep its styling.",
+   "bullets": [
+    "The document's look keeps tables, code and headings as designed, but can clash with the form.",
+    "The form's look is consistent, but drops the document's fonts and backgrounds.",
+    "A setting per form lets each project choose; the skill needs a default."
+   ],
+   "options": [
+    "A setting per form, the document's look by default (recommended)",
+    "A setting per form, the form's look by default",
+    "Always the document's look",
+    "Always the form's look",
+    "Discuss first"
+   ]
+  },
+  {
    "id": "r-spec-ahead",
    "kind": "read",
    "section": "read",

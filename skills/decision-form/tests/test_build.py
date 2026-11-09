@@ -547,3 +547,314 @@ class TestPage(BuildCase):
         doc = base_doc()
         doc["form"]["live"] = "bad name!"
         self.assertFails(self.run_build(doc, "--check"), "form.live must be a collection name")
+
+    def queue_js(self, expr):
+        """Run `expr` against the page's real queue code (esc, liveWhen, qState, queueGroups, queueHtml) in node; returns the JSON result."""
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node is not installed")
+        _, html = self.page()
+        js = main_script(html)
+        esc = js[js.index("function esc("):].split("\n", 1)[0]
+        code = js[js.index("function liveWhen"):js.index("function renderQueue")]
+        path = os.path.join(self.dir, "queue.js")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(esc + "\n" + code + "\nconsole.log(JSON.stringify(" + expr + "))")
+        proc = subprocess.run([node, path], capture_output=True, text=True, timeout=60)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        return json.loads(proc.stdout)
+
+    def test_queue_states_normalise_free_text_status(self):
+        cases = {"Doing": "running", "in progress": "running", "NOW": "running", "queued": "next", "todo": "next", "planned": "next",
+                 "pending": "next", "": "next", "whatever": "next", "blocked": "blocked", "failed": "blocked",
+                 "cancelled": "blocked", "stopped": "blocked", "done": "done", "Shipped": "done", "needs you": "needs",
+                 "ready for review": "review", "waiting on legal": "waiting", "on hold": "held", "held": "held"}
+        got = self.queue_js("Object.fromEntries(%s.map(s => [s, qState(s)]))" % json.dumps(list(cases)))
+        for status, state in cases.items():
+            self.assertEqual(got[status], state, status)
+        self.assertEqual(self.queue_js("[qState(undefined), qState(null)]"), ["next", "next"])
+
+    def test_queue_sections_in_fixed_order_with_labels_and_counts(self):
+        items = [{"title": "a", "status": "done"}, {"title": "b", "status": "blocked"}, {"title": "c", "status": "doing"},
+                 {"title": "d", "status": "doing"}, {"title": "e"}, {"title": "f", "status": "needs you"}, {"title": "g", "status": "held"}]
+        h = self.queue_js("queueHtml({items: %s})" % json.dumps(items))
+        heads = re.findall(r"<h4>(.*?)</h4>", h)
+        self.assertEqual(heads, ["Needs you (1)", "Running now (2)", "Next (1)", "Blocked (1)", "Held on purpose (1)", "Done recently (1)"])
+        self.assertIn("<h2>Live queue</h2>", h)
+        self.assertIn("This card updates by itself.", h)
+        self.assertNotIn("<h3>", h)  # no group: no heading, and a single bare card
+        self.assertEqual(h.count('class="lqg bare"'), 1)
+
+    def test_queue_groups_in_order_of_first_appearance_ungrouped_without_heading(self):
+        items = [{"title": "a", "group": "M-3"}, {"title": "b"}, {"title": "c", "group": "M-1", "status": "doing"}, {"title": "d", "group": "M-3", "status": "doing"}]
+        h = self.queue_js("queueHtml({items: %s})" % json.dumps(items))
+        self.assertEqual(re.findall(r"<h3>(.*?)<span>", h), ["M-3", "M-1"])
+        self.assertEqual(h.count("<section"), 3)
+        self.assertNotIn("bare", h)
+        self.assertIn("<span>1 running · 1 next</span>", h)
+        self.assertLess(h.index("M-3"), h.index(">b</b>"))
+        self.assertLess(h.index(">b</b>"), h.index("M-1"))
+
+    def test_queue_hides_done_items_older_than_48_hours(self):
+        items = [{"title": "old", "status": "done", "at": "2026-10-20T10:00:00Z"}, {"title": "fresh", "status": "done", "at": "2026-10-26T10:00:00Z"},
+                 {"title": "undated", "status": "shipped"}, {"title": "oldrun", "status": "doing", "at": "2026-10-01T00:00:00Z"}]
+        h = self.queue_js("queueHtml({items: %s, at: '2026-10-27T10:00:00Z'})" % json.dumps(items))
+        self.assertNotIn(">old</b>", h)
+        for kept in ("fresh", "undated", "oldrun"):
+            self.assertIn(">%s</b>" % kept, h)
+        self.assertEqual(self.queue_js("queueHtml({items: %s, at: '2026-10-27T10:00:00Z'})" % json.dumps(items[:1])), "")
+        self.assertEqual(self.queue_js("queueHtml({items: []})"), "")
+
+    def test_queue_escapes_all_text(self):
+        items = [{"title": "<img src=x>", "status": "doing", "note": "<u>n</u>", "group": "<i>g</i>"}]
+        h = self.queue_js("queueHtml({items: %s})" % json.dumps(items))
+        for raw in ("<img", "<i>", "<u>"):
+            self.assertNotIn(raw, h)
+        self.assertIn("&lt;img src=x&gt;", h)
+
+    def test_queue_card_updates_in_place_and_leaves_with_the_tab(self):
+        _, html = self.page()
+        js = main_script(html)
+        fn = js[js.index("function renderQueue"):]
+        fn = fn[:fn.index("\n}\n")]
+        self.assertIn("box.innerHTML = h; return", fn)  # in place, no re-render of the view
+        self.assertNotIn("go(", fn)
+        self.assertIn("cur === 'queue'", fn)
+        self.assertIn("box.remove()", fn)
+        self.assertIn("border-left:3px solid var(--c)", html)
+
+
+class TestRelativeUrls(BuildCase):
+    """Every relative URL opens in place; the build lists the files to publish beside the form and warns about missing ones."""
+
+    def refs_doc(self, urls, **ref_kw):
+        doc = base_doc()
+        doc["items"][0]["refs"] = [{"label": f"r{n}", "url": u, **ref_kw.get(u, {})} for n, u in enumerate(urls)]
+        return doc
+
+    def peeks(self, doc):
+        res = self.run_build(doc)
+        self.assertBuilds(res)
+        return res, {r["url"]: r["peek"] for r in res.page_data("ITEMS")[0]["refs"]}
+
+    def test_every_relative_url_peeks_with_or_without_an_anchor(self):
+        urls = ["docs/a.html#x", "docs/a.html", "../up.html", "https://example.com/a#b", "HTTP://EXAMPLE.COM/a", "mailto:a@b.c",
+                "//cdn.example.com/a.html", "/root/a.html", "#x", "ftp:x"]
+        _, got = self.peeks(self.refs_doc(urls))
+        self.assertEqual([u for u in urls if got[u]], ["docs/a.html#x", "docs/a.html", "../up.html"])
+
+    def test_explicit_peek_on_a_ref_wins_either_way(self):
+        _, got = self.peeks(self.refs_doc(["docs/a.html", "https://example.com/a"], **{"docs/a.html": {"peek": False}, "https://example.com/a": {"peek": True}}))
+        self.assertEqual(got, {"docs/a.html": False, "https://example.com/a": True})
+
+    def chain_doc(self, **step_kw):
+        doc = base_doc()
+        doc["items"] = [item("rd", "read", kind="read", chain=[
+            {"label": "One", "url": "docs/one.html", "why": "first", "before": [], **step_kw.get("one", {})},
+            {"label": "Two", "url": "https://example.com/two", "why": "second", "before": ["One"], **step_kw.get("two", {})},
+            {"label": "Three", "url": "docs/three.html#s", "why": "third", "before": ["One"], **step_kw.get("three", {})}])]
+        return doc
+
+    def test_chain_steps_peek_like_refs_and_honour_an_explicit_peek(self):
+        res = self.run_build(self.chain_doc())
+        self.assertBuilds(res)
+        self.assertEqual([s["peek"] for s in res.page_data("ITEMS")[0]["chain"]], [True, False, True])
+        res = self.run_build(self.chain_doc(one={"peek": False}, two={"peek": True}))
+        self.assertBuilds(res)
+        self.assertEqual([s["peek"] for s in res.page_data("ITEMS")[0]["chain"]], [False, True, True])
+        self.assertFails(self.run_build(self.chain_doc(one={"peek": "yes"}), "--check"), "chain step 1: peek must be true or false")
+
+    def test_root_relative_urls_warn(self):
+        doc = self.refs_doc(["/docs/a.html", "//cdn.example.com/a.html", "docs/b.html"])
+        doc["items"] += [item("rd", "read", kind="read", chain=[
+            {"label": "One", "url": "/docs/one.html", "why": "first", "before": []},
+            {"label": "Two", "url": "docs/two.html", "why": "second", "before": ["One"]}])]
+        doc["form"]["specBase"] = "/docs/SPEC.html"
+        res = self.run_build(doc, "--check")
+        self.assertBuilds(res)
+        for needle in ("q1: ref url '/docs/a.html' starts with '/'", "rd: chain step 1: url '/docs/one.html' starts with '/'", "form.specBase '/docs/SPEC.html' starts with '/'"):
+            self.assertIn(needle, res.err)
+        self.assertEqual(res.err.count("starts with '/'"), 3)  # not the protocol-relative one, nor the relative ones
+        self.assertFails(self.run_build(doc, "--check", "--strict"), "starts with '/'")
+
+    def test_the_build_lists_the_files_to_publish_beside_the_form(self):
+        doc = self.refs_doc(["docs/b.html#x", "docs/a.html", "docs/a.html#y", "https://example.com/z", "#top", "docs/skip.html"], **{"docs/skip.html": {"peek": False}})
+        doc["items"] += [item("rd", "read", kind="read", chain=[
+            {"label": "One", "url": "docs/c.html#s", "why": "first", "before": []},
+            {"label": "Two", "url": "docs/a.html", "why": "second", "before": ["One"]}]), item("q2", spec=["OQ-1"])]
+        doc["form"]["specBase"] = "docs/SPEC.html"
+        res = self.run_build(doc)
+        self.assertBuilds(res)
+        self.assertIn("publish beside the form: docs/SPEC.html, docs/a.html, docs/b.html, docs/c.html\n", res.out)
+        del doc["items"][-1]["spec"]  # no item cites the spec: specBase is not needed
+        res = self.run_build(doc)
+        self.assertNotIn("SPEC.html", res.out)
+        self.assertNotIn("publish beside", self.run_build(base_doc()).out)
+
+    def test_a_file_that_is_not_beside_the_form_is_a_warning(self):
+        doc = self.refs_doc(["docs/a.html#x", "docs/gone%20too.html", "../up.html"])
+        res = self.run_build(doc)
+        self.assertBuilds(res)
+        self.assertIn("warn: docs/a.html: not found next to the built index.html", res.err)
+        self.assertIn("warn: docs/gone%20too.html: not found", res.err)
+        self.assertIn("warn: ../up.html: lies above the form", res.err)
+        self.assertFails(self.run_build(doc, "--strict"), "docs/a.html: not found")
+        self.write("form/docs/a.html", "<h1 id=x>x</h1>")
+        self.write("form/docs/gone too.html", "<p>ok</p>")
+        res = self.run_build(self.refs_doc(["docs/a.html#x", "docs/gone%20too.html"]), "--strict")
+        self.assertBuilds(res)
+        self.assertNotIn("warn:", res.err)
+
+    def test_check_alone_does_not_look_for_the_files(self):
+        res = self.run_build(self.refs_doc(["docs/a.html"]), "--check", "--strict")
+        self.assertBuilds(res)
+        self.assertIn("0 warnings", res.out)
+
+
+class TestPeek(BuildCase):
+    """The in-place viewer: no link leaves the form, documents keep their styles, their scripts never run."""
+
+    def page(self):
+        res = self.run_build(self.refs_doc())
+        self.assertBuilds(res)
+        return res, read(os.path.join(self.dir, "form", "index.html"))
+
+    def refs_doc(self):
+        doc = base_doc()
+        doc["items"][0]["refs"] = [{"label": "Spec", "url": "docs/SPEC.html"}, {"label": "Web", "url": "https://example.com/a"}]
+        return doc
+
+    def peek_js(self, expr):
+        """Run `expr` against the page's pure peek helpers (isRel, resolveRel, safeDecode, unpin, settleMedia, scopeCss) in node."""
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node is not installed")
+        _, html = self.page()
+        js = main_script(html)
+        code = js[js.index("// --- peek: helpers"):js.index("// --- peek: dialog")]
+        path = os.path.join(self.dir, "peek.js")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(code + "\nconsole.log(JSON.stringify(" + expr + "))")
+        proc = subprocess.run([node, path], capture_output=True, text=True, timeout=60)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        return json.loads(proc.stdout)
+
+    def test_table_cells_do_not_collapse_to_one_letter_per_line(self):
+        _, html = self.page()
+        self.assertIn(":where(.peek-doc th,.peek-doc td){overflow-wrap:break-word;word-break:normal;min-width:9ch}", html)
+
+    def test_a_document_that_needs_its_scripts_says_so(self):
+        _, html = self.page()
+        self.assertIn("scripted = !!doc.querySelector('script')", html)
+        self.assertIn("needs its own scripts to show", html)
+
+    def test_no_link_to_the_full_page_and_no_plain_link_for_a_relative_url(self):
+        res, html = self.page()
+        self.assertNotIn("Open the full page", html)
+        self.assertNotIn("Open the full page instead", html)
+        self.assertNotIn(".dlg-head a", html)
+        self.assertIn('<span id="peek-title"></span>', html)
+        refs = res.page_data("ITEMS")[0]["refs"]
+        self.assertEqual([(r["label"], r["peek"]) for r in refs], [("Spec", True), ("Web", False)])
+        js = main_script(html)
+        link = js[js.index("function refLink"):js.index("function refsHtml")]
+        self.assertLess(link.index("x.peek"), link.index("<a href"))  # the plain link is only for what does not peek
+        self.assertIn("Could not load ' + safeDecode(path) + '. Its file may not be published with this form.", js)
+        self.assertNotIn("Open the full page instead", js)
+
+    def test_dialog_has_a_whole_document_button_shown_only_for_a_section(self):
+        _, html = self.page()
+        self.assertIn('<button type="button" id="peek-whole" hidden>Whole document</button>', html)
+        js = main_script(html)
+        self.assertIn("document.getElementById('peek-whole').hidden = !hit", js)
+        self.assertIn("The section \"' + id + '\" was not found in this document. Showing the whole document.", js)
+
+    def test_document_is_shown_in_a_shadow_root_without_scripts_or_handlers(self):
+        _, html = self.page()
+        js = main_script(html)
+        self.assertIn("attachShadow({ mode: 'open' })", js)
+        self.assertIn("querySelectorAll('script,style,link,iframe,object,embed').forEach(n => n.remove())", js)
+        self.assertIn("/^on/i.test(a.name)", js)
+        self.assertIn("javascript:", js)
+        self.assertIn("addEventListener('submit', e => e.preventDefault())", js)
+        self.assertIn("setAttribute('target', '_blank'); n.setAttribute('rel', 'noopener')", js)
+        self.assertNotIn("innerHTML = doc", js)
+        self.assertNotIn("eval(", js)
+
+    def test_is_rel_matches_the_builders_is_peek(self):
+        urls = ["docs/a.html", "docs/a.html#x", "../up.html", "a.html", "https://x.org/a", "HTTP://X.ORG", "mailto:a@b.c", "//x.org/a", "/x", "#x", "", "  docs/a.html ", "ftp:x"]
+        got = self.peek_js("%s.map(isRel)" % json.dumps(urls))
+        want = [True, True, True, True, False, False, False, False, False, False, False, True, False]
+        self.assertEqual(got, want)
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("decision_form_build", BUILD)
+        build = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(build)
+        for u, w in zip(urls, want):
+            if u == u.strip():  # the page trims what a document's href carries; the builder takes the authored URL as it is
+                self.assertEqual(build.is_peek(u), w, u)
+
+    def test_relative_links_resolve_against_the_current_document(self):
+        cases = [("b.html", "docs/a.html"), ("../b.html#y", "docs/a.html"), ("./c/d.html?q=1#z", "docs/a.html"), ("../../x.html", "docs/a.html"),
+                 ("docs/b.html#s", "a.html"), ("sub/b.html", "docs/deep/a.html"), ("../b.html", "docs/deep/a.html"), ("%C3%A9.html#%C3%A9", "a.html")]
+        got = self.peek_js("%s.map(([h, f]) => resolveRel(h, f))" % json.dumps(cases))
+        self.assertEqual(got, ["docs/b.html", "b.html#y", "docs/c/d.html?q=1#z", "x.html", "docs/b.html#s", "docs/deep/sub/b.html", "docs/b.html", "%C3%A9.html#%C3%A9"])
+
+    def test_anchors_decode_safely(self):
+        got = self.peek_js("['caf%C3%A9', 'a%20b', '100%', '%E0%A4%A', 'plain', ''].map(safeDecode)")
+        self.assertEqual(got, ["caf\u00e9", "a b", "100%", "%E0%A4%A", "plain", ""])
+
+    def test_scope_css_maps_root_html_and_body_to_the_shadow_root(self):
+        cases = {
+            ":root{--a:1}": ":host{--a:1}",
+            ':root[data-theme="dark"]{--a:2}': ':host([data-theme="dark"]){--a:2}',
+            '@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--a:2}}': '@media (prefers-color-scheme:dark){:host(:not([data-theme="light"])){--a:2}}',
+            ':root:not([data-theme="light"]) .logo{x:1}': ':host(:not([data-theme="light"])) .logo{x:1}',
+            "html{scroll-padding-top:12px}": ":host{scroll-padding-top:12px}",
+            "body{margin:0;font:17px var(--f-body)}": ".peek-doc{margin:0;font:17px var(--f-body)}",
+            "html,body{margin:0}": ":host,.peek-doc{margin:0}",
+            "body > main h2, body.dark a{x:1}": ".peek-doc > main h2, .peek-doc.dark a{x:1}",
+            "html body{x:1}": ":host .peek-doc{x:1}",
+            "ROOT{x:1}": "ROOT{x:1}",
+            ":ROOT{x:1}": ":host{x:1}",
+        }
+        got = self.peek_js("%s.map(c => scopeCss(c))" % json.dumps(list(cases)))
+        for (src, want), have in zip(cases.items(), got):
+            self.assertEqual(have, want, src)
+
+    def test_scope_css_leaves_other_text_alone(self):
+        same = ['a[href$=".html"],a[title="a html b"]{x:1}', ".body,.html,#body,htmlx,bodyguard{x:1}", "@keyframes k{from{o:0}to{o:1}}",
+                "@font-face{font-family:x;src:url(data:a;b)}", ".x{font:var(--f-body);background-position:fixed}", "*{box-sizing:border-box}"]
+        self.assertEqual(self.peek_js("%s.map(c => scopeCss(c))" % json.dumps(same)), same)
+        self.assertEqual(self.peek_js("scopeCss('/* html{} */ @import url(x.css); body{a:b}')").strip(), ".peek-doc{a:b}")
+
+    def test_scope_css_takes_fixed_and_sticky_elements_back_into_the_flow(self):
+        got = self.peek_js("scopeCss('.rail{position:sticky;top:0}.bar{position: fixed !important}.o{position:absolute}.p{position:-webkit-sticky}')")
+        self.assertEqual(got, ".rail{position:static!important;top:0}.bar{position:static!important}.o{position:absolute}.p{position:static!important}")
+        self.assertEqual(self.peek_js("unpin('position:fixed;inset:0')"), "position:static!important;inset:0")
+
+    def test_scope_css_settles_width_queries_for_a_dialog_of_at_most_720px(self):
+        got = self.peek_js("scopeCss('@media (max-width:900px){.page{display:block}}@media (min-width: 900px){.page{display:grid}}@media (max-width:600px){.a{x:1}}@media (min-width:640px){.b{x:1}}')")
+        self.assertEqual(got, "@media (min-width:0px){.page{display:block}}@media (max-width:0px){.page{display:grid}}@media (max-width:600px){.a{x:1}}@media (min-width:640px){.b{x:1}}")
+
+
+
+class TestOtherOption(BuildCase):
+    """Every closed set of options ends with "Other (in notes)" (Pablo, 2026-11-08); "Discuss first" is not a way out."""
+
+    def options(self, opts):
+        doc = base_doc()
+        doc["items"][0]["options"] = opts
+        res = self.run_build(doc)
+        self.assertBuilds(res)
+        return res.page_data("ITEMS")[0]["options"]
+
+    def test_appended_after_discuss_first(self):
+        self.assertEqual(self.options(["A (recommended)", "B", "Discuss first"]),
+                         ["A (recommended)", "B", "Discuss first", "Other (in notes)"])
+
+    def test_not_doubled_when_an_option_already_says_other(self):
+        self.assertEqual(self.options(["A (recommended)", "Something other"]), ["A (recommended)", "Something other"])
+
+    def test_free_text_items_get_none(self):
+        self.assertEqual(self.options([]), [])

@@ -11,7 +11,7 @@ ArtifactData tool lists them ({id, data: {...}} or {id, choice, ...}). Every ans
 the latest per item is its current answer, and the log lists them all (append-only).
 
 Stock Python 3, no packages. The item format and the style rules are in ../references/item-format.md."""
-import argparse, base64, datetime, glob, hashlib, html, json, os, re, subprocess, sys
+import argparse, base64, datetime, glob, hashlib, html, json, os, posixpath, re, subprocess, sys, urllib.parse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(HERE, "..", "assets", "template.html")
@@ -21,6 +21,14 @@ FLOW = ["read", "decide", "act", "queue", "updates", "later"]
 # Who acts (Pablo, 2026-10-15): the owner -> act / section act; the agent -> queue / section queue; nobody -> update / section updates.
 KIND_HOME = {"act": "act", "queue": "queue", "update": "updates"}
 DISCUSS = re.compile(r"\bdiscuss\b", re.I)
+# Every closed set of options ends with a way out (Pablo, 2026-11-08). "Discuss first" keeps the item open and asks
+# the agent to take up what the notes say, so it is not the place for a different answer. The page appends this
+# unless an option already says "other".
+OTHER = "Other (in notes)"
+OTHERISH = re.compile(r"\bother\b", re.I)
+
+def with_other(opts):
+    return list(opts) + [OTHER] if opts and not any(OTHERISH.search(o) for o in opts) else list(opts)
 
 # ---------- style rules (SPEC REQ-DI-2) ----------
 LIMITS = {"title_chars": 70, "lead_sentences": 2, "bullets": 5, "bullet_words": 20, "option_words": 10, "context_words": 90}
@@ -114,12 +122,43 @@ def apply_brand(page, blk):
         page = page.replace(ph, blk[k] if k else "", 1)
     return page
 
+# ---------- relative URLs (a published artifact: plain links leave it, fetch() of files published next to the page works) ----------
+SCHEME_RE = re.compile(r"^[a-z][a-z0-9+.-]*:", re.I)
+ROOT_REL_WHY = "a root-relative URL cannot work on a published artifact (use a path relative to the form)"
+
+def is_peek(u):
+    """True for a relative URL (not a scheme, `//host`, `/root` or `#anchor`): the form opens it in place."""
+    return bool(u and not SCHEME_RE.match(u) and not u.startswith(("/", "#")))
+
+def root_relative(u): return isinstance(u, str) and u.startswith("/") and not u.startswith("//")
+
+def needed_files(doc):
+    """The relative files the form opens in place (refs, chain steps, form.specBase), without anchors, sorted."""
+    form, items, out = doc.get("form", {}), doc.get("items", []), set()
+    def add(u):
+        if is_peek(u): out.add(re.split(r"[#?]", u, maxsplit=1)[0])
+    for it in items:
+        for x in list(it.get("refs", [])) + list(it.get("chain") or []):
+            if x.get("peek", True): add(x.get("url"))
+    if form.get("specBase") and any(it.get("spec") for it in items): add(form["specBase"])
+    out.discard("")
+    return sorted(out)
+
+def missing_files(paths, out):
+    """Warnings for the needed files that are not next to the built form."""
+    warns = []
+    for p in paths:
+        n = posixpath.normpath(urllib.parse.unquote(p))
+        if n.startswith(".."): warns.append(f"{p}: lies above the form, so it cannot be published beside it")
+        elif not os.path.isfile(os.path.join(out, n)): warns.append(f"{p}: not found next to the built index.html (it must be published beside the form)")
+    return warns
+
 def doc_of(ref):
     """The document a ref points at: its URL without the anchor, or its label when it has no URL."""
     u = ref.get("url")
     return u.split("#")[0] if u else ref.get("label")
 
-CHAIN_KEYS = {"label", "url", "why", "before", "for"}
+CHAIN_KEYS = {"label", "url", "why", "before", "for", "peek"}
 CHAIN_WHY_WORDS = 25
 
 def check_chain(i, kind, chain, ids):
@@ -136,6 +175,8 @@ def check_chain(i, kind, chain, ids):
         if not (isinstance(lab, str) and lab.strip()): errs.append(f"{w} has no label"); lab = None
         elif lab in labels: errs.append(f"{w}: label {lab!r} used twice")
         if st.get("url") is not None and not isinstance(st["url"], str): errs.append(f"{w}: url must be a string or null")
+        elif root_relative(st.get("url")): warns.append(f"{w}: url {st['url']!r} starts with '/'; {ROOT_REL_WHY}")
+        if "peek" in st and not isinstance(st["peek"], bool): errs.append(f"{w}: peek must be true or false")
         why = st.get("why")
         if not (isinstance(why, str) and why.strip()): warns.append(f"{w} has no reason (why)")
         elif words(why) > CHAIN_WHY_WORDS: warns.append(f"{w}: why over {CHAIN_WHY_WORDS} words ({words(why)})")
@@ -159,6 +200,7 @@ def check(doc, base=".", current=None):
     all_ids = {x.get("id") for x in doc.get("items", [])}
     if "brand" in doc.get("form", {}): errs += check_brand(doc["form"]["brand"], base)
     form = doc.get("form", {})
+    if root_relative(form.get("specBase")): warns.append(f"form.specBase {form['specBase']!r} starts with '/'; {ROOT_REL_WHY}")
     live = form.get("live", "live")
     if not (isinstance(live, str) and re.fullmatch(r"[A-Za-z0-9_-]{1,64}", live)): errs.append("form.live must be a collection name: letters, digits, '_' and '-'")
     elif live == form.get("collection", "responses"): errs.append("form.live must differ from form.collection (the live documents are not answers)")
@@ -204,6 +246,7 @@ def check(doc, base=".", current=None):
         if total > LIMITS["context_words"]: warns.append(f"{where} context is {total} words (aim under {LIMITS['context_words']})")
         for r in it.get("refs", []):
             if "label" not in r: errs.append(f"{where} a ref has no label")
+            if root_relative(r.get("url")): warns.append(f"{where} ref url {r['url']!r} starts with '/'; {ROOT_REL_WHY}")
         if "chain" in it: chain_errs, chain_warns = check_chain(i, k, it["chain"], all_ids); errs += chain_errs; warns += chain_warns
         sb = it.get("superseded_by")
         if sb is not None and (not isinstance(sb, str) or sb == i or sb not in {x.get("id") for x in doc.get("items", [])}):
@@ -261,15 +304,13 @@ def refs_of(it, form):
         else: out.append({"label": f"{form.get('specName', 'SPEC.md')} {sid}", "url": None})
     return out
 
-def is_peek(u): return bool(u and "#" in u and not re.match(r"^[a-z]+:", u))
-
 def chain_of(it, info):
     """A read item's chain for the page: steps with their links. info: item id -> {id, title, section, group, resolved}."""
     labels = {st.get("label") for st in it.get("chain") or []}
     out = []
     for st in it.get("chain") or []:
         u = st.get("url")
-        out.append({"label": st["label"], "url": u, "peek": is_peek(u), "why": st.get("why", ""),
+        out.append({"label": st["label"], "url": u, "peek": st.get("peek", is_peek(u)), "why": st.get("why", ""),
                     "before": [{"label": b} if b in labels else {"label": info[b]["title"], "item": info[b]} for b in st.get("before") or []],
                     "for": [info[f] for f in st.get("for") or []]})
     return out
@@ -281,7 +322,7 @@ def read_first_of(item_id, items, info):
 
 def page_item(it, form):
     return {"id": it["id"], "kind": it.get("kind", "decide"), "section": it["section"], "group": it.get("group"),
-            "title": it["title"], "ctx": ctx_html(it), "refs": refs_of(it, form), "options": it.get("options", []),
+            "title": it["title"], "ctx": ctx_html(it), "refs": refs_of(it, form), "options": with_other(it.get("options", [])),
             "default": it.get("default"), "defaulted": it.get("default") is not None, "blocks": bool(it.get("blocks")),
             "applied": it.get("applied")}
 
@@ -361,6 +402,8 @@ def main():
     current = {}
     for h in hist: current[h["id"]] = h
     errs, warns = check(doc, qdir, current)
+    needs = [] if errs else needed_files(doc)
+    if not (a.check or a.mark_published): warns += missing_files(needs, out)
     for w in warns: print("warn:", w, file=sys.stderr)
     for e in errs: print("error:", e, file=sys.stderr)
     if errs or (a.strict and warns): sys.exit(1)
@@ -438,6 +481,7 @@ def main():
     print(f"form: {os.path.relpath(os.path.join(out, 'index.html'))} · {len(open_items)} waiting "
           f"({sum(1 for i in open_items if not i['defaulted'])} open, {sum(1 for i in open_items if i['defaulted'])} with a default) · "
           f"{len(done)} in the outbox · {len(new)} new · {len(warns)} warnings")
+    if needs: print("publish beside the form:", ", ".join(needs))
     if blockers: print("blocking:", ", ".join(blockers))
     print(f"log: {os.path.relpath(logp)} · {len(hist)} answers archived")
 

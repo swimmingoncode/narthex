@@ -9,6 +9,11 @@
       "name": "narthex",
       "source": "./",
       "description": "Agent skills for decision-driven work: build a decision form from a questions file, collect answers, and keep a decision log."
+    },
+    {
+      "name": "pr-review-loop",
+      "source": "./mods/pr-review-loop",
+      "description": "Wakes the reviewer and implementer sessions of a PR when the other side acts, on GitHub or in the review chat file. Never merges."
     }
   ]
 }

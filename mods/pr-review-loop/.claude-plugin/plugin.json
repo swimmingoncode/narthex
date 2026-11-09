@@ -1,0 +1,6 @@
+{
+  "name": "pr-review-loop",
+  "version": "0.1.0",
+  "description": "Wakes an implementer or reviewer session on one PR from GitHub and a shared review-chat file, so the two stop polling by hand.",
+  "types": "./types/index.d.ts"
+}

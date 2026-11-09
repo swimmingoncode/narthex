@@ -142,7 +142,8 @@ const LS = FORM.storageKey;
 let S = {}, col = null, dl = null, who = null, cur = null, curHash = '', lastReq = null;
 // timers: edits not yet sent (per item). writing: writes in flight. Both mean "this view owns the item" until the write lands,
 // so a snapshot never overwrites them (and the echo of our own write is a no-op, because the state already matches).
-const timers = {}, writing = {};
+// failed: items whose last send failed (retried when the connection returns). again: a newer value waits behind the write in flight.
+const timers = {}, writing = {}, again = {}, failed = new Set();
 const LIVE = { queue: null, notice: null };
 const NEWSET = new Set(NEW);
 const ALL = [['overview', 'Overview', FORM.overviewBlurb || 'What is new, what blocks, and how much is left.'],
@@ -152,6 +153,22 @@ const DISCUSS = /\bdiscuss\b/i;
 
 function lsLoad(){ try { return JSON.parse(localStorage.getItem(LS) || '{}') } catch(e){ return {} } }
 function lsSave(){ try { localStorage.setItem(LS, JSON.stringify(S)) } catch(e){} }
+// --- save: helpers (pure; the tests run them in node)
+// A new answer's stamp is never older than the one it replaces, so "newer" always means "written later".
+function nextAt(prev, now){ return prev && prev >= now ? new Date(Date.parse(prev) + 1).toISOString() : now }
+// This browser holds an answer the account does not: missing there, or older there (a write that never landed).
+function newerLocal(remote, mine){ return !!mine && (!remote || (remote.at || '') < (mine.at || '')) }
+// Open items first (the file's order, so a newer one stacks below the older ones), answered next, defaulted last.
+function stackOrder(its, isAnswered){ return its.map((i, n) => [i, n]).sort((a, b) => rankOf(a[0], isAnswered) - rankOf(b[0], isAnswered) || a[1] - b[1]).map(x => x[0]) }
+function rankOf(i, isAnswered){ return i.defaulted ? 2 : (isAnswered(i) ? 1 : 0) }
+// Answered cards above an open one go to the bottom; the reader's card (keepId) never moves in the order. Returns the new order of ids, or null when nothing needs to move.
+function settlePlan(cards, keepId){
+  const done = c => c.id !== keepId && c.answered;
+  const lastOpen = cards.reduce((n, c, i) => c.answered ? n : i, -1);
+  if (!cards.some((c, i) => done(c) && i < lastOpen)) return null;
+  return cards.filter(c => !done(c)).concat(cards.filter(done)).map(c => c.id);
+}
+// --- save: end
 // Unsent notes, per item, in sessionStorage: a fallback for a reload that the platform's hot state does not cover.
 function draftGet(id){ try { return sessionStorage.getItem(LS + ':draft:' + id) } catch(e){ return null } }
 function draftSet(id, v){ try { if (v == null) sessionStorage.removeItem(LS + ':draft:' + id); else sessionStorage.setItem(LS + ':draft:' + id, v) } catch(e){} }
@@ -260,12 +277,12 @@ function card(it){
   const st = el.querySelector('.saved');
   const upd = () => {
     const c = el.querySelector('input[type=radio]:checked'), n = el.querySelector('textarea').value;
-    if (c || n){ S[it.id] = { choice: c ? c.value : '', notes: n, at: new Date().toISOString() }; if (who) S[it.id].by = who; }
+    if (c || n){ S[it.id] = { choice: c ? c.value : '', notes: n, at: nextAt((S[it.id] || {}).at, new Date().toISOString()) }; if (who) S[it.id].by = who; }
     else delete S[it.id];
     lsSave(); draftSet(it.id, n); el.classList.toggle('answered', answered(it.id));
     const tg = el.querySelector('.tags'); if (tg) tg.innerHTML = tagsHtml(it);
     st.textContent = 'Saving…'; tabs(); updateSubnav(); settleAnswered(el);
-    clearTimeout(timers[it.id]); timers[it.id] = setTimeout(() => { delete timers[it.id]; draftSet(it.id, null); persist(it.id, st) }, 700);
+    clearTimeout(timers[it.id]); timers[it.id] = setTimeout(() => { delete timers[it.id]; send(it.id) }, 700);
   };
   el.querySelectorAll('input[type=radio]').forEach(x => x.addEventListener('change', upd));
   el.querySelector('textarea').addEventListener('input', upd);
@@ -279,21 +296,37 @@ function settleAnswered(keep){
   const v = document.getElementById('view');
   if (cur === 'queue' || !keep.isConnected || keep.parentElement !== v) return;
   const cards = [...v.children].filter(e => e.classList.contains('item'));
-  const done = e => e !== keep && answered(e.id);
-  const lastOpen = cards.reduce((n, e, i) => answered(e.id) ? n : i, -1);
-  if (!cards.some((e, i) => done(e) && i < lastOpen)) return;
+  const plan = settlePlan(cards.map(e => ({ id: e.id, answered: answered(e.id) })), keep.id);
+  if (!plan) return;
   const top = keep.getBoundingClientRect().top, before = v.querySelector(':scope > details.dflts');
-  cards.filter(done).forEach(e => v.insertBefore(e, before));
+  plan.map(id => cards.find(e => e.id === id)).forEach(e => v.insertBefore(e, before));
   const d = keep.getBoundingClientRect().top - top; if (d) window.scrollBy(0, d);
 }
 
-async function persist(id, st){
-  if (!col){ st.textContent = 'Saved in this browser only. Export your answers from the Overview to hand them over.'; return }
-  writing[id] = (writing[id] || 0) + 1;
-  try { const r = S[id]; if (r) await col.doc(id).set(r); else await col.doc(id).delete(); st.textContent = 'Saved to your account. Claude can read it.' }
-  catch(e){ st.textContent = 'Not saved to your account (' + (e && e.code || 'error') + '). Kept in this browser.' }
-  finally { if (!--writing[id]) delete writing[id] }
+function setSt(id, msg){ const e = document.getElementById(id + '-st'); if (e) e.textContent = msg }
+// One write at a time per item, always of the latest value: while one is in flight only the fact that more is waiting is kept,
+// and the newest answer is sent when it lands (two writes in flight could land out of order and leave the older one on the account).
+// A failed send stays in `failed` and is retried when the connection returns, not only at the next edit.
+async function send(id){
+  if (writing[id]){ again[id] = true; return }
+  if (!col){ draftSet(id, null); setSt(id, 'Saved in this browser only. Export your answers from the Overview to hand them over.'); return }
+  writing[id] = true;
+  try {
+    do {
+      again[id] = false;
+      const r = S[id];
+      if (r && !r.at){ r.at = new Date().toISOString(); lsSave() } // an answer written without a stamp gets one, so it can be compared
+      const sentAt = r ? r.at : null;
+      try {
+        if (r) await col.doc(id).set(r); else await col.doc(id).delete();
+        failed.delete(id);
+        if (!again[id] && !timers[id]){ setSt(id, 'Saved to your account. Claude can read it.'); if (((S[id] || {}).at || null) === sentAt) draftSet(id, null) }
+      } catch(e){ failed.add(id); setSt(id, 'Not saved to your account (' + (e && e.code || 'error') + '). Kept in this browser; it will retry when the connection returns.') }
+    } while (again[id]);
+  } finally { delete writing[id]; delete again[id] }
 }
+const retryFailed = () => [...failed].forEach(send);
+window.addEventListener('online', retryFailed);
 
 // A remote change to one item, applied to its card where it stands: no re-render, so focus, scroll and open sections stay.
 function updateCard(id){
@@ -334,8 +367,7 @@ function go(hash){
     v.appendChild(sn);
     its = its.filter(i => i.group === grp);
   }
-  const rank = i => i.defaulted ? 2 : (answered(i.id) ? 1 : 0); // a newer open item stacks below the older ones, in the file's order
-  if (pg !== 'queue') its.sort((a, b) => rank(a) - rank(b)); // the queue keeps the file's order: it is a sequence
+  if (pg !== 'queue') its = stackOrder(its, i => answered(i.id)); // a newer open item stacks below the older ones; the queue keeps the file's order: it is a sequence
   if (!its.length){ v.insertAdjacentHTML('beforeend', '<p class="empty">Nothing waiting here.</p>'); return }
   const shown = its.filter(i => !i.defaulted), dflt = its.filter(i => i.defaulted);
   for (const it of shown) v.appendChild(card(it));
@@ -619,7 +651,7 @@ function renderQueue(){
 // What a republish must not lose: where the reader is and what they were typing.
 function hotState(){
   const ae = document.activeElement, drafts = {};
-  document.querySelectorAll('textarea').forEach(t => { const id = t.id.replace(/-notes$/, ''); if (timers[id]) drafts[id] = t.value });
+  document.querySelectorAll('textarea').forEach(t => { const id = t.id.replace(/-notes$/, ''); if (timers[id] || writing[id] || failed.has(id)) drafts[id] = t.value });
   return { hash: curHash, scroll: [window.scrollX, window.scrollY],
     open: [...document.querySelectorAll('details[open][id]')].map(d => d.id), drafts,
     focus: ae && ae.id || null, sel: ae && ae.tagName === 'TEXTAREA' ? [ae.selectionStart, ae.selectionEnd] : null };
@@ -662,16 +694,18 @@ function boot(data){
     col.onSnapshot(snap => {
       const remote = {};
       for (const d of snap.docs){ const x = d.data(); if (x) remote[d.id] = { choice: x.choice || '', notes: x.notes || '', at: x.at || '', ...(x.by ? { by: x.by } : {}) } }
-      if (first){ first = false; // send answers made offline that the account does not have yet
-        for (const [k, r] of Object.entries(S)) if (!remote[k] && ITEMS.some(i => i.id === k)) col.doc(k).set(r).catch(() => {});
+      const cached = !!(snap.metadata && snap.metadata.fromCache); // served from the local cache: not yet the account's word
+      if (first && !cached){ first = false; // send what this browser holds and the account does not: missing there, or newer here
+        for (const [k, r] of Object.entries(S)) if (ITEMS.some(i => i.id === k) && newerLocal(remote[k], r)) send(k);
       }
+      if (!cached) retryFailed(); // a live snapshot means the connection is back
       const changed = [];
       for (const [k, r] of Object.entries(remote)){
         if (timers[k] || writing[k]) continue; // this view's own pending write, or its echo
         const mine = S[k];
         if (mine && (r.at || '') < (mine.at || '')) continue;
         if (mine && mine.choice === r.choice && mine.notes === r.notes && (mine.at || '') === (r.at || '')) continue; // already what we show
-        S[k] = r; changed.push(k);
+        S[k] = r; failed.delete(k); changed.push(k);
       }
       if (!changed.length) return;
       lsSave();

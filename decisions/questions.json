@@ -3464,6 +3464,40 @@
    ]
   },
   {
+   "id": "d-review-signoff",
+   "section": "decide",
+   "group": "inbox",
+   "title": "Review mod: what counts as the reviewer's sign-off?",
+   "lead": "Both review sessions act as you on GitHub, and you can't approve your own PR. I went ahead with the first option; change it here if you prefer.",
+   "bullets": [
+    "A SIGNED_OFF line in the review chat file, in one fixed format; an approval from another account also counts.",
+    "Only a GitHub approval, which needs a second account or a bot for the reviewer.",
+    "Every row of the chat file's status table closed: fragile, since the tables are free-form."
+   ],
+   "options": [
+    "SIGNED_OFF line (recommended, in use)",
+    "GitHub approval only",
+    "Status table closed"
+   ]
+  },
+  {
+   "id": "d-mod-home",
+   "section": "decide",
+   "group": "inbox",
+   "title": "Where does the review mod live?",
+   "lead": "It has to be installed in the reviewer and engineer sessions. I'm building it in the Narthex repo (mods/pr-review-loop); change it here if you prefer.",
+   "bullets": [
+    "Narthex, public: it's the monitor of R21 and R22, with nothing Bloque-specific in the code.",
+    "A private Bloque repo with its own marketplace file.",
+    "Local only, loaded with --plugin-dir, until it has run on a few PRs."
+   ],
+   "options": [
+    "Narthex repo, public (recommended, in use)",
+    "Private Bloque repo",
+    "Local only for now"
+   ]
+  },
+  {
    "id": "r-spec-ahead",
    "kind": "read",
    "section": "read",

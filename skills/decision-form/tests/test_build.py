@@ -858,3 +858,82 @@ class TestOtherOption(BuildCase):
 
     def test_free_text_items_get_none(self):
         self.assertEqual(self.options([]), [])
+
+
+class TestSaveAndOrder(BuildCase):
+    """Save behaviour (retry, one write at a time, local-newer sent, cache is not the account's word) and R37 card order."""
+
+    def page(self):
+        res = self.run_build(base_doc())
+        self.assertBuilds(res)
+        return main_script(read(os.path.join(self.dir, "form", "index.html")))
+
+    def helpers(self, expr):
+        """Run `expr` against the page's pure save/order helpers (nextAt, newerLocal, stackOrder, settlePlan) in node."""
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node is not installed")
+        js = self.page()
+        code = js[js.index("// --- save: helpers"):js.index("// --- save: end")]
+        path = os.path.join(self.dir, "save.js")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(code + "\nconsole.log(JSON.stringify(" + expr + "))")
+        proc = subprocess.run([node, path], capture_output=True, text=True, timeout=60)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        return json.loads(proc.stdout)
+
+    def test_a_failed_send_is_retried_when_the_connection_returns(self):
+        js = self.page()
+        self.assertIn("failed.add(id)", js)
+        self.assertIn("window.addEventListener('online', retryFailed)", js)
+        snap = js[js.index("col.onSnapshot("):js.index("// The live documents")]
+        self.assertIn("if (!cached) retryFailed()", snap)
+
+    def test_one_write_at_a_time_and_the_latest_value_wins(self):
+        js = self.page()
+        send = js[js.index("async function send(id)"):js.index("const retryFailed")]
+        self.assertIn("if (writing[id]){ again[id] = true; return }", send)
+        self.assertIn("while (again[id])", send)
+        self.assertNotIn("writing[id] = (writing[id] || 0) + 1", js)
+        self.assertEqual(js.count("col.doc(id).set("), 1)  # the only write of an answer goes through send()
+
+    def test_a_local_answer_newer_than_the_accounts_is_sent_on_load(self):
+        self.assertEqual(self.helpers("[newerLocal(undefined, {at:'2026-01-01'}), newerLocal({at:'2026-01-01'}, {at:'2026-01-02'}), newerLocal({at:'2026-01-02'}, {at:'2026-01-01'}), newerLocal({at:'x'}, {at:'x'}), newerLocal({at:'x'}, undefined), newerLocal({at:''}, {at:'2026'})]"),
+                         [True, True, False, False, False, True])
+
+    def test_a_write_without_a_stamp_gets_one_and_stamps_only_grow(self):
+        self.assertIn("if (r && !r.at){ r.at = new Date().toISOString(); lsSave() }", self.page())
+        self.assertEqual(self.helpers("[nextAt(undefined, '2026-01-01T00:00:00.000Z'), nextAt('2026-01-01T00:00:00.000Z', '2026-01-01T00:00:00.000Z'), nextAt('2026-01-02T00:00:00.000Z', '2026-01-01T00:00:00.000Z'), nextAt('2026-01-01T00:00:00.000Z', '2026-01-03T00:00:00.000Z')]"),
+                         ["2026-01-01T00:00:00.000Z", "2026-01-01T00:00:00.001Z", "2026-01-02T00:00:00.001Z", "2026-01-03T00:00:00.000Z"])
+
+    def test_a_first_snapshot_from_cache_is_not_the_accounts_word(self):
+        js = self.page()
+        snap = js[js.index("col.onSnapshot("):js.index("// The live documents")]
+        self.assertIn("snap.metadata && snap.metadata.fromCache", snap)
+        self.assertIn("if (first && !cached)", snap)
+        self.assertIn("if (mine && (r.at || '') < (mine.at || '')) continue;", snap)  # an older copy never overwrites a newer local one
+        self.assertIn("if (timers[k] || writing[k]) continue;", snap)  # own echo ignored
+
+    def test_answered_cards_above_an_open_one_go_to_the_bottom_and_the_readers_card_stays(self):
+        # a answered, b answered (the reader's, just answered), c open, d open: a goes below, b keeps its place before c
+        plan = self.helpers("settlePlan([{id:'a',answered:true},{id:'b',answered:true},{id:'c',answered:false},{id:'d',answered:false}], 'b')")
+        self.assertEqual(plan, ["b", "c", "d", "a"])
+        # the reader answers the first open card while an older answered one sits above a later open one
+        plan = self.helpers("settlePlan([{id:'a',answered:true},{id:'b',answered:false},{id:'c',answered:true},{id:'d',answered:false}], 'b')")
+        self.assertEqual(plan, ["b", "d", "a", "c"])
+        # nothing is moved when the answered ones are already below the open ones, or the only one above is the reader's
+        self.assertIsNone(self.helpers("settlePlan([{id:'a',answered:false},{id:'b',answered:true}], 'x')"))
+        self.assertIsNone(self.helpers("settlePlan([{id:'a',answered:true},{id:'b',answered:false}], 'a')"))
+
+    def test_settle_answered_keeps_the_readers_screen_position(self):
+        js = self.page()
+        fn = js[js.index("function settleAnswered"):js.index("function setSt")]
+        self.assertIn("settlePlan(", fn)
+        self.assertIn("keep.getBoundingClientRect().top", fn)
+        self.assertIn("window.scrollBy(0, d)", fn)
+
+    def test_newer_open_items_stack_below_older_ones_and_answered_go_after(self):
+        got = self.helpers("stackOrder([{id:'old1'},{id:'ans'},{id:'old2'},{id:'new'},{id:'dflt',defaulted:true}], i => i.id === 'ans').map(i => i.id)")
+        self.assertEqual(got, ["old1", "old2", "new", "ans", "dflt"])
+        js = self.page()
+        self.assertIn("if (pg !== 'queue') its = stackOrder(its, i => answered(i.id))", js)  # the queue keeps the file's order

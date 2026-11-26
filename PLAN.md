@@ -1,7 +1,7 @@
 ---
 name: Narthex implementation plan
 plan_version: 0.2.0
-spec_version: 0.3.7
+spec_version: 0.3.8
 status: draft
 date: 2026-10-17
 step: STEP-3
@@ -375,7 +375,7 @@ C0 is the contract freeze: `F-002` to `F-005` merged, which includes the sign-in
 
 | Task | Work | Tests | Done when |
 |---|---|---|---|
-| `T-013-01` | Publish job: run the builder with `--target narthex` at a commit, store the snapshot and page (disk or S3-compatible), database publish lock, one form per project | `publish with a stale base is refused`; `item from another project is refused` (L2); `unapproved item is not published` (L2); `publish records who approved it` [`REQ-DEC-22`, `INV-11`, `INV-9`] | tests pass |
+| `T-013-01` | Publish job: run the builder with `--target narthex` at a commit, store the snapshot and page (disk or S3-compatible), database publish lock, one form per project | `publish with a stale base is refused`; `item from another project is refused` (L2); `a form is published only to its own project's private page` (L2); `publish records who published it` [`REQ-DEC-22`, `INV-11`, `INV-9`] | tests pass |
 | `T-013-02` | Serve the page on the user-content domain; the answer endpoint appends an answer event | `answer is stored as an event first`; `rebuilding a form keeps every answer` (L2) [`INV-2`, `INV-18`] | tests pass |
 | `T-013-03` | Event stream (server-sent events) after a cursor, resuming from the last event id, with keepalives. It accepts the watch key and sends only the cursor and the kind of each event, never its content | `stream resumes after the last cursor`; `idle stream sends only keepalives`; `stream for a watch key carries no answer text` [`REQ-DEC-42`, ADR-0010] | tests pass |
 | `T-013-04` | Read since a cursor; short wait then "pending"; acknowledge with the archive commit; link-request events; acknowledged answers age out after 30 days | `read returns only changes after the cursor`; `wait returns pending after its limit`; `only acknowledged answers age out` [`REQ-DEC-24`, `REQ-IFC-6`, `INV-2`] | tests pass |

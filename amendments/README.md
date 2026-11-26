@@ -12,6 +12,7 @@ at 0001 (ruling R19 of 2026-10-17, in `notes/2026-10-17-rulings.md`).
 | `0005-practitioner.md` | Applied in SPEC v0.3.5; definition superseded by 0006 |
 | `0006-maker-level.md` | Applied in SPEC v0.3.6 |
 | `0007-testing-narthex.md` | Applied in SPEC v0.3.7 |
+| `0008-publish-form-without-asking.md` | Applied in SPEC v0.3.8 |
 
 ## History
 

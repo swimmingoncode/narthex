@@ -1,0 +1,11 @@
+{
+  "responses": [
+    {
+      "id": "ru-publish-no-ask",
+      "choice": "Adopt as relayed",
+      "notes": "Pablo, relayed by the Pallet Usage Subscription session on 2026-11-25: the rules that make a session wait for his yes before publishing a form are unnecessary noise; publish and update it without asking. Confirmed in the Narthex chat the same day: \"Yes, that's nonsense. Amend the SPEC.\" Said at 2026-11-25. Ruling R40.",
+      "at": "2026-11-25T12:00:00-05:00",
+      "by": "relayed:chat"
+    }
+  ]
+}

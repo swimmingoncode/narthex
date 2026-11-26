@@ -1,11 +1,11 @@
 ---
 name: Narthex (codename)
 summary: Tools and a knowledge base that turn a user's agentic system into a senior software architect. It guides people from a product specification through requirements, architecture, construction, verification, release and evolution, with decisions as data, living documents, and checks that run in CI.
-spec_version: 0.3.7
+spec_version: 0.3.8
 status: draft
-date: 2026-10-17
+date: 2026-11-25
 rewrite_of: SDD Studio SPEC v0.2.0
-amendments: 0001 to 0007
+amendments: 0001 to 0008
 ---
 
 # Narthex: system specification
@@ -260,7 +260,7 @@ Bloque's teams come first, so organisations, teams and role-based access are in 
 | **Experiment** | Bounded work that tries one shape of a solution (§7.5). Its questions and draft changes stay in its own log until it ends |
 | **Outcome** | The one-page result of an experiment: adopt, adapt or drop, with measured numbers |
 | **Promotion** | Moving an adopted or adapted outcome into the project's record |
-| **Outward action** | Anything visible outside the owner's private space: a push, a PR or issue on another party's repo, a message, a publication, a release, a payment |
+| **Outward action** | Anything visible outside the owner's private space: a push, a PR or issue on another party's repo, a message, a publication, a release, a payment. Publishing a project's decision form, which is private to its lead, is not one; sharing it is |
 | **Monitor** | A background watcher in the harness that wakes the agent when something changes (R22) |
 | **Channel** | Any path that brings a person's answer to the agent without the agent asking: a plugin hook or a monitor (§7.2.6) |
 | **Alarm** | A signal that a change trips a check or touches an identifier someone else owns (§7.6) |
@@ -278,7 +278,7 @@ Bloque's teams come first, so organisations, teams and role-based access are in 
 | Builder | A non-engineer (operations, product, business) who builds a product or an operation through agents, by code, low-code or no-code (R11, R12) | Rule on their own product, within the specs it builds on | Amend a spec they don't own; they raise a proposal to its owner instead (`REQ-TEM-7`) |
 | Engineer reviewer | An engineer who owns a set of identifiers | Review a change that trips one of them (`REQ-VER-7`) | They are asked for nothing else |
 | Product-spec owner | Whoever owns the product specification: often the lead or a builder | Answer gap items (`REQ-CHN-5`); record validation (`REQ-CHN-13`) | Rule on the SRS, unless they are also its lead |
-| Orchestrating agent | The user's main agent on a project | Write items; build and publish the form after approval; read answers; apply rulings through amendments; dispatch agents | Answer items; take an outward action without an explicit answer |
+| Orchestrating agent | The user's main agent on a project | Write items; build, publish and update the form without asking first; read answers; apply rulings through amendments; dispatch agents | Answer items; take an outward action without an explicit answer |
 | Worker agent | An agent on one task under a brief | Raise items; open PRs on the project repo | Edit `SPEC.md` or `PLAN.md`, or merge, unless the task says so; push to a protected or upstream repo |
 | Viewer | Anyone given a read link | Read a shared form or document | Answer |
 
@@ -734,7 +734,7 @@ Normative. Each skill reads and writes files in the layout of `REQ-DAT-1`, and e
 | `REQ-SKL-2` | `research` | MUST dispatch read-only agents that write sourced reports (`REQ-DOC-9`) under `research/` or `notes/`, add their external sources to `REFERENCES.md`, and list the questions the research raises as items. |
 | `REQ-SKL-3` | `spec` | MUST run `STEP-1`: check the product specification (`REQ-CHN-5`), write or update `SPEC.md` under the project's profile, and `OVERVIEW.md`, informative, stating which spec version it digests. Every open question MUST become an item. |
 | `REQ-SKL-4` | `design` | MUST run `STEP-2`: write `ARCHITECTURE.md` and the ADRs (`REQ-CHN-8` to `REQ-CHN-10`) (ASM-54). |
-| `REQ-SKL-5` | `decide` | MUST maintain `decisions/questions.json`, build the form, ask the lead before the first publish of a form, read answers back (`REQ-DEC-23`), archive them, update the log, and keep the queue current (`REQ-DEC-30`). |
+| `REQ-SKL-5` | `decide` | MUST maintain `decisions/questions.json`, build the form, publish and update it without asking the lead first (R40), read answers back (`REQ-DEC-23`), archive them, update the log, and keep the queue current (`REQ-DEC-30`). |
 | `REQ-SKL-6` | `plan` | MUST write `PLAN.md` with plan decisions, features, tasks and milestones, each tracing to the identifiers it serves, and the construction method of each milestone (`REQ-CHN-11`). It MUST check the task table (every task traces to an identifier, no cycles, milestone order) and generate the dependency waves (ASM-16). |
 | `REQ-SKL-7` | `dispatch` | MUST start one agent per feature, each in its own git worktree as a subagent (ASM-42), with a brief built from the house rules and the feature plan. It MUST track each agent's branch, PR and CI, collect the items each agent raises, hand a PR to a script that waits for CI and resumes the agent when CI finishes (ASM-9), and back off when agents hit usage limits (ASM-18). |
 | `REQ-SKL-8` | `review` | MUST run read-only adversarial reviewers on each PR against the spec, before merge. Findings that need a fix go back as fixups; findings that need a ruling become items. After any change applied post-review, the reviewers MUST be told what changed (ASM-8). |
@@ -897,7 +897,7 @@ Ruled by R10 as proposed in `notes/2026-10-17-product-definition-review.md` §3.
 | `INV-6` | Backlinks are symmetric: if an item, amendment or check references an anchor, the rendered anchor lists it. |
 | `INV-7` | Every ruling applied to a spec cites the item ids that ruled it. A ruling given outside the form is recorded as a relayed item before it applies; no spec change cites "chat" alone. |
 | `INV-8` | No component and no brief overrides the git committer identity or commit signing (`REQ-SKL-19`). |
-| `INV-9` | A published form contains only what the lead approved to publish. Nothing is published on a default. |
+| `INV-9` | A form is published only to its own project's page, private to its lead. Publishing or updating it needs no approval (R40); sharing it with anyone else is an outward action (`INV-4`). |
 | `INV-10` | The lead's inbox holds no item raised inside an experiment that has not been promoted, except reserved items. |
 | `INV-11` | No item from another project appears in a project's form (ASM-11). |
 | `INV-12` | A user's experience level changes the guidance they get, and never a gate or a check. |

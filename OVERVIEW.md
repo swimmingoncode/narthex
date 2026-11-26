@@ -1,13 +1,13 @@
 ---
 name: Narthex (codename): overview
-digest_of: SPEC.md v0.3.7 (amendments 0001 to 0007 applied)
+digest_of: SPEC.md v0.3.8 (amendments 0001 to 0008 applied)
 status: informative. Where this and SPEC.md disagree, SPEC.md wins
 date: 2026-10-17
 ---
 
 # Narthex: overview
 
-A short reading of `SPEC.md` v0.3.7 for someone new to the project: what Narthex is, who it is for, how it
+A short reading of `SPEC.md` v0.3.8 for someone new to the project: what Narthex is, who it is for, how it
 works, what exists today, and what is still open. Identifiers in `code` point to the spec. External sources are
 in `REFERENCES.md`.
 
@@ -158,6 +158,10 @@ confirmed on five form items, `v3-asm-trust`, `v3-asm-method`, `v3-asm-form`, `v
 - amendment 0007 (v0.3.7): Narthex tests itself at four layers (components, invariants, synthetic sessions with
   persona agents, real use at Bloque); a synthetic run costs at most $3, five runs per scenario per release; every
   real incident becomes a scenario (`REQ-VER-14` to `REQ-VER-20`).
+
+**Ruled** on 2026-11-25:
+- amendment 0008 (v0.3.8): the decision form is published and updated without asking the lead first; it is private
+  to the lead, so publishing it is not an outward action, and sharing it still is (`REQ-SKL-5`, `INV-9`).
 
 **Open**, each an item on the form (SPEC §11):
 

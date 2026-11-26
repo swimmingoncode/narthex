@@ -17,8 +17,6 @@ repo. Format and style rules: `references/item-format.md`.
 - **Spell out every question.** One item per question; never "its 6 questions".
 - **Concise items.** A title of at most 70 characters, one or two sentences, at most five bullets, options
   of at most ten words, the recommendation first. Run the builder; fix every warning.
-- **Ask before publishing.** The first publish of a form, and any publish that adds a reserved item, needs
-  the lead's explicit yes. Show what will be published (section counts and titles) and ask in one line.
 - **No defaults on reserved items.** Outward actions, security trade-offs and product rulings the lead keeps
   are `reserved: true` and never carry a default.
 - **Experiments stay out of the inbox.** Questions raised inside an experiment go to its own file
@@ -53,7 +51,7 @@ repo. Format and style rules: `references/item-format.md`.
    relative link opens outside the artifact and breaks), so the build prints `publish beside the form:` with the
    files to publish and warns about any that is not next to `index.html`. A shown document keeps its styles but
    its scripts don't run: publish diagrams as inline SVG (or mermaid rendered to SVG), not drawn by script.
-4. **Ask, then publish.** After the lead's yes, publish `decisions/form/index.html` with the Artifact tool,
+4. **Publish.** Publish `decisions/form/index.html` with the Artifact tool,
    declaring `capabilities: {db: {}, user: {}, downloads: true}`. Publish any documents the items open in
    place (`refs` with relative URLs, `form.specBase`) through `files`, at the same relative paths. Record
    the artifact URL in `form.url` in the questions file. Later publishes reuse that `url` and omit

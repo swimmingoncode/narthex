@@ -53,7 +53,7 @@ Tool: `skills/decision-form/` in this repo (read `SKILL.md` and
    Be specific: name the exact question, what happens today, and each option's consequence.
 2. Build: `python3 skills/decision-form/scripts/build.py decisions/questions.json`.
    Fix every warning.
-3. **Ask the lead before the first publish.** Then publish `decisions/form/index.html` with the Artifact tool,
+3. **Publish** `decisions/form/index.html` with the Artifact tool, without asking first (the form is private to the lead),
    `capabilities: {db: {}, user: {}, downloads: true}`, and any documents the items open in place via `files`
    (relative paths, so they open inside the form). Record the URL in `form.url`.
 4. `build.py … --mark-published`, then one push notification per publish that adds or changes items: under 200
